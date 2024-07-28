@@ -1,0 +1,38 @@
+<div class="profile-page">
+    <form class="profile-page-form">
+        <div class="group-input">
+            <label>
+                Email
+                <input class="input-text" type="text" placeholder="Email">
+            </label>
+        </div>
+        <div class="group-input">
+            <label class="group-input">
+                Фамилия
+                <input class="input-text" type="text" placeholder="Фамилия">
+            </label>
+        </div>
+        <div class="group-input">
+            <label class="group-input">
+                Имя
+                <input class="input-text" type="text" placeholder="Имя">
+            </label>
+        </div>
+        <div class="group-input">
+            <label class="group-input">
+                Отчество
+                <input class="input-text" type="text" placeholder="Отчество">
+            </label>
+        </div>
+        <div class="group-input">
+            <label>
+                Роль
+                <select class="input-select" placeholder="Выберите роль пользователя">
+                    @for (role of roles; track role.id) {
+                        <option [value]="role.id">{{role.name}}</option>
+                    }
+                  </select>                 
+            </label>
+        </div>
+    </form>    
+</div>    

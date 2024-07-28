@@ -1,0 +1,23 @@
+:root{
+    --dark-color: #000000;
+    --light-color: #ffffff;
+    --primary-color: #AE7AFF;
+    --page-color: #DCDCDC;
+    --header-color: #A9A9A9;
+}
+
+body{
+    margin: 0;
+}
+
+.login-page{
+    margin: 200px 35%;
+    box-sizing: border-box;
+}
+
+.create-user-page{
+    margin: 30px 35%;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

@@ -1,0 +1,26 @@
+<div class="container-fluid">
+    <header class="header">
+      <div class="dropdown">
+        <button class="btn btn-lg btn-secondary dropdown-toggle float-end h-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Меню
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" routerLink="/profile">Профиль</a></li>
+          <li><a class="dropdown-item" routerLink="/user">Пользователи</a></li>
+          <li><a class="dropdown-item" (click)="logout()">Выход</a></li>
+        </ul>
+      </div>
+    </header>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-2">
+          Колонка 1 (занимает 12 колонок на малых экранах и 8 колонок на средних и больших экранах)
+      </div>
+      <div class="col-10">
+        <div>
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+      </div>
+    </div>
+<div>

@@ -1,0 +1,87 @@
+<div class="container">
+    <div class="input-group">
+        <button type="button" class="btn btn-secondary m-3" data-bs-toggle="modal" data-bs-target="#exampleModal">Добавить пользователя</button>
+        <div class="form-check m-4">
+            <input class="form-check-input" type="checkbox" id="flexCheckDefault" (change)="handleChange($event)">
+            <label class="form-check-label" for="flexCheckDefault">
+                Показать только активных
+            </label>
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Имя</th>
+            <th scope="col">Фамилия</th>
+            <th scope="col">Отчество</th>
+            <th scope="col">Логин</th>
+            <th scope="col">Email</th>
+            <th scope="col">Активен</th>
+          </tr>
+        </thead>
+        <tbody>
+            @for (item of filerUsers; track item.login) {
+                <tr>
+                    <td>{{item.firstName}}</td>
+                    <td>{{item.lastName}}</td>
+                    <td>{{item.patronymic}}</td>
+                    <td>{{item.login}}</td>
+                    <td>{{item.email}}</td>
+                    <td>{{item.isLocked ? "Нет" : "Да"}}</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+  
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form [formGroup]="userForm" (ngSubmit)="onCreateUser($event)">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="formGroupExampleInput" class="form-label">Фамилия</label>
+                            <input type="text" formControlName="lastName" class="form-control mt-2" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                        </div> 
+                        <div class="mb-3">
+                            <label for="formGroupExampleInput" class="form-label">Имя</label>
+                            <input type="text" formControlName="firstName" class="form-control mt-2" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                        </div> 
+                        <div class="mb-3">
+                            <label for="formGroupExampleInput" class="form-label">Отчество</label>
+                            <input type="text" formControlName="patronymic" class="form-control mt-2" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                        </div> 
+                        <div class="mb-3">
+                            <label for="formGroupExampleInput" class="form-label">Роль пользователя</label>
+                            <select class="form-select" formControlName="typeUser" aria-label="Default select example">
+                                @for (role of roles$ | async; track role.id ) {
+                                    <option [value]="role.id">{{role.name}}</option>
+                                }
+                            </select>
+                        </div>
+                        @if(this.userForm.value.typeUser == const.USER_TYPE.Student){
+                            <div class="mb-3">
+                                <label for="formGroupExampleInput" class="form-label">Группа</label>
+                                <select class="form-select" aria-label="Default select example">
+                                    <option [value]="1">П-41</option>
+                                </select>
+                            </div>
+                        }
+                        <div class="mb-3">
+                            <label for="formGroupExampleInput" class="form-label">Ссылка для пользователя</label>
+                            <div class="input-group">
+                                <button class="btn btn-outline-secondary" type="button" id="button-addon1"><img src="/icons/copy.svg" width="20"/> </button>
+                                <input type="text" class="form-control" [value]="urlForCreateUser()" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="modal-footer">
+                        @if(urlForCreateUser() == null){
+                            <button type="submit" class="btn btn-primary">Сгенерировать</button>
+                        }
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="closeModelCreatingUser()">Закрыть</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
