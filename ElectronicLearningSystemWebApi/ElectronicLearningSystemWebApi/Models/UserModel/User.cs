@@ -61,7 +61,7 @@ namespace ElectronicLearningSystemWebApi.Models.UserModel
         /// <summary>
         /// Время работы токена.
         /// </summary>
-        public DateTime RefreshTokenExpiryTime { get; set; }
+        public DateTime? RefreshTokenExpiryTime { get; set; }
 
         /// <summary>
         /// Заблокирована учетная запись

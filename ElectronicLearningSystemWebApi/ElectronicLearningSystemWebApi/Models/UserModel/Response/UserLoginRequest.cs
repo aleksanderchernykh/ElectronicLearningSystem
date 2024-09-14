@@ -1,9 +1,18 @@
 ﻿namespace ElectronicLearningSystemWebApi.Models.UserModel.Response
 {
+    /// <summary>
+    /// Запрос на авторизацию пользователя.
+    /// </summary>
     public class UserLoginRequest
     {
+        /// <summary>
+        /// Логин пользователя.
+        /// </summary>
         public required string Login { get; set; }
 
+        /// <summary>
+        /// Пароль пользователя.
+        /// </summary>
         public required string Password { get; set; }
     }
 }

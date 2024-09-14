@@ -1,4 +1,6 @@
-﻿using ElectronicLearningSystemWebApi.Helpers;
+﻿using ElectronicLearningSystemWebApi.Enums;
+using ElectronicLearningSystemWebApi.Extensions;
+using ElectronicLearningSystemWebApi.Helpers;
 using ElectronicLearningSystemWebApi.Models.UserModel;
 
 namespace ElectronicLearningSystemWebApi.Context
@@ -15,19 +17,19 @@ namespace ElectronicLearningSystemWebApi.Context
 
             var administrator = new Role
             {
-                Id = new Guid("02bc926f-9c56-4fb9-bc8e-68bbe2e87c17"),
+                Id = (Guid)UserRoleEnum.Admin.GetAmbientValue(),
                 Name = "Администратор"
             };
 
             context.Role.AddRange(
                 administrator, 
                 new Role {
-                    Id = new Guid("c0eb7e9a-b913-4cd0-bf70-146fc48764ba"),
+                    Id = (Guid)UserRoleEnum.Teacher.GetAmbientValue(),
                     Name = "Преподаватель"
                 },
                 new Role
                 {
-                    Id = new Guid("86b8ca0b-85ce-4aca-b911-28836645ebc7"),
+                    Id = (Guid)UserRoleEnum.Student.GetAmbientValue(),
                     Name = "Студент"
                 });
 

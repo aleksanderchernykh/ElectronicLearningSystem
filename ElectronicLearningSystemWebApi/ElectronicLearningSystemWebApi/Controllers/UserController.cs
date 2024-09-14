@@ -6,6 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ElectronicLearningSystemWebApi.Controllers
 {
+    /// <summary>
+    /// Контроллер для работы с пользователем.
+    /// </summary>
+    /// <param name="userRepository">Репозиторий для работы с пользователем.</param>
     [Authorize]
     [ApiController]
     [Route("user")]
@@ -22,7 +26,7 @@ namespace ElectronicLearningSystemWebApi.Controllers
         /// <param name="userResponse"></param>
         /// <returns></returns>
         [HttpPost("create")]
-        public async Task<IActionResult> Create([FromBody] UserRequest userResponse)
+        public async Task<IActionResult> Create([FromBody] CreateUserRequest userResponse)
         {
             try
             {

@@ -1,4 +1,6 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using ElectronicLearningSystemWebApi.Models.UserModel;
+using ElectronicLearningSystemWebApi.Repositories;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -6,12 +8,23 @@ using System.Text;
 
 namespace ElectronicLearningSystemWebApi.Helpers.Jwt
 {
-    public class TokenHelper(IConfiguration configuration)
+    /// <summary>
+    /// Хелпер для генерации и проверки токена пользователя.
+    /// </summary>
+    /// <param name="configuration">Конфигурация</param>
+    /// <param name="userRepository"></param>
+    public class TokenHelper(IConfiguration configuration,
+        UserRepository userRepository)
     {
         /// <summary>
         /// Конфигурация приложения.
         /// </summary>
         private readonly IConfiguration _configuration = configuration;
+
+        /// <summary>
+        /// Репозиторий для работы с пользователем.
+        /// </summary>
+        private readonly UserRepository _userRepository = userRepository;
 
         /// <summary>
         /// Генерация токена для доступа.
@@ -79,6 +92,23 @@ namespace ElectronicLearningSystemWebApi.Helpers.Jwt
             }
 
             return principal;
+        }
+
+        /// <summary>
+        /// Генерация токена для пользователя.
+        /// </summary>
+        /// <param name="user">Пользователь.</param>
+        /// <returns>Токен доступа и обновления.</returns>
+        public Tuple<string, string> GenerateTokenForUser(User user)
+        {
+            var accessToken = GenerateAccessToken(user.Login);
+            var refreshToken = GenerateRefreshToken();
+
+            user.RefreshToken = refreshToken;
+            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(Convert.ToDouble(_configuration["Jwt:RefreshTokenLifetime"]));
+            _userRepository.UpdateUser(user);
+
+            return Tuple.Create(accessToken, refreshToken);
         }
     }
 }

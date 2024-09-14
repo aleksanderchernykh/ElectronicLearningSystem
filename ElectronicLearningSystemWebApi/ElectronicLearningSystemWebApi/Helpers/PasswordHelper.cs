@@ -1,5 +1,8 @@
 ﻿namespace ElectronicLearningSystemWebApi.Helpers
 {
+    /// <summary>
+    /// Хелпер работы с паролями.
+    /// </summary>
     public static class PasswordHelper
     {
         /// <summary>

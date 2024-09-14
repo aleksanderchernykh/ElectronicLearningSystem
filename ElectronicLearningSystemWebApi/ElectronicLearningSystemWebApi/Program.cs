@@ -31,7 +31,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowSpecificOrigins",
         builder =>
         {
-            builder.WithOrigins("http://localhost:4200") // Укажите ваш фронтенд-URL
+            builder.WithOrigins("http://localhost:4200") // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ-URL
                    .AllowAnyHeader()
                    .AllowAnyMethod();
         });

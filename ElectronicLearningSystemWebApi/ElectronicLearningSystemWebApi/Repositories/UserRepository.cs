@@ -74,9 +74,9 @@ namespace ElectronicLearningSystemWebApi.Repositories
         /// Создание нового пользователя.
         /// </summary>
         /// <param name="userResponse">Данные пользователя.</param>
-        /// <exception cref="ArgumentException">Пользователь с переданным логином уже существует.</exception>
+        /// <exception cref="DublicateUserException">Пользователь с переданным логином уже существует.</exception>
         /// <exception cref="ArgumentNullException">Передано пустое значение логина или пароля.</exception>
-        public async Task CreateUser(UserRequest userResponse)
+        public async Task CreateUser(CreateUserRequest userResponse)
         {
             var dublicateUser = await GetUserByLoginAsync(userResponse.Login);
 
@@ -95,8 +95,7 @@ namespace ElectronicLearningSystemWebApi.Repositories
             {
                 Email = userResponse.Email,
                 Password = PasswordHelper.HashPassword(userResponse.Password),
-                RefreshTokenExpiryTime = DateTime.Now,
-                RoleId = new Guid("fc3363d4-5782-4a1b-ad58-e2388f6084e5"),
+                RoleId = userResponse.RoleId,
                 Login = userResponse.Login,
             };
 
@@ -118,8 +117,7 @@ namespace ElectronicLearningSystemWebApi.Repositories
         /// </summary>
         /// <param name="id"></param>
         /// <returns>Пользователь.</returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public async Task<User> GetUserByIdAsync(Guid id)
+        public async Task<User?> GetUserByIdAsync(Guid id)
         {
             return await _applicationContext.User.FirstOrDefaultAsync(x => x.Id == id);
         }
@@ -131,6 +129,18 @@ namespace ElectronicLearningSystemWebApi.Repositories
         public async Task<IEnumerable<User>> GetUsers()
         {
             return await _applicationContext.User.ToListAsync();
+        }
+
+        /// <summary>
+        /// Выход пользователя из системы.
+        /// </summary>
+        /// <param name="user">Пользователь.</param>
+        public void LogoutUser(User user)
+        {
+            user.RefreshToken = null;
+            user.RefreshTokenExpiryTime = null;
+            _applicationContext.Update(user);
+            _applicationContext.SaveChanges();
         }
     }
 }
