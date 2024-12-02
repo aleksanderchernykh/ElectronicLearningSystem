@@ -1,5 +1,5 @@
 ﻿using ElectronicLearningSystemWebApi.Enums;
-using ElectronicLearningSystemWebApi.Extensions;
+using ElectronicLearningSystemCore.Extensions;
 using ElectronicLearningSystemWebApi.Helpers;
 using ElectronicLearningSystemWebApi.Models.UserModel;
 

@@ -1,7 +1,10 @@
+using Avro.Generic;
+using ElectronicLearningSystemKafka.Core.Producer;
 using ElectronicLearningSystemWebApi.Context;
 using ElectronicLearningSystemWebApi.Helpers.Jwt;
 using ElectronicLearningSystemWebApi.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -22,6 +25,11 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<TokenHelper>();
 builder.Services.AddScoped<UserRepository>();
+builder.Services.AddSingleton<Producer>(provider =>
+{
+    var logger = provider.GetRequiredService<ILogger<Producer>>();
+    return new Producer(logger, confuguration.GetConnectionString("KafkaBrokerUrl"), confuguration.GetConnectionString("SchemaRegistryUrl"));
+});
 
 var key = Encoding.ASCII.GetBytes(confuguration["Jwt:Key"]);
 

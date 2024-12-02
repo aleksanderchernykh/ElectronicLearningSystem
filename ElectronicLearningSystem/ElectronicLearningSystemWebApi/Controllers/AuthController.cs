@@ -1,7 +1,12 @@
+using ElectronicLearningSystemKafka.Core.Producer;
 using ElectronicLearningSystemWebApi.Helpers.Jwt;
+using ElectronicLearningSystemWebApi.Models.EmailModel.Response;
 using ElectronicLearningSystemWebApi.Models.UserModel.Response;
 using ElectronicLearningSystemWebApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using ElectronicLearningSystemKafka.Common.Enums;
+using Confluent.Kafka;
+using ElectronicLearningSystemKafka.Common.Models;
 
 namespace ElectronicLearningSystemWebApi.Controllers
 {
@@ -15,8 +20,14 @@ namespace ElectronicLearningSystemWebApi.Controllers
     [Route("auth")]
     public class AuthController(TokenHelper tokenHelper,
         IConfiguration configuration,
-        UserRepository userRepository) : ControllerBase
+        UserRepository userRepository,
+        ILogger<AuthController> logger,
+        Producer producer) : ControllerBase
     {
+        private ILogger<AuthController> _logger = logger;
+
+        private readonly Producer _producer = producer;
+
         /// <summary>
         /// Хелпер для работы с токенами.
         /// </summary>
@@ -67,6 +78,7 @@ namespace ElectronicLearningSystemWebApi.Controllers
         /// </summary>
         /// <param name="userLoginResponse"></param>
         /// <returns></returns>
+        [HttpPost("logout")]
         public async Task<IActionResult> Logout([FromBody] LogoutRequest logoutResponse)
         {
             var user = await _userRepository.GetUserByLoginAsync(logoutResponse.Login);
@@ -113,6 +125,32 @@ namespace ElectronicLearningSystemWebApi.Controllers
                     AccessToken = token.Item1,
                     RefreshToken = token.Item2
                 });
+            }
+            catch
+            {
+                return Unauthorized();
+            }
+        }
+
+        /// <summary>
+        /// Отправка сообщения для проверки kafka.
+        /// </summary>
+        [HttpPost("sendemail")]
+        public async Task<IActionResult> SendEmail([FromBody] EmailSendingResponse emailResponse)
+        {
+            try
+            {
+                var email = new Email 
+                {
+                    Text = emailResponse.Text,
+                    Recipients = emailResponse.Recipients,
+                    Files = emailResponse.Files,
+                    Subject = emailResponse.Subject,
+                };
+
+                await _producer.SendMessage(TopicEnum.EmailSending, new Message<string, Email> { Key = Guid.NewGuid().ToString(), Value = email });
+
+                return Ok();
             }
             catch
             {

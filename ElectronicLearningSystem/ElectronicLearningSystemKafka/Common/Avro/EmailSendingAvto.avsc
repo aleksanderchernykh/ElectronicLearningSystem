@@ -1,0 +1,32 @@
+{
+	"namespace": "ElectronicLearningSystemKafka.Common.Models",
+	"type": "record",
+	"name": "Email",
+	"fields": [
+		{
+			"name": "Recipients",
+			"type": {
+				"type": "array",
+				"items": "string"
+			}
+		},
+		{
+			"name": "Text",
+			"type": "string"
+		},
+		{
+			"name": "Subject",
+			"type": "string"
+		},
+		{
+			"name": "Files",
+			"type": [
+				"null",
+				{
+					"type": "array",
+					"items": "string"
+				}
+			]
+		}
+	]
+}

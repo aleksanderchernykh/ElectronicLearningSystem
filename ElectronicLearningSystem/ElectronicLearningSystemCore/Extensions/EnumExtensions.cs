@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
 
-namespace ElectronicLearningSystemWebApi.Extensions
+namespace ElectronicLearningSystemCore.Extensions
 {
     /// <summary>
     /// Методы расширения для Guid.

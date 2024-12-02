@@ -3,7 +3,7 @@
 namespace ElectronicLearningSystemWebApi.Enums
 {
     /// <summary>
-    /// Перечисление идентификаторов ролей.
+    /// Перечисление ролей.
     /// </summary>
     public enum UserRoleEnum
     {   
