@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectronicLearningSystemKaf
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectronicLearningSystemCore", "ElectronicLearningSystemCore\ElectronicLearningSystemCore.csproj", "{57901721-31DD-46A3-9A02-9BAA85BD16AE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmailSendingMessage", "EmailSendingMessage\EmailSendingMessage.csproj", "{0053F544-BF94-4DF4-BF93-A1739FA76B40}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailSendingService", "EmailSendingService\EmailSendingService.csproj", "{7CA3D827-D91F-4EA1-901C-F91B86029226}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{57901721-31DD-46A3-9A02-9BAA85BD16AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57901721-31DD-46A3-9A02-9BAA85BD16AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57901721-31DD-46A3-9A02-9BAA85BD16AE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0053F544-BF94-4DF4-BF93-A1739FA76B40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0053F544-BF94-4DF4-BF93-A1739FA76B40}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0053F544-BF94-4DF4-BF93-A1739FA76B40}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0053F544-BF94-4DF4-BF93-A1739FA76B40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CA3D827-D91F-4EA1-901C-F91B86029226}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CA3D827-D91F-4EA1-901C-F91B86029226}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CA3D827-D91F-4EA1-901C-F91B86029226}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CA3D827-D91F-4EA1-901C-F91B86029226}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
