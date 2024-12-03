@@ -24,8 +24,6 @@ namespace ElectronicLearningSystemWebApi.Controllers
         ILogger<AuthController> logger,
         Producer producer) : ControllerBase
     {
-        private ILogger<AuthController> _logger = logger;
-
         private readonly Producer _producer = producer;
 
         /// <summary>
@@ -33,10 +31,6 @@ namespace ElectronicLearningSystemWebApi.Controllers
         /// </summary>
         private readonly TokenHelper _tokenHelper = tokenHelper;
 
-        /// <summary>
-        /// Конфигурация.
-        /// </summary>
-        private readonly IConfiguration _configuration = configuration;
 
         /// <summary>
         /// Репозиторий для работы с пользователями системы.

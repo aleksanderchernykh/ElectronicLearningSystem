@@ -6,7 +6,6 @@ using ElectronicLearningSystemCore.Extensions;
 using ElectronicLearningSystemKafka.Common.Enums;
 using Microsoft.Extensions.Logging;
 using Confluent.Kafka.SyncOverAsync;
-using System.Threading;
 
 namespace ElectronicLearningSystemKafka.Core.Consumer
 {

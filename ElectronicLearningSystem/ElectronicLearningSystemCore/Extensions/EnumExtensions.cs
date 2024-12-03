@@ -13,7 +13,7 @@ namespace ElectronicLearningSystemCore.Extensions
         /// </summary>
         /// <param name="enumVal">Значение перечисления</param>
         /// <returns>Идентификатор.</returns>
-        public static object GetAmbientValue(this Enum enumVal)
+        public static object? GetAmbientValue(this Enum enumVal)
         {
             Type type = enumVal.GetType();
             MemberInfo[] memInfo = type.GetMember(enumVal.ToString());

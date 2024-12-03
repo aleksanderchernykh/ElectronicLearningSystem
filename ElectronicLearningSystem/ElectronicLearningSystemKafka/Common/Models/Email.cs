@@ -7,9 +7,7 @@
 // ------------------------------------------------------------------------------
 namespace ElectronicLearningSystemKafka.Common.Models
 {
-	using System;
 	using System.Collections.Generic;
-	using System.Text;
 	using global::Avro;
 	using global::Avro.Specific;
 	

@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
 namespace ElectronicLearningSystemKafka.Common.Enums
 {
     public enum TopicEnum
     {
         [AmbientValue(typeof(string), "EmailSendingTopic")]
-        EmailSending
+        EmailSending,
+
+        [AmbientValue(typeof(string), "EmailSendingTopicRetry")]
+        EmailSendingRetry
     }
 }
