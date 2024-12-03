@@ -33,7 +33,7 @@ namespace ElectronicLearningSystemKafka.Core.Producer
                 throw new ArgumentNullException(nameof(schemaRegistryUrl));
             }
 
-            _logger = logger;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _producerConfig = new ProducerConfig
             {
                 BootstrapServers = bootstrapServersUrl,
@@ -58,23 +58,22 @@ namespace ElectronicLearningSystemKafka.Core.Producer
         {
             using var schemaRegistry = new CachedSchemaRegistryClient(_schemaRegistryConfig);
 
-            using (var producer = new ProducerBuilder<TKey, TValue>(_producerConfig)
+            using var producer = new ProducerBuilder<TKey, TValue>(_producerConfig)
                 .SetValueSerializer(new AvroSerializer<TValue>(schemaRegistry))
-                .Build())
+                .Build();
+
+            try
             {
-                try
-                {
-                    var result = await producer.ProduceAsync(topic.GetAmbientValue().ToString(), message);
-                    _logger.LogDebug($"Сообщение {result.Message} успешно доставлено в топик {result.Topic}");
-                }
-                catch (ProduceException<TKey, TValue> e)
-                {
-                    _logger.LogError($"Во время отправки сообщения произошла ошибка {e.Error}");
-                }
-                catch (Exception e)
-                {
-                    _logger.LogError(e.ToString());
-                }
+                var result = await producer.ProduceAsync(topic.GetAmbientValue().ToString(), message);
+                _logger.LogDebug($"Сообщение {result.Message} успешно доставлено в топик {result.Topic}");
+            }
+            catch (ProduceException<TKey, TValue> e)
+            {
+                _logger.LogError($"Во время отправки сообщения произошла ошибка {e.Error}");
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.ToString());
             }
         }
     }
