@@ -21,7 +21,7 @@
         public required string[] Recipients { get; set; }
 
         /// <summary>
-        /// Получатели.
+        /// Файлы.
         /// </summary>
         public string[]? Files { get; set; }
     }
