@@ -9,12 +9,11 @@ using Confluent.Kafka.SyncOverAsync;
 
 namespace ElectronicLearningSystemKafka.Core.Consumer
 {
-    public sealed class Consumer : IDisposable
+    public sealed class Consumer
     {
         private readonly ConsumerConfig _consumerConfig;
         private readonly ILogger _logger;
         private readonly CachedSchemaRegistryClient _schemaRegistryClient;
-        private readonly CancellationTokenSource _cts = new();
 
         public Consumer(ILogger<Consumer> logger, string bootstrapServersUrl, string schemaRegistryUrl)
         {
@@ -50,10 +49,10 @@ namespace ElectronicLearningSystemKafka.Core.Consumer
         /// <param name="topic">Топик для обработки.</param>
         /// <param name="action">Действие, выполняемое для полученного сообщения.</param>
         /// <exception cref="ArgumentNullException">Передано пустое значение.</exception>
-        public void SubscribeTopic<TKey, TValue>(string groupId, TopicEnum topic, Action<ConsumeResult<TKey, TValue>> action) 
+        public async Task SubscribeTopic<TKey, TValue>(string groupId, TopicEnum topic, Action<ConsumeResult<TKey, TValue>> action) 
             where TValue : ISpecificRecord
         {
-            SubscribeTopic(groupId, topic.GetAmbientValue().ToString(), action);
+            await SubscribeTopic(groupId, topic.GetAmbientValue().ToString(), action);
         }
 
         /// <summary>
@@ -65,7 +64,7 @@ namespace ElectronicLearningSystemKafka.Core.Consumer
         /// <param name="topic">Топик для обработки.</param>
         /// <param name="action">Действие, выполняемое для полученного сообщения.</param>
         /// <exception cref="ArgumentNullException">Передано пустое значение.</exception>
-        public void SubscribeTopic<TKey, TValue>(string groupId, string topic, Action<ConsumeResult<TKey, TValue>> action)
+        public async Task SubscribeTopic<TKey, TValue>(string groupId, string topic, Action<ConsumeResult<TKey, TValue>> action)
             where TValue : ISpecificRecord
         {
             if (string.IsNullOrWhiteSpace(topic))
@@ -85,11 +84,11 @@ namespace ElectronicLearningSystemKafka.Core.Consumer
 
             try
             {
-                while (!_cts.Token.IsCancellationRequested)
+                await Task.Run(() =>
                 {
                     try
                     {
-                        var consumeResult = consumerBuilder.Consume(_cts.Token);
+                        var consumeResult = consumerBuilder.Consume();
                         action?.Invoke(consumeResult);
                         _logger.LogDebug($"Message: {consumeResult.Message.Value}, Partition: {consumeResult.Partition}, Offset: {consumeResult.Offset}");
                     }
@@ -97,32 +96,12 @@ namespace ElectronicLearningSystemKafka.Core.Consumer
                     {
                         _logger.LogError($"Error occurred: {e.Error.Reason}");
                     }
-                }
-            }
-            catch (OperationCanceledException)
-            {
-                _logger.LogInformation("Consumer loop canceled.");
+                });
             }
             finally
             {
                 consumerBuilder.Close();
             }
-        }
-
-        /// <summary>
-        /// Отписка от топика.
-        /// </summary>
-        public void UnsubscribeTopic()
-        {
-            if (_cts != null && !_cts.IsCancellationRequested)
-            {
-                _cts.Cancel();
-            }
-        }
-
-        public void Dispose()
-        {
-            UnsubscribeTopic();
         }
     }
 }
