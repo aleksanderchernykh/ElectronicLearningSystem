@@ -22,7 +22,7 @@ namespace EmailSendingService
                 _logger,
                 _configuration["Kafka:KafkaBrokerUrl"] ?? throw new ArgumentNullException("Не заполнено значение Kafka:KafkaBrokerUrl"),
                 _configuration["Kafka:SchemaRegistryUrl"] ?? throw new ArgumentNullException("Не заполнено значение Kafka:SchemaRegistryUrl")
-            );;
+            );
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
