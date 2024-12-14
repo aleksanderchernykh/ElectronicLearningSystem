@@ -1,10 +1,11 @@
 using Avro.Generic;
 using ElectronicLearningSystemKafka.Core.Producer;
 using ElectronicLearningSystemWebApi.Context;
-using ElectronicLearningSystemWebApi.Helpers.Jwt;
-using ElectronicLearningSystemWebApi.Repositories;
+using ElectronicLearningSystemWebApi.Helpers;
+using ElectronicLearningSystemWebApi.Helpers.EmailHelper;
+using ElectronicLearningSystemWebApi.Repositories.Base;
+using ElectronicLearningSystemWebApi.Repositories.User;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -22,16 +23,19 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
         options.UseSqlServer(confuguration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddAuthorization();
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
-builder.Services.AddScoped<TokenHelper>();
-builder.Services.AddScoped<UserRepository>();
-builder.Services.AddSingleton<Producer>(provider =>
+builder.Services.AddScoped(typeof(IRepository<>), typeof(RepositoryBase<>));
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IEmailSendingService, EmailSendingService>();
+builder.Services.AddScoped<JwtTokenHelper>();
+builder.Services.AddSingleton(provider =>
 {
     var logger = provider.GetRequiredService<ILogger<Producer>>();
-    return new Producer(logger, confuguration.GetConnectionString("KafkaBrokerUrl"), confuguration.GetConnectionString("SchemaRegistryUrl"));
+    return new Producer(logger, 
+        confuguration.GetConnectionString("KafkaBrokerUrl"), 
+        confuguration.GetConnectionString("SchemaRegistryUrl"));
 });
-
-var key = Encoding.ASCII.GetBytes(confuguration["Jwt:Key"]);
 
 // Add CORS policy
 builder.Services.AddCors(options =>
@@ -39,7 +43,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowSpecificOrigins",
         builder =>
         {
-            builder.WithOrigins("http://localhost:4200") // ������� ��� ��������-URL
+            builder.WithOrigins("http://localhost:4200")
                    .AllowAnyHeader()
                    .AllowAnyMethod();
         });
@@ -62,7 +66,7 @@ builder.Services.AddAuthentication(x =>
         ValidateIssuerSigningKey = true,
         ValidIssuer = confuguration["Jwt:Issuer"],
         ValidAudience = confuguration["Jwt:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(key)
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(confuguration["Jwt:Key"]))
     };
 });
 var app = builder.Build();

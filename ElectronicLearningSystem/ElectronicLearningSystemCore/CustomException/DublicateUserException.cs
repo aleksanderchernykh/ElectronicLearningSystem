@@ -1,4 +1,4 @@
-﻿namespace ElectronicLearningSystemWebApi.Helpers.CustomException
+﻿namespace ElectronicLearningSystemWebApi.Helpers.Exceptions
 {
     /// <summary>
     /// Пользователь уже существует в системе.

@@ -23,15 +23,8 @@ namespace ElectronicLearningSystemKafka.Core.Producer
         /// <exception cref="ArgumentNullException">Пустое значение bootstrapServersUrl или schemaRegistryUrl.</exception>
         public Producer(ILogger<Producer> logger, string bootstrapServersUrl, string schemaRegistryUrl)
         {
-            if (string.IsNullOrWhiteSpace(bootstrapServersUrl))
-            {
-                throw new ArgumentNullException(nameof(bootstrapServersUrl));
-            }
-
-            if (string.IsNullOrWhiteSpace(schemaRegistryUrl))
-            {
-                throw new ArgumentNullException(nameof(schemaRegistryUrl));
-            }
+            ArgumentException.ThrowIfNullOrWhiteSpace(bootstrapServersUrl);
+            ArgumentException.ThrowIfNullOrWhiteSpace(schemaRegistryUrl);
 
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _producerConfig = new ProducerConfig

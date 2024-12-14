@@ -3,20 +3,15 @@ using ElectronicLearningSystemWebApi.Models.StudentModel;
 using Microsoft.Identity.Client;
 using System.Data;
 using System.Text.RegularExpressions;
-using Group = ElectronicLearningSystemWebApi.Models.GroupModel.Group;
+using GroupEntity = ElectronicLearningSystemWebApi.Models.GroupModel.GroupEntity;
 
 namespace ElectronicLearningSystemWebApi.Models.UserModel
 {
     /// <summary>
     /// Пользователь.
     /// </summary>
-    public class User
+    public class UserEntity : EntityBase
     {
-        /// <summary>
-        /// Идентификатор.
-        /// </summary>
-        public Guid Id { get; set; }
-
         /// <summary>
         /// Имя.
         /// </summary>
@@ -51,7 +46,7 @@ namespace ElectronicLearningSystemWebApi.Models.UserModel
         /// Роль пользователя.
         /// </summary>
         public Guid RoleId { get; set; }
-        public Role Role { get; set; }
+        public RoleEntity Role { get; set; }
 
         /// <summary>
         /// Токен для обновления.
@@ -71,11 +66,11 @@ namespace ElectronicLearningSystemWebApi.Models.UserModel
         /// <summary>
         /// Навигационное свойство для профиля студента.
         /// </summary>
-        public StudentProfile? StudentProfile { get; set; }
+        public StudentProfileEntity? StudentProfile { get; set; }
 
         /// <summary>
         /// Навигационное свойство для групп.
         /// </summary>
-        public IEnumerable<Group>? Groups { get; set; }
+        public IEnumerable<GroupEntity>? Groups { get; set; }
     }
 }

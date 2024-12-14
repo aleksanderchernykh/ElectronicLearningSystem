@@ -1,7 +1,7 @@
 ﻿using ElectronicLearningSystemWebApi.Enums;
 using ElectronicLearningSystemCore.Extensions;
-using ElectronicLearningSystemWebApi.Helpers;
 using ElectronicLearningSystemWebApi.Models.UserModel;
+using ElectronicLearningSystemWebApi.Helpers;
 
 namespace ElectronicLearningSystemWebApi.Context
 {
@@ -15,7 +15,7 @@ namespace ElectronicLearningSystemWebApi.Context
                 return;
             }
 
-            var administrator = new Role
+            var administrator = new RoleEntity
             {
                 Id = (Guid)UserRoleEnum.Admin.GetAmbientValue(),
                 Name = "Администратор"
@@ -23,17 +23,17 @@ namespace ElectronicLearningSystemWebApi.Context
 
             context.Role.AddRange(
                 administrator, 
-                new Role {
+                new RoleEntity {
                     Id = (Guid)UserRoleEnum.Teacher.GetAmbientValue(),
                     Name = "Преподаватель"
                 },
-                new Role
+                new RoleEntity
                 {
                     Id = (Guid)UserRoleEnum.Student.GetAmbientValue(),
                     Name = "Студент"
                 });
 
-            context.User.Add(new User
+            context.User.Add(new UserEntity
                 { 
                     Id = Guid.NewGuid(),
                     Role = administrator,

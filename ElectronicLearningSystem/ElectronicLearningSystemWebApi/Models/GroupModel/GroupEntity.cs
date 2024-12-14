@@ -2,13 +2,8 @@
 
 namespace ElectronicLearningSystemWebApi.Models.GroupModel
 {
-    public class Group
+    public class GroupEntity : EntityBase
     {
-        /// <summary>
-        /// Идентификатор.
-        /// </summary>
-        public Guid Id { get; set; }
-
         /// <summary>
         /// Наименование группы.
         /// </summary>
@@ -17,7 +12,7 @@ namespace ElectronicLearningSystemWebApi.Models.GroupModel
         /// <summary>
         /// Куратор.
         /// </summary>
-        public User Tutor { get; set; }
+        public UserEntity Tutor { get; set; }
         public Guid TutorId { get; set; }
     }
 }

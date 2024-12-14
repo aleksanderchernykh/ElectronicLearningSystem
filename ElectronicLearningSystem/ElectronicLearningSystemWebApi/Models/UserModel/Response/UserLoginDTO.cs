@@ -3,7 +3,7 @@
     /// <summary>
     /// Запрос на авторизацию пользователя.
     /// </summary>
-    public class UserLoginRequest
+    public class UserLoginDTO
     {
         /// <summary>
         /// Логин пользователя.

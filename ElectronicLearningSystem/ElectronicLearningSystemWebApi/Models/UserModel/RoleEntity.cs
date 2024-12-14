@@ -3,21 +3,16 @@
     /// <summary>
     /// Роль пользователя.
     /// </summary>
-    public class Role
+    public class RoleEntity : EntityBase
     {
         /// <summary>
-        /// Идентификатор.
-        /// </summary>
-        public Guid Id { get; set; }  
-
-        /// <summary>
-        /// Наименование
+        /// Наименование.
         /// </summary>
         public required string Name { get; set; }
 
         /// <summary>
         /// Параметр для получения всех пользователей связанных с ролью.
         /// </summary>
-        public ICollection<User> Users { get; set; }
+        public ICollection<UserEntity> Users { get; set; }
     }
 }

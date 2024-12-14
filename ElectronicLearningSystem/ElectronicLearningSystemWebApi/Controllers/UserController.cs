@@ -1,6 +1,9 @@
-﻿using ElectronicLearningSystemWebApi.Helpers.CustomException;
+﻿using AutoMapper;
+using ElectronicLearningSystemWebApi.Enums;
+using ElectronicLearningSystemWebApi.Helpers.Exceptions;
+using ElectronicLearningSystemWebApi.Models.UserModel;
 using ElectronicLearningSystemWebApi.Models.UserModel.Response;
-using ElectronicLearningSystemWebApi.Repositories;
+using ElectronicLearningSystemWebApi.Repositories.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,14 +14,15 @@ namespace ElectronicLearningSystemWebApi.Controllers
     /// </summary>
     /// <param name="userRepository">Репозиторий для работы с пользователем.</param>
     [Authorize]
+    [Route("api/[controller]")]
     [ApiController]
-    [Route("user")]
-    public class UserController(UserRepository userRepository) : ControllerBase
+    public class UserController(IUserRepository userRepository,
+        ILogger<UserController> logger,
+        IMapper mapper) : ControllerBase
     {
-        /// <summary>
-        /// Репозиторий для работы с пользователем.
-        /// </summary>
-        private readonly UserRepository _userRepository = userRepository;
+        private readonly IUserRepository _userRepository = userRepository;
+        private readonly IMapper _mapper = mapper;
+        private readonly ILogger<UserController> _logger = logger;
 
         /// <summary>
         /// Создание нового пользователя.
@@ -26,31 +30,30 @@ namespace ElectronicLearningSystemWebApi.Controllers
         /// <param name="userResponse"></param>
         /// <returns></returns>
         [HttpPost("create")]
-        public async Task<IActionResult> Create([FromBody] CreateUserRequest userResponse)
+        public async Task<IActionResult> Create([FromBody] CreateUserDTO userResponse)
         {
             try
             {
-                await _userRepository.CreateUser(userResponse);
-                return StatusCode(201, new { Message = "Пользователь создан" });
+                var newUser = _mapper.Map<UserEntity>(userResponse);
+                if (newUser is null)
+                {
+                    _logger.LogError(new EventId((int)EventLoggerEnum.InvalidMapEntity), message: $"Invalid map user {userResponse.Login}");
+                    return BadRequest();
+                }
+
+                await _userRepository.AddRecordAsync(newUser);
+                return StatusCode(201);
             }
             catch (DublicateUserException ex)
             {
+                _logger.LogError(new EventId((int)EventLoggerEnum.DublicateUserException), message: $"Duplicate user was found {userResponse.Email}");
                 return StatusCode(409, new { ex.Message });
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest();
+                _logger.LogError(new EventId((int)EventLoggerEnum.DataBaseException), message: ex.ToString());
+                return BadRequest(ex.Message);
             }
-        }
-
-        /// <summary>
-        /// Получение ролей пользователя.
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet("getroles")]
-        public async Task<IActionResult> GetRoles()
-        {
-            return Ok(await _userRepository.GetRoles());
         }
 
         /// <summary>
@@ -60,7 +63,16 @@ namespace ElectronicLearningSystemWebApi.Controllers
         [HttpGet("getusers")]
         public async Task<IActionResult> GetUsers()
         {
-            return Ok(await _userRepository.GetUsers());
+            try
+            {
+                var users = await _userRepository.GetAllRecordAsync();
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(new EventId((int)EventLoggerEnum.DataBaseException), message: ex.ToString());
+                return BadRequest(500);
+            }
         }
 
         /// <summary>
@@ -75,7 +87,21 @@ namespace ElectronicLearningSystemWebApi.Controllers
                 return Unauthorized();
             }
 
-            return Ok(await _userRepository.GetUserByLoginAsync(User.Identity.Name));
+            try
+            {
+                var user = await _userRepository.GetUserByLoginAsync(User.Identity.Name);
+               
+                if (user == null)
+                {
+                    return Unauthorized();
+                }
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(new EventId((int)EventLoggerEnum.DataBaseException), message: ex.ToString());
+                return BadRequest(500);
+            }
         }
 
         /// <summary>
@@ -83,17 +109,25 @@ namespace ElectronicLearningSystemWebApi.Controllers
         /// </summary>
         /// <param name="id">Идентификатор.</param>
         /// <returns>Пользователь.</returns>
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetAsync(Guid id)
+        [HttpGet("getuser/{id}")]
+        public async Task<IActionResult> GetUserByIdAsync(Guid id)
         {
-            var user = await _userRepository.GetUserByIdAsync(id);
-
-            if (user == null)
+            try
             {
-                return BadRequest("Пользователь не найден.");
-            }
+                var user = await _userRepository.GetRecordByIdAsync(id);
 
-            return Ok(user);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError((int)EventLoggerEnum.DataBaseException, message: ex.ToString());
+                return BadRequest(500);
+            }
         }
     }
 }

@@ -8,24 +8,24 @@ namespace ElectronicLearningSystemWebApi.Context
     public class ApplicationContext(DbContextOptions<ApplicationContext> options) 
         : DbContext(options)
     {
-        public DbSet<User> User => Set<User>();
-        public DbSet<Role> Role => Set<Role>();
-        public DbSet<Group> Group => Set<Group>();
-        public DbSet<StudentProfile> StudentProfile => Set<StudentProfile>();
+        public DbSet<UserEntity> User => Set<UserEntity>();
+        public DbSet<RoleEntity> Role => Set<RoleEntity>();
+        public DbSet<GroupEntity> Group => Set<GroupEntity>();
+        public DbSet<StudentProfileEntity> StudentProfile => Set<StudentProfileEntity>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>()
+            modelBuilder.Entity<UserEntity>()
                 .HasOne(u => u.Role)
                 .WithMany(r => r.Users)
                 .HasForeignKey(u => u.RoleId);
 
-            modelBuilder.Entity<Group>()
+            modelBuilder.Entity<GroupEntity>()
                 .HasOne(u => u.Tutor)
                 .WithMany(r => r.Groups)
                 .HasForeignKey(u => u.TutorId);
 
-            modelBuilder.Entity<StudentProfile>()
+            modelBuilder.Entity<StudentProfileEntity>()
                 .HasOne(u => u.User)
                 .WithOne(r => r.StudentProfile)
                 .OnDelete(DeleteBehavior.Restrict);

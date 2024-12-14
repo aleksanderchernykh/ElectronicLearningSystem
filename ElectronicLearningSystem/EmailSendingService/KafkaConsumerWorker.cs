@@ -1,35 +1,29 @@
 ﻿using ElectronicLearningSystemKafka.Common.Enums;
 using ElectronicLearningSystemKafka.Common.Models;
 using ElectronicLearningSystemKafka.Core.Consumer;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace EmailSendingService
 {
-    public class KafkaConsumerWorker : BackgroundService
+    public class KafkaConsumerWorker(ILogger<KafkaConsumerWorker> logger,
+        Consumer consumer,
+        EmailSender sender) : BackgroundService
     {
-        private readonly ILogger<Consumer> _logger;
-        private readonly IConfiguration _configuration;
-        private readonly Consumer _consumer;
+        private readonly ILogger<KafkaConsumerWorker> _logger = 
+            logger ?? throw new ArgumentNullException(nameof(logger));
 
-        public KafkaConsumerWorker(ILogger<Consumer> logger, IConfiguration configuration)
-        {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+        private readonly Consumer _consumer = 
+            consumer ?? throw new ArgumentNullException(nameof(consumer));
 
-            _consumer = new Consumer(
-                _logger,
-                _configuration["Kafka:KafkaBrokerUrl"] ?? throw new ArgumentNullException("Не заполнено значение Kafka:KafkaBrokerUrl"),
-                _configuration["Kafka:SchemaRegistryUrl"] ?? throw new ArgumentNullException("Не заполнено значение Kafka:SchemaRegistryUrl")
-            );
-        }
+        private readonly EmailSender _sender = 
+            sender ?? throw new ArgumentNullException(nameof(sender));
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             try
             {
-                await SubscribeTopic();
+                await SubscribeTopic(stoppingToken);
             }
             catch (Exception ex)
             {
@@ -37,12 +31,13 @@ namespace EmailSendingService
             }
         }
 
-        protected virtual async Task SubscribeTopic()
+        protected virtual async Task SubscribeTopic(CancellationToken stoppingToken)
         {
             await _consumer.SubscribeTopic<string, Email>(
                 "emailreader",
                 TopicEnum.EmailSending,
-                topic => _logger.LogInformation($"Заголовок: {topic.Message.Value.Subject}")
+                topic => _sender.SendEmailAsync(topic.Message.Value),
+                stoppingToken
             );
         }
     }

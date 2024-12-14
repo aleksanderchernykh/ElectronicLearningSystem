@@ -1,9 +1,11 @@
-﻿namespace ElectronicLearningSystemWebApi.Models.UserModel.Response
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ElectronicLearningSystemWebApi.Models.UserModel.Response
 {
     /// <summary>
     /// Запрос на обновление токена пользователя.
     /// </summary>
-    public class RefreshTokenRequest
+    public class RefreshTokenDTO
     {
         /// <summary>
         /// Токен доступа.

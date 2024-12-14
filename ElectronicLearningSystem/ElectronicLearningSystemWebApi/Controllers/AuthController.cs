@@ -1,41 +1,34 @@
-using ElectronicLearningSystemKafka.Core.Producer;
-using ElectronicLearningSystemWebApi.Helpers.Jwt;
-using ElectronicLearningSystemWebApi.Models.EmailModel.Response;
 using ElectronicLearningSystemWebApi.Models.UserModel.Response;
-using ElectronicLearningSystemWebApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using ElectronicLearningSystemKafka.Common.Enums;
-using Confluent.Kafka;
-using ElectronicLearningSystemKafka.Common.Models;
+using ElectronicLearningSystemWebApi.Repositories.User;
+using ElectronicLearningSystemWebApi.Helpers;
+using ElectronicLearningSystemWebApi.Enums;
 
 namespace ElectronicLearningSystemWebApi.Controllers
 {
     /// <summary>
     /// Контролер для работы с авторизацией пользователя в системе..
     /// </summary>
-    /// <param name="tokenHelper">Хелпер для работы с токенами.</param>
-    /// <param name="configuration">Конфигурация.</param>
+    /// <param name="jwtTokenHelper">Хелпер для работы с токенами.</param>
     /// <param name="userRepository">Репозиторий для работы с пользователями системы.</param>
+    [Route("api/[controller]")]
     [ApiController]
-    [Route("auth")]
-    public class AuthController(TokenHelper tokenHelper,
-        IConfiguration configuration,
-        UserRepository userRepository,
-        ILogger<AuthController> logger,
-        Producer producer) : ControllerBase
+    public class AuthController(JwtTokenHelper jwtTokenHelper,
+        UserHelper userHelper,
+        IUserRepository userRepository,
+        ILogger<AuthController> logger) : ControllerBase
     {
-        private readonly Producer _producer = producer;
+        private readonly UserHelper _userHelper = 
+            userHelper ?? throw new ArgumentNullException(nameof(userHelper));
 
-        /// <summary>
-        /// Хелпер для работы с токенами.
-        /// </summary>
-        private readonly TokenHelper _tokenHelper = tokenHelper;
+        private readonly JwtTokenHelper _tokenHelper = 
+            jwtTokenHelper ?? throw new ArgumentNullException(nameof(jwtTokenHelper));
 
+        private readonly IUserRepository _userRepository = 
+            userRepository ?? throw new ArgumentNullException(nameof(userRepository));
 
-        /// <summary>
-        /// Репозиторий для работы с пользователями системы.
-        /// </summary>
-        private readonly UserRepository _userRepository = userRepository;
+        private readonly ILogger<AuthController> _logger = 
+            logger ?? throw new ArgumentNullException(nameof(logger));
 
         /// <summary>
         /// Авторизация пользователя в системе.
@@ -43,26 +36,23 @@ namespace ElectronicLearningSystemWebApi.Controllers
         /// <param name="userLoginResponse">Запрос на авторизацию.</param>
         /// <returns>Токен для дальнейшего доступа пользователя в системе.</returns>
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] UserLoginRequest userLoginResponse)
+        public async Task<IActionResult> Login([FromBody] UserLoginDTO userLoginResponse)
         {
             try
             {
                 var user = await _userRepository.GetUserByLoginAsync(userLoginResponse.Login);
-                if (user == null || !_userRepository.VerificationPassword(user, userLoginResponse.Password))
+                if (user == null || !_userHelper.VerificationPassword(user, userLoginResponse.Password))
                 {
                     return Unauthorized("Некорректно передан логин или пароль.");
                 }
 
-                var token = _tokenHelper.GenerateTokenForUser(user);
+                var token = await _tokenHelper.GenerateTokenForUser(user);
 
-                return Ok(new 
-                { 
-                    AccessToken = token.Item1, 
-                    RefreshToken = token.Item2 
-                });
+                return Ok(token);
             }
-            catch
+            catch (Exception ex)
             {
+                _logger.LogError((int)EventLoggerEnum.DataBaseException, ex.ToString());
                 return Unauthorized();
             }
         }
@@ -73,16 +63,24 @@ namespace ElectronicLearningSystemWebApi.Controllers
         /// <param name="userLoginResponse"></param>
         /// <returns></returns>
         [HttpPost("logout")]
-        public async Task<IActionResult> Logout([FromBody] LogoutRequest logoutResponse)
+        public async Task<IActionResult> Logout([FromBody] LogoutDTO logoutResponse)
         {
-            var user = await _userRepository.GetUserByLoginAsync(logoutResponse.Login);
-            if (user == null)
+            try
             {
-                return Unauthorized("Некорректно передан логин или пароль.");
-            }
+                var user = await _userRepository.GetUserByLoginAsync(logoutResponse.Login);
+                if (user == null)
+                {
+                    return Unauthorized("Некорректно передан логин или пароль.");
+                }
 
-            _userRepository.LogoutUser(user);
-            return Ok();
+                await _userHelper.LogoutUserAsync(user);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError((int)EventLoggerEnum.DataBaseException, ex.ToString());
+                return Unauthorized();
+            }
         }
 
         /// <summary>
@@ -90,12 +88,12 @@ namespace ElectronicLearningSystemWebApi.Controllers
         /// </summary>
         /// <param name="refreshTokenRequest">Запрос на обновление токена.</param>
         /// <returns>Новые токены доступа.</returns>
-        [HttpPost("refresh")]
-        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequest refreshTokenRequest)
+        [HttpPost("refreshtoken")]
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenDTO refreshTokenRequest)
         {
             try
             {
-                var principal = tokenHelper.GetPrincipalFromExpiredToken(refreshTokenRequest.AccessToken);
+                var principal = jwtTokenHelper.GetPrincipalFromExpiredToken(refreshTokenRequest.AccessToken);
                 if (principal == null)
                 {
                     return Unauthorized("Некорректный токен доступа.");
@@ -112,42 +110,13 @@ namespace ElectronicLearningSystemWebApi.Controllers
                     return Unauthorized("Некорректный рефреш токен пользователя.");
                 }
 
-                var token = _tokenHelper.GenerateTokenForUser(user);
+                var token = await _tokenHelper.GenerateTokenForUser(user);
 
-                return Ok(new
-                {
-                    AccessToken = token.Item1,
-                    RefreshToken = token.Item2
-                });
+                return Ok(token);
             }
-            catch
+            catch (Exception ex)
             {
-                return Unauthorized();
-            }
-        }
-
-        /// <summary>
-        /// Отправка сообщения для проверки kafka.
-        /// </summary>
-        [HttpPost("sendemail")]
-        public async Task<IActionResult> SendEmail([FromBody] EmailSendingResponse emailResponse)
-        {
-            try
-            {
-                var email = new Email 
-                {
-                    Text = emailResponse.Text,
-                    Recipients = emailResponse.Recipients,
-                    Files = emailResponse.Files,
-                    Subject = emailResponse.Subject,
-                };
-
-                await _producer.SendMessage(TopicEnum.EmailSending, new Message<string, Email> { Key = Guid.NewGuid().ToString(), Value = email });
-
-                return Ok();
-            }
-            catch
-            {
+                _logger.LogError((int)EventLoggerEnum.DataBaseException, ex.ToString());
                 return Unauthorized();
             }
         }

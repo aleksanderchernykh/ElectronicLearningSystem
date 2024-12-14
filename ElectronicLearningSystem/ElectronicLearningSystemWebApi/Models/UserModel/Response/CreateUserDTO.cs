@@ -3,7 +3,7 @@
     /// <summary>
     /// Заспрос на создание нового пользователя.
     /// </summary>
-    public class CreateUserRequest : UserLoginRequest
+    public class CreateUserDTO : UserLoginDTO
     {
         /// <summary>
         /// Почта.

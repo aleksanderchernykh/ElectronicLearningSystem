@@ -1,6 +1,6 @@
 ﻿namespace ElectronicLearningSystemWebApi.Models.UserModel.Response
 {
-    public class LogoutRequest
+    public class LogoutDTO
     {
         /// <summary>
         /// Логин пользователя.

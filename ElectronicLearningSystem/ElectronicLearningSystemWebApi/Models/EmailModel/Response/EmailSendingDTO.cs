@@ -3,7 +3,7 @@
     /// <summary>
     /// Email сообщение.
     /// </summary>
-    public class EmailSendingResponse
+    public class EmailSendingDTO
     {
         /// <summary>
         /// Тема.
