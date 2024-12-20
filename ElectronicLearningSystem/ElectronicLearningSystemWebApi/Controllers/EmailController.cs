@@ -2,12 +2,14 @@
 using ElectronicLearningSystemKafka.Common.Models;
 using ElectronicLearningSystemWebApi.Enums;
 using ElectronicLearningSystemWebApi.Helpers.EmailHelper;
-using ElectronicLearningSystemWebApi.Models.EmailModel.Response;
+using ElectronicLearningSystemWebApi.Models.EmailModel.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ElectronicLearningSystemWebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Authorize]
+    [Route("email")]
     [ApiController]
     public class EmailController(IEmailSendingService emailSendingService, 
         IMapper mapper,

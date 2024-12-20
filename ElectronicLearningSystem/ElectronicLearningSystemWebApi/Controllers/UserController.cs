@@ -14,7 +14,7 @@ namespace ElectronicLearningSystemWebApi.Controllers
     /// </summary>
     /// <param name="userRepository">Репозиторий для работы с пользователем.</param>
     [Authorize]
-    [Route("api/[controller]")]
+    [Route("user")]
     [ApiController]
     public class UserController(IUserRepository userRepository,
         ILogger<UserController> logger,
@@ -65,7 +65,7 @@ namespace ElectronicLearningSystemWebApi.Controllers
         {
             try
             {
-                var users = await _userRepository.GetAllRecordAsync();
+                var users = await _userRepository.GetAllRecordsAsync();
                 return Ok(users);
             }
             catch (Exception ex)

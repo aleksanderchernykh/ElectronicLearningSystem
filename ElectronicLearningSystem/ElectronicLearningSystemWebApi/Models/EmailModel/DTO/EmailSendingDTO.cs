@@ -1,4 +1,4 @@
-﻿namespace ElectronicLearningSystemWebApi.Models.EmailModel.Response
+﻿namespace ElectronicLearningSystemWebApi.Models.EmailModel.DTO
 {
     /// <summary>
     /// Email сообщение.

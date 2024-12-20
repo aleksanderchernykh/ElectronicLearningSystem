@@ -1,11 +1,12 @@
 import { Component, inject, signal, ViewChild, WritableSignal } from '@angular/core';
-import { UserServiseService } from '../../services/user-servise.service';
+import { UserService } from '../../services/user.service';
 import { ProfileForm } from '../../interfaces/forms/profile-form.interfaces';
 import { map, Observable, of } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { Role } from '../../interfaces/role';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ConfigService } from '../../services/config.service';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-user-page',
@@ -15,11 +16,11 @@ import { ConfigService } from '../../services/config.service';
   styleUrl: './user-page.component.scss'
 })
 export class UserPageComponent {
-  userService = inject(UserServiseService);
+  userService = inject(UserService);
   const = inject(ConfigService);
   users$: Observable<ProfileForm[]> = of([]);
-  roles$: Observable<Role[] | null> = of(null);
-  filerUsers: ProfileForm[] = [];
+  roles$: Observable<Role[]> = of([]);
+  filtersUsers: ProfileForm[] = [];
   userForm: FormGroup;
   filterUsers: ProfileForm[] = [];
   urlForCreateUser: WritableSignal<string | null> = signal(null);
@@ -38,7 +39,7 @@ export class UserPageComponent {
     this.users$ = this.userService.getUsers();
 
     this.users$.subscribe(val =>{
-      this.filerUsers = val
+      this.filtersUsers = val
     })
 
     this.roles$ = this.userService.getRoles();
@@ -56,13 +57,13 @@ export class UserPageComponent {
 
   handleChange($event: Event) {
     if(($event.target as HTMLInputElement).checked){
-      this.filerUsers = this.filerUsers.filter(position => position.isLocked == false)
+      this.filtersUsers = this.filtersUsers.filter(position => position.isLocked == false)
     }else{
       this.users$.subscribe(val =>{
-        this.filerUsers = val
+        this.filtersUsers = val
       })
     }
 
-    console.log(this.filerUsers);
+    console.log(this.filtersUsers);
   }
 }

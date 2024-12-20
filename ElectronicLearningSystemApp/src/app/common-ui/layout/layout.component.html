@@ -1,26 +1,43 @@
 <div class="container-fluid">
-    <header class="header">
-      <div class="dropdown">
-        <button class="btn btn-lg btn-secondary dropdown-toggle float-end h-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-          Меню
-        </button>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" routerLink="/profile">Профиль</a></li>
-          <li><a class="dropdown-item" routerLink="/user">Пользователи</a></li>
-          <li><a class="dropdown-item" (click)="logout()">Выход</a></li>
-        </ul>
-      </div>
-    </header>
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-2">
-          Колонка 1 (занимает 12 колонок на малых экранах и 8 колонок на средних и больших экранах)
-      </div>
-      <div class="col-10">
-        <div>
-          <router-outlet></router-outlet>
-        </div>
-      </div>
-      </div>
+  <header class="header">
+    <div class="dropdown">
+      <ul class="dropdown-menu" aria-labelledby="notificationDropdown">
+        @for (notification of notifications; track notification) {
+          <li class="dropdown-item">
+            <div class="d-flex">
+              <div class="me-3">
+                <i class="bi bi-bell-fill text-primary"></i>
+              </div>
+              <div>
+                <p class="mb-0">{{notification.text}}</p>
+              </div>
+            </div>
+          </li>
+          <li><hr class="dropdown-divider"></li>
+        }
+        <li class="dropdown-item text-center">
+          <a (click)="clearnotification()" class="text-primary">Очистить уведомления</a>
+        </li>
+      </ul>
+      <button class="btn btn-lg btn-secondary dropdown-toggle float-end h-100" type="button" id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        Уведомления <span class="badge bg-danger">{{notifications.length}}</span>
+      </button>
     </div>
-<div>
+
+    <div class="dropdown">
+      <button class="btn btn-lg btn-secondary dropdown-toggle float-end h-100" type="button" id="menuDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        Меню
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="menuDropdown">
+        <li><a class="dropdown-item" routerLink="/profile">Профиль</a></li>
+        <li><a class="dropdown-item" routerLink="/boadr">Задания</a></li>
+        <li><a class="dropdown-item" routerLink="/user">Пользователи</a></li>
+        <li><a class="dropdown-item" (click)="logout()">Выход</a></li>
+        <li><a class="dropdown-item" (click)="createnotification()">Отправить уведомление</a></li>
+      </ul>
+    </div>
+  </header>
+  <main>
+    <router-outlet></router-outlet>
+  </main>
+</div>

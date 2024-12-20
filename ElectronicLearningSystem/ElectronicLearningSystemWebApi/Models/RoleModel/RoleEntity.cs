@@ -1,4 +1,6 @@
-﻿namespace ElectronicLearningSystemWebApi.Models.UserModel
+﻿using ElectronicLearningSystemWebApi.Models.UserModel;
+
+namespace ElectronicLearningSystemWebApi.Models.RoleModel
 {
     /// <summary>
     /// Роль пользователя.

@@ -1,4 +1,5 @@
 ﻿using ElectronicLearningSystemWebApi.Models;
+using System.Linq.Expressions;
 
 namespace ElectronicLearningSystemWebApi.Repositories.Base
 {
@@ -9,11 +10,15 @@ namespace ElectronicLearningSystemWebApi.Repositories.Base
     public interface IRepository<T>
         where T : EntityBase
     {
-        Task<IList<T>> GetAllRecordAsync();
+        Task<IList<T>> GetAllRecordsAsync();
 
         Task<T?> GetRecordByIdAsync(Guid id);
 
         Task UpdateRecordAsync(T record);
+
+        Task<IList<T>> GetRecordsByQueryAsync(Expression<Func<T, bool>> predicate);
+
+        Task<T?> GetFirstRecordsByQueryAsync(Expression<Func<T, bool>> predicate);
 
         Task AddRecordAsync(T record);
 

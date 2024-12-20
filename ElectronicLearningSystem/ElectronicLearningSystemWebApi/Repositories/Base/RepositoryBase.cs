@@ -2,6 +2,7 @@
 using ElectronicLearningSystemWebApi.Context;
 using ElectronicLearningSystemWebApi.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace ElectronicLearningSystemWebApi.Repositories.Base
 {
@@ -9,7 +10,7 @@ namespace ElectronicLearningSystemWebApi.Repositories.Base
     /// Базовый репозиторий для работы с БД.
     /// </summary>
     /// <typeparam name="T">Объект в БД от класса EntityBase.</typeparam>
-    public abstract class RepositoryBase<T> : IRepository<T>
+    public class RepositoryBase<T> : IRepository<T>
         where T : EntityBase
     {
         /// <summary>
@@ -57,9 +58,20 @@ namespace ElectronicLearningSystemWebApi.Repositories.Base
         /// <summary>
         /// Получение всех записей таблицы.
         /// </summary>
-        public async Task<IList<T>> GetAllRecordAsync()
+        public async Task<IList<T>> GetAllRecordsAsync()
         {
             return await _dbSet.ToListAsync();
+        }
+
+        /// <summary>
+        /// Получение одной записи по запросу.
+        /// </summary>
+        /// <param name="predicate">Запрос.</param>
+        public async Task<T?> GetFirstRecordsByQueryAsync(Expression<Func<T, bool>> predicate)
+        {
+            ArgumentNullException.ThrowIfNull(predicate);
+
+            return await _dbSet.Where(predicate).FirstOrDefaultAsync();
         }
 
         /// <summary>
@@ -70,6 +82,17 @@ namespace ElectronicLearningSystemWebApi.Repositories.Base
             id.ThrowIsDefault();
 
             return await _dbSet.FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        /// <summary>
+        /// Получение всех записей по запросу.
+        /// </summary>
+        /// <param name="predicate">Запрос.</param>
+        public async Task<IList<T>> GetRecordsByQueryAsync(Expression<Func<T, bool>> predicate)
+        {
+            ArgumentNullException.ThrowIfNull(predicate);
+
+            return await _dbSet.Where(predicate).ToListAsync();
         }
 
         /// <summary>

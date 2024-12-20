@@ -11,7 +11,7 @@ namespace ElectronicLearningSystemWebApi.Controllers
     /// </summary>
     /// <param name="jwtTokenHelper">Хелпер для работы с токенами.</param>
     /// <param name="userRepository">Репозиторий для работы с пользователями системы.</param>
-    [Route("api/[controller]")]
+    [Route("auth")]
     [ApiController]
     public class AuthController(JwtTokenHelper jwtTokenHelper,
         UserHelper userHelper,
@@ -48,7 +48,7 @@ namespace ElectronicLearningSystemWebApi.Controllers
 
                 var token = await _tokenHelper.GenerateTokenForUser(user);
 
-                return Ok(token);
+                return Ok(new { token.AccessToken, token.RefreshToken });
             }
             catch (Exception ex)
             {

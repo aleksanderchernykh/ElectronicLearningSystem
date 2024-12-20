@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
-import { UserServiseService } from '../../services/user-servise.service';
+import { UserService } from '../../services/user.service';
 import { Role } from '../../interfaces/role';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-profile-page',
@@ -10,7 +11,7 @@ import { Role } from '../../interfaces/role';
   styleUrl: './profile-page.component.scss'
 })
 export class ProfilePageComponent {
-  userServices = inject(UserServiseService);
+  userServices = inject(UserService);
   roles: Role[] = []
   constructor(){
     this.userServices.getRoles()

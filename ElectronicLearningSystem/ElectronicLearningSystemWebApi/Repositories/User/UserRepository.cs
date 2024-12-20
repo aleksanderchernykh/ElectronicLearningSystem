@@ -27,7 +27,7 @@ namespace ElectronicLearningSystemWebApi.Repositories.User
                 return null;
             }
 
-            return await _context.User.FirstOrDefaultAsync(x => x.Login == login);
+            return await GetFirstRecordsByQueryAsync(x => x.Login == login);
         }
 
         /// <summary>

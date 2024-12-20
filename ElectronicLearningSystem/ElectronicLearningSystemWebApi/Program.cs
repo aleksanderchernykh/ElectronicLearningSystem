@@ -1,17 +1,32 @@
-using Avro.Generic;
+using AutoMapper;
 using ElectronicLearningSystemKafka.Core.Producer;
 using ElectronicLearningSystemWebApi.Context;
 using ElectronicLearningSystemWebApi.Helpers;
 using ElectronicLearningSystemWebApi.Helpers.EmailHelper;
 using ElectronicLearningSystemWebApi.Repositories.Base;
+using ElectronicLearningSystemWebApi.Repositories.Notification;
+using ElectronicLearningSystemWebApi.Repositories.TaskRepository;
 using ElectronicLearningSystemWebApi.Repositories.User;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 var confuguration = builder.Configuration;
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigins",
+        builder =>
+        {
+            builder.WithOrigins("https://localhost:4200")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+        });
+});
 
 // Add services to the container.
 
@@ -23,11 +38,20 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
         options.UseSqlServer(confuguration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddAuthorization();
+builder.Services.AddSignalR().AddJsonProtocol(options =>
+{
+    options.PayloadSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+});
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
+
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(RepositoryBase<>));
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<IEmailSendingService, EmailSendingService>();
+builder.Services.AddScoped<ITaskRepository, TaskRepository>();
+builder.Services.AddScoped<UserHelper>();
 builder.Services.AddScoped<JwtTokenHelper>();
 builder.Services.AddSingleton(provider =>
 {
@@ -35,18 +59,6 @@ builder.Services.AddSingleton(provider =>
     return new Producer(logger, 
         confuguration.GetConnectionString("KafkaBrokerUrl"), 
         confuguration.GetConnectionString("SchemaRegistryUrl"));
-});
-
-// Add CORS policy
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowSpecificOrigins",
-        builder =>
-        {
-            builder.WithOrigins("http://localhost:4200")
-                   .AllowAnyHeader()
-                   .AllowAnyMethod();
-        });
 });
 
 builder.Services.AddAuthentication(x =>
@@ -79,6 +91,13 @@ using (var scope = app.Services.CreateScope())
     DataBaseInitializer.Initialize(context);
 }
 
+var configuration = new MapperConfiguration(cfg =>
+{
+    cfg.AddProfile<MappingProfile>();
+});
+
+configuration.AssertConfigurationIsValid();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -95,5 +114,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<NotificationHub>("/notificationhub");
 
 app.Run();

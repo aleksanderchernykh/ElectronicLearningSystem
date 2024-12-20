@@ -2,6 +2,8 @@
 using ElectronicLearningSystemCore.Extensions;
 using ElectronicLearningSystemWebApi.Models.UserModel;
 using ElectronicLearningSystemWebApi.Helpers;
+using ElectronicLearningSystemWebApi.Models.NotificationTypeModel;
+using ElectronicLearningSystemWebApi.Models.RoleModel;
 
 namespace ElectronicLearningSystemWebApi.Context
 {
@@ -9,8 +11,7 @@ namespace ElectronicLearningSystemWebApi.Context
     {
         public static void Initialize(ApplicationContext context)
         {
-            if (context.User.Any() ||
-                context.Role.Any())
+            if (context.User.Any())
             {
                 return;
             }
@@ -21,26 +22,67 @@ namespace ElectronicLearningSystemWebApi.Context
                 Name = "Администратор"
             };
 
+            var student = new RoleEntity
+            {
+                Id = (Guid)UserRoleEnum.Student.GetAmbientValue(),
+                Name = "Студент"
+            };
+
+            var teacher = new RoleEntity
+            {
+                Id = (Guid)UserRoleEnum.Teacher.GetAmbientValue(),
+                Name = "Преподаватель"
+            };
+
             context.Role.AddRange(
-                administrator, 
-                new RoleEntity {
-                    Id = (Guid)UserRoleEnum.Teacher.GetAmbientValue(),
-                    Name = "Преподаватель"
-                },
-                new RoleEntity
-                {
-                    Id = (Guid)UserRoleEnum.Student.GetAmbientValue(),
-                    Name = "Студент"
-                });
+                administrator,
+                teacher,
+                student);
 
             context.User.Add(new UserEntity
-                { 
-                    Id = Guid.NewGuid(),
-                    Role = administrator,
-                    Login = "Supervisor",
-                    Password = PasswordHelper.HashPassword("Supervisor"),
-                    Email = "aleksandr.chernykh3@gmail.com"
-                });
+            { 
+                Id = Guid.NewGuid(),
+                Role = administrator,
+                Login = "Administrator",
+                Password = PasswordHelper.HashPassword("Administrator"),
+                Email = "aleksandr.chernykh3@gmail.com",
+                CreatedOn = DateTime.Now,
+                ModifiedOn = DateTime.Now
+            });
+
+            context.User.Add(new UserEntity
+            {
+                Id = Guid.NewGuid(),
+                Role = teacher,
+                Login = "Teacher",
+                Password = PasswordHelper.HashPassword("Teacher"),
+                Email = "aleksandr.chernykh3@gmail.com",
+                CreatedOn = DateTime.Now,
+                ModifiedOn = DateTime.Now
+            });
+
+            context.User.Add(new UserEntity
+            {
+                Id = Guid.NewGuid(),
+                Role = student,
+                Login = "Student",
+                Password = PasswordHelper.HashPassword("Student"),
+                Email = "aleksandr.chernykh3@gmail.com",
+                CreatedOn = DateTime.Now,
+                ModifiedOn = DateTime.Now
+            });
+
+            context.NotificationType.Add(new NotificationTypeEntity 
+            { 
+                Id = (Guid)NotificationTypeEnum.Comment.GetAmbientValue(),
+                Name = "Отправлен новый комментарий" 
+            });
+
+            context.NotificationType.Add(new NotificationTypeEntity
+            {
+                Id = (Guid)NotificationTypeEnum.Message.GetAmbientValue(),
+                Name = "Отправлено новое сообщение"
+            });
 
             context.SaveChanges();
         }

@@ -4,6 +4,8 @@ import { TokenResponse } from '../interfaces/token-response';
 import { tap } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
+import { currentuser } from '../interfaces/currentuser';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +25,22 @@ export class AuthService {
     }
     
     return !!this.token;
+  }
+
+  getToken(): string | null {
+    return this.cookieService.get('token');
+  }
+
+  getCurrentUser(): currentuser | null {
+    const token = this.getToken();
+    if (!token) return null;
+
+    try {
+      return jwtDecode<currentuser>(token);
+    } catch (error) {
+      console.error('Ошибка при декодировании токена:', error);
+      return null;
+    }
   }
 
   logout(){

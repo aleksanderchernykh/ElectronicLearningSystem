@@ -1,5 +1,8 @@
 ﻿using ElectronicLearningSystemWebApi.Models.GroupModel;
+using ElectronicLearningSystemWebApi.Models.NotificationModel;
+using ElectronicLearningSystemWebApi.Models.RoleModel;
 using ElectronicLearningSystemWebApi.Models.StudentModel;
+using ElectronicLearningSystemWebApi.Models.TaskModel;
 using Microsoft.Identity.Client;
 using System.Data;
 using System.Text.RegularExpressions;
@@ -72,5 +75,10 @@ namespace ElectronicLearningSystemWebApi.Models.UserModel
         /// Навигационное свойство для групп.
         /// </summary>
         public IEnumerable<GroupEntity>? Groups { get; set; }
+
+        /// <summary>
+        /// Оповещения.
+        /// </summary>
+        public IEnumerable<NotificationEntity>? Notifications { get; set; }
     }
 }

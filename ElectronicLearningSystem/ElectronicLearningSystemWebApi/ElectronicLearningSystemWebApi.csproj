@@ -11,6 +11,10 @@
     <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client.Core" Version="9.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Common" Version="9.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.Json" Version="9.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.6">
@@ -23,6 +27,10 @@
   <ItemGroup>
     <ProjectReference Include="..\ElectronicLearningSystemCore\ElectronicLearningSystemCore.csproj" />
     <ProjectReference Include="..\ElectronicLearningSystemKafka\ElectronicLearningSystemKafka.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\RoleModel\Response\" />
   </ItemGroup>
 
 </Project>

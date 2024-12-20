@@ -87,7 +87,7 @@ namespace ElectronicLearningSystemWebApi.Helpers
             ArgumentNullException.ThrowIfNull(user);
             ArgumentException.ThrowIfNullOrWhiteSpace(user.Login);
 
-            var accessToken = GenerateAccessToken(user.Login);
+            var accessToken = GenerateAccessToken(user);
             var refreshToken = GenerateRefreshToken();
 
             user.RefreshToken = refreshToken;
@@ -110,13 +110,21 @@ namespace ElectronicLearningSystemWebApi.Helpers
         /// </summary>
         /// <param name="username">Логин пользователя.</param>
         /// <returns>Токен.</returns>
-        protected virtual string GenerateAccessToken(string username)
+        protected virtual string GenerateAccessToken(UserEntity user)
         {
-            ArgumentException.ThrowIfNullOrWhiteSpace(username, nameof(username));
+            ArgumentNullException.ThrowIfNull(user, nameof(user));
+            ArgumentException.ThrowIfNullOrWhiteSpace(user.Login, nameof(user));
+
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Name, user.Login)
+            };
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, username) }),
+                Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.UtcNow.AddHours(_accessTokenLifetime),
                 Issuer = _issuer,
                 Audience = _audience,

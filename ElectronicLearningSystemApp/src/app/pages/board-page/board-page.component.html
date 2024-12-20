@@ -1,0 +1,29 @@
+<div class="container">
+    <div class="input-group">
+
+    </div>
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Заголовок</th>
+            <th scope="col">Описание</th>
+            <th scope="col">Студент</th>
+            <th scope="col">Ответственный</th>
+            <th scope="col">Дата создания</th>
+            <th scope="col">Дата изменения</th>
+          </tr>
+        </thead>
+        <tbody>
+            @for (item of tasks$; track item.id) {
+                <tr (click)="goToTaskDetails(item.id)">
+                    <td>{{item.topic}}</td>
+                    <td>{{item.description}}</td>
+                    <td>{{item.studentId}}</td>
+                    <td>{{item.ownerId}}</td>
+                    <td>{{item.createdOn | date: 'dd.MM.yyyy'}}</td>
+                    <td>{{item.modifiedOn | date: 'dd.MM.yyyy'}}</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

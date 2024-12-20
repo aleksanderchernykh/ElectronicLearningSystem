@@ -1,5 +1,5 @@
 ﻿using ElectronicLearningSystemWebApi.Enums;
-using ElectronicLearningSystemWebApi.Models.UserModel;
+using ElectronicLearningSystemWebApi.Models.RoleModel;
 using ElectronicLearningSystemWebApi.Repositories.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ElectronicLearningSystemWebApi.Controllers
 {
     [Authorize]
-    [Route("api/[controller]")]
+    [Route("role")]
     [ApiController]
     public class RoleController(IRepository<RoleEntity> roleRepository,
         ILogger<RoleController> logger) 
@@ -28,7 +28,7 @@ namespace ElectronicLearningSystemWebApi.Controllers
         {
             try
             {
-                return Ok(await _roleRepository.GetAllRecordAsync());
+                return Ok(await _roleRepository.GetAllRecordsAsync());
             }
             catch (Exception ex)
             {

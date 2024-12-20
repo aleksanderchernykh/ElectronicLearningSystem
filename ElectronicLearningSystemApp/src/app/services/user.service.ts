@@ -7,12 +7,12 @@ import { ProfileForm } from '../interfaces/forms/profile-form.interfaces';
 @Injectable({
   providedIn: 'root'
 })
-export class UserServiseService {
+export class UserService {
   http = inject(HttpClient);
   baseUrl = 'https://localhost:7291/';
 
   getRoles(): Observable<Role[]>{
-    return this.http.get<Role[]>(`${this.baseUrl}user/getroles`);
+    return this.http.get<Role[]>(`${this.baseUrl}role/getroles`);
   }
 
   getMe(): Observable<ProfileForm>{
