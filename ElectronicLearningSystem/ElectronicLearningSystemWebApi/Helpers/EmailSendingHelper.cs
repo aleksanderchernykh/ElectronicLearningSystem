@@ -3,13 +3,13 @@ using ElectronicLearningSystemKafka.Common.Enums;
 using ElectronicLearningSystemKafka.Common.Models;
 using ElectronicLearningSystemKafka.Core.Producer;
 
-namespace ElectronicLearningSystemWebApi.Helpers.EmailHelper
+namespace ElectronicLearningSystemWebApi.Helpers
 {
-    public class EmailSendingService(Producer producer) : IEmailSendingService
+    public class EmailSendingHelper(Producer producer)
     {
         protected readonly Producer _producer = producer;
 
-        public async Task SendEmailAsync(Email email)
+        public virtual async Task SendEmailAsync(Email email)
         {
             var message = new Message<string, Email>
             {

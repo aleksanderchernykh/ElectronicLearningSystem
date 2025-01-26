@@ -1,12 +1,4 @@
-﻿using ElectronicLearningSystemWebApi.Models.GroupModel;
-using ElectronicLearningSystemWebApi.Models.NotificationModel;
-using ElectronicLearningSystemWebApi.Models.RoleModel;
-using ElectronicLearningSystemWebApi.Models.StudentModel;
-using ElectronicLearningSystemWebApi.Models.TaskModel;
-using Microsoft.Identity.Client;
-using System.Data;
-using System.Text.RegularExpressions;
-using GroupEntity = ElectronicLearningSystemWebApi.Models.GroupModel.GroupEntity;
+﻿using ElectronicLearningSystemWebApi.Models.RoleModel;
 
 namespace ElectronicLearningSystemWebApi.Models.UserModel
 {
@@ -65,20 +57,5 @@ namespace ElectronicLearningSystemWebApi.Models.UserModel
         /// Заблокирована учетная запись
         /// </summary>
         public bool IsLocked { get; set; } = false;
-
-        /// <summary>
-        /// Навигационное свойство для профиля студента.
-        /// </summary>
-        public StudentProfileEntity? StudentProfile { get; set; }
-
-        /// <summary>
-        /// Навигационное свойство для групп.
-        /// </summary>
-        public IEnumerable<GroupEntity>? Groups { get; set; }
-
-        /// <summary>
-        /// Оповещения.
-        /// </summary>
-        public IEnumerable<NotificationEntity>? Notifications { get; set; }
     }
 }

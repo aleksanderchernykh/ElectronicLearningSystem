@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using ElectronicLearningSystemKafka.Common.Models;
 using ElectronicLearningSystemWebApi.Enums;
-using ElectronicLearningSystemWebApi.Helpers.EmailHelper;
+using ElectronicLearningSystemWebApi.Helpers;
 using ElectronicLearningSystemWebApi.Models.EmailModel.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,11 +11,11 @@ namespace ElectronicLearningSystemWebApi.Controllers
     [Authorize]
     [Route("email")]
     [ApiController]
-    public class EmailController(IEmailSendingService emailSendingService, 
+    public class EmailController(EmailSendingHelper emailSendingService, 
         IMapper mapper,
         ILogger<EmailController> logger) : ControllerBase
     {
-        private readonly IEmailSendingService _emailSendingService = emailSendingService;
+        private readonly EmailSendingHelper _emailSendingService = emailSendingService;
         private readonly IMapper _mapper = mapper;
         private readonly ILogger<EmailController> _logger = logger;
 

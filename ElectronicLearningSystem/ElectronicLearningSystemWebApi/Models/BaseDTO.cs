@@ -1,20 +1,13 @@
 ﻿using ElectronicLearningSystemWebApi.Models.UserModel;
-using Microsoft.Identity.Client;
 
 namespace ElectronicLearningSystemWebApi.Models
 {
-    public abstract class EntityBase
+    public abstract class BaseDTO
     {
         public Guid Id { get; set; }
-
         public DateTime CreatedOn { get; set; }
-
         public DateTime ModifiedOn { get; set; }
-
         public Guid? CreatedById { get; set; }
-        public UserEntity? CreatedBy { get; set; }
-
         public Guid? ModifiedById { get; set; }
-        public UserEntity? ModifiedBy { get; set; }
     }
 }

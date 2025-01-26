@@ -6,6 +6,11 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 await Host.CreateDefaultBuilder(args)
+    .ConfigureAppConfiguration((context, config) =>
+    {
+        config.SetBasePath("/app");
+        config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+    })
     .ConfigureServices((hostContext, services) =>
     {
         services.AddHostedService<KafkaConsumerWorker>();

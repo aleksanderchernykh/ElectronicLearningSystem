@@ -1,0 +1,30 @@
+# Этап сборки: создание Angular приложения
+FROM node:latest AS build
+
+WORKDIR /app
+
+COPY default.conf /etc/nginx/conf.d/default.conf
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+# Собираем Angular проект
+RUN npm run build --prod
+
+# Проверяем, что файлы действительно есть
+RUN ls -alh /app/dist/electronic-learning-system-app
+
+# Этап развертывания: использование Nginx
+FROM nginx:alpine
+
+# Копируем собранные файлы в директорию Nginx
+COPY --from=build /app/dist/electronic-learning-system-app /usr/share/nginx/html
+
+# Копируем конфигурацию Nginx
+COPY default.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]

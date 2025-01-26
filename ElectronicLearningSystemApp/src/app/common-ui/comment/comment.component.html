@@ -1,3 +1,7 @@
+<div class="mb-3 row">
+    <div class="col-6 text-start"><app-mini-profile [userId]="comment.createdById"></app-mini-profile></div>
+    <p class="col-6 text-end">{{comment.createdOn | date: 'dd.MM.yyyy HH:MM'}}</p>
+</div>
 <div class="mb-3">
-    <textarea formControlName="password" class="form-control" id="exampleFormControlTextarea1" rows="3" readonly></textarea>
+    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" readonly disabled>{{comment.text}}</textarea>
 </div>

@@ -4,5 +4,6 @@ export interface Comment {
     id: string;
     createdOn: string;
     modifiedOn: string;
-    modifiedBy: string;
+    createdById: string;
+    modifiedById: string;
   }

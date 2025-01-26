@@ -1,6 +1,6 @@
 <div class="container-fluid">
-  <header class="header">
-    <div class="dropdown">
+  <header class="header d-flex align-items-center">
+    <div class="dropdown ms-auto" style="margin-right: 5px;">
       <ul class="dropdown-menu" aria-labelledby="notificationDropdown">
         @for (notification of notifications; track notification) {
           <li class="dropdown-item">
@@ -16,16 +16,16 @@
           <li><hr class="dropdown-divider"></li>
         }
         <li class="dropdown-item text-center">
-          <a (click)="clearnotification()" class="text-primary">Очистить уведомления</a>
+          <a (click)="clearAllNotification()" class="text-primary">Очистить уведомления</a>
         </li>
       </ul>
-      <button class="btn btn-lg btn-secondary dropdown-toggle float-end h-100" type="button" id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+      <button class="btn btn-lg btn-secondary dropdown-toggle" type="button" id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
         Уведомления <span class="badge bg-danger">{{notifications.length}}</span>
       </button>
     </div>
 
     <div class="dropdown">
-      <button class="btn btn-lg btn-secondary dropdown-toggle float-end h-100" type="button" id="menuDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+      <button class="btn btn-lg btn-secondary dropdown-toggle" type="button" id="menuDropdown" data-bs-toggle="dropdown" aria-expanded="false">
         Меню
       </button>
       <ul class="dropdown-menu" aria-labelledby="menuDropdown">
@@ -33,11 +33,25 @@
         <li><a class="dropdown-item" routerLink="/boadr">Задания</a></li>
         <li><a class="dropdown-item" routerLink="/user">Пользователи</a></li>
         <li><a class="dropdown-item" (click)="logout()">Выход</a></li>
-        <li><a class="dropdown-item" (click)="createnotification()">Отправить уведомление</a></li>
+        <li><a class="dropdown-item" (click)="createNotification()">Отправить уведомление</a></li>
       </ul>
     </div>
   </header>
   <main>
-    <router-outlet></router-outlet>
+    <div class="row">
+      <div class="col-3">
+        <nav>
+          <ul class="list-group">
+            <li class="list-group-item">Ссылка 1</li>
+            <li class="list-group-item">Ссылка 2</li>
+            <li class="list-group-item">Ссылка 3</li>
+          </ul>
+        </nav>
+      </div>
+      
+      <div class="col-9">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
   </main>
 </div>

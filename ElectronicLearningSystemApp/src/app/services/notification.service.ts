@@ -8,9 +8,14 @@ import { Notification } from '../interfaces/notification';
 })
 export class NotificationService {
   http = inject(HttpClient);
-  baseUrl = 'https://localhost:7291/';
+  baseUrl = 'http://webapi:5000/';
 
   getNotifications(): Observable<Notification[]>{
     return this.http.get<Notification[]>(`${this.baseUrl}notification/getnotifications`);
+  }
+
+  createNotification(notification: { recipient: string, notificationType: string, text: string }): Observable<any> {
+    console.log(notification)
+    return this.http.post(`${this.baseUrl}notification/createnotification`, notification)
   }
 }

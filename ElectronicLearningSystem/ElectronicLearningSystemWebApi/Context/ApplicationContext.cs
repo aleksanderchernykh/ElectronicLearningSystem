@@ -27,6 +27,21 @@ namespace ElectronicLearningSystemWebApi.Context
             modelBuilder.Entity<NotificationTypeEntity>()
                 .HasKey(u => u.Id);
 
+            modelBuilder.Entity<UserEntity>(entity =>
+            {
+                entity
+                    .HasOne(u => u.CreatedBy)
+                    .WithMany()
+                    .HasForeignKey(u => u.CreatedById)
+                    .OnDelete(DeleteBehavior.NoAction);
+
+                entity
+                    .HasOne(u => u.ModifiedBy)
+                    .WithMany()
+                    .HasForeignKey(u => u.ModifiedById)
+                    .OnDelete(DeleteBehavior.NoAction);
+            });
+
             modelBuilder.Entity<RoleEntity>()
                 .HasKey(u => u.Id);
 

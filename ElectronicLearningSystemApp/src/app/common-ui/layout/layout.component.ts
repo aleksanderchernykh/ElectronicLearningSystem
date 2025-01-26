@@ -62,7 +62,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     });
   }
 
-  createnotification(): void {
+  createNotification(): void {
     if (this.connection?.state === signalR.HubConnectionState.Connected) {
       this.connection.invoke('CreatedNotification', 'sdfffsdf')
         .catch(err => console.error("Error sending notification: ", err));
@@ -71,7 +71,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     }
   }
 
-  clearnotification() {
+  clearAllNotification() {
     throw new Error('Method not implemented.');
   }
 

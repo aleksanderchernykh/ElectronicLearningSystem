@@ -5,7 +5,8 @@ using System.Security.Claims;
 
 namespace ElectronicLearningSystemWebApi.Helpers
 {
-    public class UserHelper(IUserRepository userRepository, IHttpContextAccessor httpContextAccessor)
+    public class UserHelper(IUserRepository userRepository,
+        IHttpContextAccessor httpContextAccessor)
     {
         protected readonly IUserRepository _userRepository = userRepository 
             ?? throw new ArgumentNullException(nameof(userRepository));
@@ -38,7 +39,7 @@ namespace ElectronicLearningSystemWebApi.Helpers
         {
             user.RefreshToken = null;
             user.RefreshTokenExpiryTime = null;
-            await userRepository.UpdateRecordAsync(user);
+            await _userRepository.UpdateRecordAsync(user);
         }
 
         /// <summary>
@@ -62,6 +63,5 @@ namespace ElectronicLearningSystemWebApi.Helpers
 
             return PasswordHelper.VerifyPassword(user.Password, password);
         }
-
     }
 }

@@ -22,20 +22,16 @@ namespace EmailSendingService
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
-            _smtpServer = _configuration.GetConnectionString("Email:SmtpServerUrl")
+            _smtpServer = _configuration.GetValue<string>("Email:SmtpServerUrl")
                 ?? throw new ArgumentNullException(nameof(_smtpServer), "SMTP server URL is not configured.");
 
-            _emailFrom = _configuration.GetConnectionString("Email:SenderEmailAddress")
+            _emailFrom = _configuration.GetValue<string>("Email:SenderEmailAddress")
                 ?? throw new ArgumentNullException(nameof(_emailFrom), "Sender email address is not configured.");
 
-            _emailPassword = _configuration.GetConnectionString("Email:SenderPassword")
+            _emailPassword = _configuration.GetValue<string>("Email:SenderPassword")
                 ?? throw new ArgumentNullException(nameof(_emailPassword), "Sender email password is not configured.");
 
-            var smtpPortValue = _configuration.GetConnectionString("Email:SmtpPort");
-            if (!int.TryParse(smtpPortValue, out _smtpPort))
-            {
-                throw new ArgumentException("SMTP Port is not a valid integer or is missing in the configuration.", nameof(_smtpPort));
-            }
+            _smtpPort = _configuration.GetValue<int>("Email:SmtpPort");
         }
 
         public async Task SendEmailAsync(Email email)

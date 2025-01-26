@@ -22,8 +22,21 @@ export class NewCommentComponent {
   }
   
   onCreateComment($event: Event) {
-    const formData: CommentForm = { task: this.taskid, comment: this.commentForm.value.comment };
-    this.commentService.createcomment(formData);
+    const formData: CommentForm = { 
+      taskId: this.taskid, 
+      text: this.commentForm.value.comment 
+    };
+  
+    // Подписка на результат запроса
+    this.commentService.createcomment(formData).subscribe(
+      response => {
+        console.log('Comment created successfully', response);
+      },
+      error => {
+        console.error('Error creating comment', error);
+      }
+    );
+  
     console.log("comment");
   }
 }

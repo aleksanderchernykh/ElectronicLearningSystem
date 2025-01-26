@@ -9,10 +9,10 @@ namespace ElectronicLearningSystemWebApi.Models.NotificationModel
 
         public bool IsReady { get; set; }
 
-        public required UserEntity Recipient { get; set; }
+        public UserEntity Recipient { get; set; }
         public Guid RecipientId { get; set; }
 
-        public required NotificationTypeEntity NotificationType {  get; set; }
+        public NotificationTypeEntity NotificationType {  get; set; }
         public Guid NotificationTypeId { get; set; }
     }
 }

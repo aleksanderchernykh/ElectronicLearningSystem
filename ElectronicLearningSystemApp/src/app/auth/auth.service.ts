@@ -13,7 +13,7 @@ import { jwtDecode } from 'jwt-decode';
  
 export class AuthService {
   http: HttpClient = inject(HttpClient);
-  baseUrl: string = "https://localhost:7291/";
+  baseUrl: string = "http://webapi:5000/";
   cookieService = inject(CookieService)
   token: string | null = null;
   refreshToken: string | null = null;

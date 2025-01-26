@@ -8,7 +8,7 @@ import { Task } from '../interfaces/task';
 })
 export class TaskService {
   http = inject(HttpClient);
-  baseUrl = 'https://localhost:7291/';
+  baseUrl = 'http://webapi:5000/';
 
   getTasks(): Observable<Task[]>{
     return this.http.get<Task[]>(`${this.baseUrl}task/gettasks`);

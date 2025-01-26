@@ -11,10 +11,5 @@ namespace ElectronicLearningSystemWebApi.Models.RoleModel
         /// Наименование.
         /// </summary>
         public required string Name { get; set; }
-
-        /// <summary>
-        /// Параметр для получения всех пользователей связанных с ролью.
-        /// </summary>
-        public ICollection<UserEntity> Users { get; set; }
     }
 }

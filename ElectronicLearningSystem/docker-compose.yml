@@ -1,0 +1,105 @@
+version: '3.8'
+
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.6.0
+    container_name: zkkafka
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    ports:
+      - "2181:2181"
+    
+  broker1:
+    image: confluentinc/cp-kafka:7.6.0
+    container_name: brokerkafka1
+    ports:
+      - '9092:9092'
+      - '29092:29092'
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zkkafka:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://brokerkafka1:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      - zookeeper
+
+  schema-registry:
+    image: confluentinc/cp-schema-registry:latest
+    ports:
+      - 8085:8085
+    environment:
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://brokerkafka1:29092
+      SCHEMA_REGISTRY_KAFKASTORE_SECURITY_PROTOCOL: PLAINTEXT
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_LISTENERS: http://schema-registry:8085
+      SCHEMA_REGISTRY_SCHEMA_REGISTRY_INTER_INSTANCE_PROTOCOL: "http"
+      SCHEMA_REGISTRY_LOG4J_ROOT_LOGLEVEL: INFO
+      SCHEMA_REGISTRY_KAFKASTORE_TOPIC: _schemas
+    depends_on:
+      - broker1
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafkaui
+    ports:
+      - '8082:8080'
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local-docker
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: brokerkafka1:29092
+      KAFKA_CLUSTERS_0_ZOOKEEPER: zkkafka:2181
+      KAFKA_CLUSTERS_0_SCHEMAREGISTRY: http://schema-registry:8085
+    depends_on:
+      - broker1
+      - zookeeper
+      - schema-registry
+
+  redis:
+    image: redis:latest
+    container_name: rediscontainer
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
+  emailservice:
+    image: emailservice:latest
+    container_name: emailservice
+    environment:
+      KAFKA_BROKER: brokerkafka1:29092
+      ZOOKEEPER_HOST: zkkafka:2181
+      SCHEMA_REGISTRY_URL: http://schema-registry:8085
+    depends_on:
+      - broker1
+      - zookeeper
+      - schema-registry
+      
+  webapi:
+    image: webapiimage:latest
+    container_name: webapi
+    depends_on:
+      - mssql
+      - broker1
+      - zookeeper
+      - schema-registry
+    ports:
+      - "5000:5000"
+      
+  webapp:
+    image: webappimage:latest
+    container_name: webapp
+    ports:
+      - "80:80"
+
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: mssqlserver
+    environment:
+      SA_PASSWORD: "U)c82r65M%"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+
+volumes:
+  redis-data:
+    driver: local

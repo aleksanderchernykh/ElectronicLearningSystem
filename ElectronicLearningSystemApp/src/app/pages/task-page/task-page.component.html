@@ -1,8 +1,21 @@
-<p>{{task$?.topic}}</p>
-<p>{{task$?.description}}</p>
-<div>
-    <app-new-comment></app-new-comment>
+<div class="mb-3" style="margin-top: 20px;">
+    <textarea class="form-control" id="exampleFormControlTextarea" rows="1" sty readonly disabled>{{task.topic}}</textarea>
+</div>
+<div class="mb-3">
+    <textarea class="form-control" id="exampleFormControlTextarea2" rows="10" readonly disabled>{{task.description}}</textarea>
 </div>
 <div>
-    <app-comment></app-comment>
+    <div class="mb-3">
+        <form [formGroup]="commentForm" (ngSubmit)="onCreateComment($event)">
+            <textarea formControlName="comment" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            <div class="mt-3">
+                <button type="submit" class="btn btn-secondary w-100">Сохранить</button>
+            </div>
+        </form>
+    </div>
 </div>
+@for (comment of comments$; track comment.id) {
+    <div>
+        <app-comment [comment]="comment"></app-comment>
+    </div>
+}

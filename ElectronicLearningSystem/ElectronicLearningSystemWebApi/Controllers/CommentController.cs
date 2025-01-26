@@ -11,10 +11,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ElectronicLearningSystemWebApi.Controllers
 {
+    [Authorize]
     [Route("comment")]
     [ApiController]
     public class CommentController(IRepository<CommentEntity> commentRepository,
-        ILogger<CommentController> logger, IMapper mappingProfile) : ControllerBase
+        ILogger<CommentController> logger, CommentHelper commentHelper) : ControllerBase
     {
         private readonly IRepository<CommentEntity> _commentRepository = commentRepository 
             ?? throw new ArgumentNullException(nameof(commentRepository));
@@ -22,8 +23,8 @@ namespace ElectronicLearningSystemWebApi.Controllers
         private readonly ILogger<CommentController> _logger = logger 
             ?? throw new ArgumentNullException(nameof(logger));
 
-        private readonly IMapper _mappingProfile = mappingProfile
-            ?? throw new ArgumentNullException(nameof(mappingProfile));
+        private readonly CommentHelper _commentHelper = commentHelper
+            ?? throw new ArgumentNullException(nameof(commentHelper));
 
         [HttpGet("getcommentsbytask/{id}")]
         public async Task<IActionResult> GetCommentsByTask(Guid id)
@@ -36,7 +37,8 @@ namespace ElectronicLearningSystemWebApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(new EventId((int)EventLoggerEnum.DataBaseException), message: ex.ToString());
+                _logger.LogError(new EventId((int)EventLoggerEnum.DataBaseException),
+                    message: ex.ToString());
                 return BadRequest();
             }
         }
@@ -51,10 +53,11 @@ namespace ElectronicLearningSystemWebApi.Controllers
 
             try
             {
-                var comment = _mappingProfile.Map<CommentEntity>(createComment);
+                var comment = commentHelper.GetCommentByDTO(createComment);
                 if (comment is null)
                 {
-                    _logger.LogError(new EventId((int)EventLoggerEnum.InvalidMapEntity), message: $"Invalid map comment {createComment.TaskId}");
+                    _logger.LogError(new EventId((int)EventLoggerEnum.InvalidMapEntity),
+                        message: $"Invalid map comment {createComment.TaskId}");
                     return BadRequest();
                 }
 
@@ -64,7 +67,8 @@ namespace ElectronicLearningSystemWebApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(new EventId((int)EventLoggerEnum.DataBaseException), message: ex.ToString());
+                _logger.LogError(new EventId((int)EventLoggerEnum.DataBaseException),
+                    message: ex.ToString());
                 return BadRequest();
             }
         }

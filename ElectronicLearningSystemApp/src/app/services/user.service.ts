@@ -3,13 +3,14 @@ import { inject, Injectable } from '@angular/core';
 import { Role } from '../interfaces/role';
 import { Observable } from 'rxjs';
 import { ProfileForm } from '../interfaces/forms/profile-form.interfaces';
+import { User } from '../interfaces/user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
   http = inject(HttpClient);
-  baseUrl = 'https://localhost:7291/';
+  baseUrl = 'http://webapi:5000/';
 
   getRoles(): Observable<Role[]>{
     return this.http.get<Role[]>(`${this.baseUrl}role/getroles`);
@@ -21,5 +22,9 @@ export class UserService {
 
   getUsers(): Observable<ProfileForm[]> {
     return this.http.get<ProfileForm[]>(`${this.baseUrl}user/getusers`)
+  }
+
+  getUserById(id :string): Observable<User> {
+    return this.http.get<User>(`${this.baseUrl}user/getuser/${id}`)
   }
 }

@@ -1,0 +1,16 @@
+export interface User{
+    firstName: string,
+    lastName: string,
+    patronymic: string,
+    email: string,
+    login: string,
+    roleId: string,
+    isLocked: boolean,
+    id: string,
+    createdOn: string,
+    modifiedOn: string,
+    createdById: string,
+    createdBy: string,
+    modifiedById: string,
+    modifiedBy: string,
+}

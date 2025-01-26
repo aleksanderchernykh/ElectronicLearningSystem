@@ -1,4 +1,4 @@
 export interface CommentForm {
-    task: string;
-    comment: string;
+    text: string;
+    taskId: string;
 }
