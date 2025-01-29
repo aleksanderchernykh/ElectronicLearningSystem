@@ -7,6 +7,7 @@ COPY ./EmailSendingService ./EmailSendingService/
 COPY ./ElectronicLearningSystemCore ./ElectronicLearningSystemCore/
 COPY ./ElectronicLearningSystemKafka ./ElectronicLearningSystemKafka/
 
+
 # Восстанавливаем зависимости
 RUN dotnet restore ./EmailSendingService/EmailSendingService.csproj
 RUN dotnet restore ./ElectronicLearningSystemKafka/ElectronicLearningSystemKafka.csproj

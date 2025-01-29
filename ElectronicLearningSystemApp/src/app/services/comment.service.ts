@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { CommentForm } from '../interfaces/forms/comment-form';
 import { Comment } from '../interfaces/comment';
+import { ConfigService } from './config.service';
 
 
 @Injectable({
@@ -10,17 +11,17 @@ import { Comment } from '../interfaces/comment';
 })
 export class CommentService {
   http = inject(HttpClient);
-  baseUrl = 'http://webapi:5000/';
+  config = inject(ConfigService); 
 
   createcomment(payload: CommentForm): Observable<any>{
     console.log(payload);
-    return this.http.post(`${this.baseUrl}comment/createcomment`, payload).pipe(
+    return this.http.post(`${this.config.API_URL}comment/createcomment`, payload).pipe(
       catchError(this.handleError) // Обработка ошибок
     );
   }
 
   getcommentbytask(id: string): Observable<Comment[]>{
-    return this.http.get<Comment[]>(`${this.baseUrl}comment/getcommentsbytask/${id}`);
+    return this.http.get<Comment[]>(`${this.config.API_URL}comment/getcommentsbytask/${id}`);
   }
 
   private handleError(error: HttpErrorResponse) {

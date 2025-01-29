@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class ConfigService {
-  readonly API_URL = 'https://api.example.com';
+  readonly API_URL = 'http://webapi:5000/';
 
   readonly USER_TYPE = {
     Administrator: "02bc926f-9c56-4fb9-bc8e-68bbe2e87c17",

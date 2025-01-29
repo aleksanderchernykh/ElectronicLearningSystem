@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   zookeeper:
     image: confluentinc/cp-zookeeper:7.6.0
@@ -46,7 +44,7 @@ services:
       - '8082:8080'
     environment:
       KAFKA_CLUSTERS_0_NAME: local-docker
-      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: brokerkafka1:29092
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: http://brokerkafka1:29092
       KAFKA_CLUSTERS_0_ZOOKEEPER: zkkafka:2181
       KAFKA_CLUSTERS_0_SCHEMAREGISTRY: http://schema-registry:8085
     depends_on:
@@ -63,20 +61,22 @@ services:
       - redis-data:/data
 
   emailservice:
-    image: emailservice:latest
+    image: emailservice
     container_name: emailservice
-    environment:
-      KAFKA_BROKER: brokerkafka1:29092
-      ZOOKEEPER_HOST: zkkafka:2181
-      SCHEMA_REGISTRY_URL: http://schema-registry:8085
+    build: 
+      context: ./ElectronicLearningSystem
+      dockerfile: ./EmailSendingService/Dockerfile
     depends_on:
       - broker1
       - zookeeper
       - schema-registry
       
   webapi:
-    image: webapiimage:latest
+    image: webapiimage
     container_name: webapi
+    build: 
+      context: ./ElectronicLearningSystem
+      dockerfile: ./ElectronicLearningSystemWebApi/Dockerfile
     depends_on:
       - mssql
       - broker1
@@ -86,8 +86,13 @@ services:
       - "5000:5000"
       
   webapp:
-    image: webappimage:latest
+    image: webappimage
     container_name: webapp
+    build: 
+      context: ./ElectronicLearningSystemApp
+      dockerfile: ./Dockerfile
+    depends_on:
+      - webapi
     ports:
       - "80:80"
 
