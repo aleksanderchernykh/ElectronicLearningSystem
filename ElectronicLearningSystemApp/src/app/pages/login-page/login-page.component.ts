@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } 
 import { AuthService } from '../../auth/auth.service';
 import { LoginForm } from '../../interfaces/forms/login-form';
 import { Router, RouterOutlet } from '@angular/router';
+import { catchError, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-login-page',
@@ -15,6 +16,7 @@ export class LoginPageComponent {
   authService = inject(AuthService);
   router = inject(Router);
   userForm: FormGroup;
+  error: string = "";
 
   constructor(private fb: FormBuilder) {
     this.userForm = this.fb.group({
@@ -25,10 +27,31 @@ export class LoginPageComponent {
 
   onSubmit(event: any) {
     const formData: LoginForm = this.userForm.value;
+
     this.authService.login(formData)
-      .subscribe(val => {
-        console.log(val)
-        this.router.navigate(['/']);
+    .pipe(
+      catchError(err=> {
+        if (err.status === 401) {
+          this.error = err.error.message;
+        }
+        
+        return throwError(() => err);
       })
+    )
+    .subscribe({
+      next: () => {
+        this.router.navigate(['/']);
+      },
+    });
+  }
+
+  gotoRecoveryProfile() {
+    const formData: LoginForm = this.userForm.value;
+    
+    if (formData.login) {
+      this.router.navigate(['/recoveryprofile'], { queryParams: { login: formData.login } });
+    } else {
+      this.router.navigate(['/recoveryprofile']);
+    }
   }
 } 

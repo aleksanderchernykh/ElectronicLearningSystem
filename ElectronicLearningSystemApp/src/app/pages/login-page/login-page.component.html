@@ -1,22 +1,37 @@
+<div class="center-page">
+    <div class="login-page">
+        <form [formGroup]="userForm" (ngSubmit)="onSubmit($event)">
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">
+                    Login or Email
+                </label>
+                
+                <input formControlName="login" type="email" class="form-control" id="exampleFormControlInput1">
+            </div>
+    
+            <div class="mb-3">
+                <label for="inputPassword5" class="form-label">
+                    Password
+                </label>
 
-<div class="login-page">
-    <form [formGroup]="userForm" (ngSubmit)="onSubmit($event)">
-        <div class="mb-3">
-            <label for="exampleFormControlInput1" class="form-label">Login</label>
-            <input formControlName="login" type="email" class="form-control" id="exampleFormControlInput1" placeholder="Введите логин">
-        </div>
-
-        <div class="mb-3">
-            <label for="inputPassword5" class="form-label">Password</label>
-            <input formControlName="password" type="password" id="inputPassword5" class="form-control" aria-describedby="passwordHelpBlock" placeholder="Введите пароль">
-        </div>    
-        
-        <div class="mb-3 text-center">
-            <button type="button" class="btn btn-link center">Восстановить пароль</button>
-        </div>
-
-        <div class="mb-3">
-            <button type="submit" class="btn btn-secondary w-100">Войти</button>
-        </div>
-    </form>
+                <input formControlName="password" type="password" id="inputPassword5" class="form-control" aria-describedby="passwordHelpBlock">
+            </div>
+            
+            <div class="error-label">
+                @if (error) {
+                    <label>{{error}}</label>
+                }
+            </div>
+            
+            <div class="mb-3 text-center">
+                <button type="button" class="btn btn-link center" (click)="gotoRecoveryProfile()">
+                    Recovery password
+                </button>
+            </div>
+    
+            <div class="mb-3">
+                <button type="submit" class="succeed-button">Sign In</button>
+            </div>
+        </form>
+    </div>
 </div>

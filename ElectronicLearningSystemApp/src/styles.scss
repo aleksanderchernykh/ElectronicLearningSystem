@@ -1,23 +1,47 @@
 :root{
     --dark-color: #000000;
     --light-color: #ffffff;
-    --primary-color: #AE7AFF;
-    --page-color: #DCDCDC;
-    --header-color: #A9A9A9;
+    --primary-color: #333333;
+    --body-color: #F5F5F5;
+    --succed-button-color: #F5F5F5;
+    --link-color: #007BFF;
+    --error-color: #af6060;
+    --info-color: #e2ebb3;
 }
 
-body{
-    margin: 0;
+.center-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: var(--body-color) !important;
+    font-family: Arial, sans-serif;
 }
 
-.login-page{
-    margin: 200px 35%;
-    box-sizing: border-box;
+.info-label {
+    border-radius: 10px;
+    padding: 10px 15px;
+    background-color: var(--info-color);
+    text-align: justify;
 }
 
-.create-user-page{
-    margin: 30px 35%;
+.error-label {
+    color: var(--error-color);
+    font-size: 14px;
+    text-align: center;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.succeed-button {
+    width: 100%;
+    padding: 10px;
+    border-color: #c9c9c9;
+    border-radius: 30px;
+    background: var(--succed-button-color);
+    color: black;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.cancel-button {
+
+}

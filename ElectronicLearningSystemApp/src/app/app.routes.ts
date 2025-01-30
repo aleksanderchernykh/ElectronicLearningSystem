@@ -8,6 +8,7 @@ import { UserPageComponent } from './pages/user-page/user-page.component';
 import { CreateUserPageComponent } from './pages/create-user-page/create-user-page.component';
 import { BoardPageComponent } from './pages/board-page/board-page.component';
 import { TaskPageComponent } from './pages/task-page/task-page.component';
+import { RecoveryProfilePageComponent } from './pages/recovery-profile-page/recovery-profile-page.component';
 
 export const routes: Routes = [
     { path: '', component: LayoutComponent, children:[
@@ -19,5 +20,6 @@ export const routes: Routes = [
         ], canActivate: [canActivateAuth]
     },
     { path: 'login', component: LoginPageComponent },
-    { path: 'createuser', component: CreateUserPageComponent }
+    { path: 'createuser', component: CreateUserPageComponent },
+    { path: 'recoveryprofile', component: RecoveryProfilePageComponent }
 ];

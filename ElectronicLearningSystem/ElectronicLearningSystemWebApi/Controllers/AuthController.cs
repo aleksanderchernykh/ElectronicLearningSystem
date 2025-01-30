@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using ElectronicLearningSystemWebApi.Repositories.User;
 using ElectronicLearningSystemWebApi.Helpers;
 using ElectronicLearningSystemWebApi.Enums;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Newtonsoft.Json;
 
 namespace ElectronicLearningSystemWebApi.Controllers
 {
@@ -33,27 +35,68 @@ namespace ElectronicLearningSystemWebApi.Controllers
         /// <summary>
         /// Авторизация пользователя в системе.
         /// </summary>
-        /// <param name="userLoginResponse">Запрос на авторизацию.</param>
-        /// <returns>Токен для дальнейшего доступа пользователя в системе.</returns>
+        /// <param name="userLoginRequest">Данные пользователя для входа.</param>
+        /// <returns>Токен доступа и рефреш-токен.</returns>
+        /// <response code="200">Успешная авторизация. </response>
+        /// <response code="400">Некорректный запрос. </response>
+        /// <response code="401">Неверный логин или пароль. </response>
+        /// <response code="403">Аккаунт заблокирован. </response>
+        /// <response code="500">Ошибка сервера. </response>
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] UserLoginDTO userLoginResponse)
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(403)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> Login([FromBody] UserLoginDTO userLoginRequest)
         {
+            if (userLoginRequest is null)
+            {
+                return BadRequest(new
+                {
+                    ErrorCode = "INVALID_REQUEST",
+                    Message = "Invalid request data"
+                });
+            }
+
             try
             {
-                var user = await _userRepository.GetUserByLoginAsync(userLoginResponse.Login);
-                if (user == null || !_userHelper.VerificationPassword(user, userLoginResponse.Password))
+                var user = await _userRepository.GetUserByLoginAsync(userLoginRequest.Login);
+                if (user == null || !_userHelper.VerificationPassword(user, userLoginRequest.Password))
                 {
-                    return Unauthorized("Некорректно передан логин или пароль.");
+                    return Unauthorized(new
+                    {
+                        ErrorCode = "ACCOUNT_UNAUTHORIZED",
+                        Message = "The user entered the wrong username or password"
+                    });
+                }
+
+                if (user.IsLocked)
+                {
+                    return StatusCode(403, new
+                    {
+                        ErrorCode = "ACCOUNT_BLOCKED",
+                        Message = "The user's account has been deactivated"
+                    });
                 }
 
                 var token = await _tokenHelper.GenerateTokenForUser(user);
 
-                return Ok(new { token.AccessToken, token.RefreshToken });
+                return Ok(new
+                {
+                    token.AccessToken,
+                    token.RefreshToken
+                });
             }
             catch (Exception ex)
             {
-                _logger.LogError((int)EventLoggerEnum.DataBaseException, ex.ToString());
-                return Unauthorized();
+                _logger.LogError((int)EventLoggerEnum.DataBaseException, ex, "Error during user login");
+
+                return StatusCode(500, new
+                {
+                    ErrorCode = "SERVER_ERROR",
+                    Message = "An unexpected error occurred. Please try again later."
+                });
             }
         }
 
@@ -119,6 +162,31 @@ namespace ElectronicLearningSystemWebApi.Controllers
                 _logger.LogError((int)EventLoggerEnum.DataBaseException, ex.ToString());
                 return Unauthorized();
             }
+        }
+
+        [HttpPost("recoverypassword")]
+        public async Task<IActionResult> RecoveryPassword([FromBody] RecoveryPasswordDTO login) 
+        {
+            if (login == null)
+            {
+                return BadRequest(new
+                {
+                    ErrorCode = "INVALID_REQUEST",
+                    Message = "Invalid request data"
+                });
+            }
+
+            var user = await _userRepository.GetUserByLoginAsync(login.Login);
+            if (user is null)
+            {
+                return StatusCode(404, new
+                {
+                    ErrorCode = "NOT_FOUND",
+                    Message = "User was not found"
+                });
+            }
+
+            return Ok();
         }
     }
 }
