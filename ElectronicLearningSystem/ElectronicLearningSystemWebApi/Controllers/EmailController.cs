@@ -25,11 +25,6 @@ namespace ElectronicLearningSystemWebApi.Controllers
         [HttpPost("sendemail")]
         public async Task<IActionResult> SendEmail([FromBody] EmailSendingDTO emailResponse)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest("Incorrect data was transmitted");
-            }
-
             try
             {
                 var email = _mapper.Map<Email>(emailResponse);

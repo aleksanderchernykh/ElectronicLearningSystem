@@ -1,10 +1,8 @@
-﻿using AutoMapper;
-using ElectronicLearningSystemCore.Extensions;
+﻿using ElectronicLearningSystemCore.Extensions;
 using ElectronicLearningSystemWebApi.Enums;
 using ElectronicLearningSystemWebApi.Helpers;
 using ElectronicLearningSystemWebApi.Models.CommentModel;
 using ElectronicLearningSystemWebApi.Models.CommentModel.DTO;
-using ElectronicLearningSystemWebApi.Models.UserModel;
 using ElectronicLearningSystemWebApi.Repositories.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -56,7 +54,7 @@ namespace ElectronicLearningSystemWebApi.Controllers
                 var comment = commentHelper.GetCommentByDTO(createComment);
                 if (comment is null)
                 {
-                    _logger.LogError(new EventId((int)EventLoggerEnum.InvalidMapEntity),
+                    _logger.LogError(new EventId((int)EventLoggerEnum.InvalidMapEntityException),
                         message: $"Invalid map comment {createComment.TaskId}");
                     return BadRequest();
                 }

@@ -23,6 +23,11 @@
         /// <summary>
         /// Ошибка маппинга сущностей.
         /// </summary>
-        InvalidMapEntity = 1003
+        InvalidMapEntityException = 1003,
+
+        /// <summary>
+        /// Ошибка сервера.
+        /// </summary>
+        ServerException = 1004
     }
 }

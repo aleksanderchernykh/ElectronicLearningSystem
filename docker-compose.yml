@@ -56,9 +56,9 @@ services:
     image: redis:latest
     container_name: rediscontainer
     ports:
-      - "6379:6379"
+      - "6380:6379"
     volumes:
-      - redis-data:/data
+      - ./redis-data:/data
 
   emailservice:
     image: emailservice
@@ -104,7 +104,3 @@ services:
       ACCEPT_EULA: "Y"
     ports:
       - "1433:1433"
-
-volumes:
-  redis-data:
-    driver: local
