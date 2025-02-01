@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using StackExchange.Redis;
 using System.Text;
 using System.Text.Json;
 
@@ -20,6 +21,8 @@ builder.WebHost.ConfigureKestrel(options =>
     options.ListenAnyIP(5000);
 });
 
+builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
+    ConnectionMultiplexer.Connect(builder.Configuration["Redis:ConnectionString"]));
 
 builder.Services.AddCors(options =>
 {
@@ -86,6 +89,7 @@ builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 builder.Services.AddScoped<EmailSendingHelper>();
 builder.Services.AddScoped<UserHelper>();
+builder.Services.AddScoped<AuthHelper>();
 builder.Services.AddScoped<NotificationHelper>();
 builder.Services.AddScoped<CommentHelper>();
 builder.Services.AddScoped<JwtTokenHelper>();

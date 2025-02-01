@@ -1,34 +1,31 @@
 using ElectronicLearningSystemWebApi.Models.UserModel.Response;
 using Microsoft.AspNetCore.Mvc;
-using ElectronicLearningSystemWebApi.Repositories.User;
 using ElectronicLearningSystemWebApi.Helpers;
 using ElectronicLearningSystemWebApi.Enums;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Newtonsoft.Json;
+using ElectronicLearningSystemWebApi.Models.ErrorModel;
 
 namespace ElectronicLearningSystemWebApi.Controllers
 {
     /// <summary>
-    /// Контролер для работы с авторизацией пользователя в системе..
+    /// Контролер для работы с авторизацией пользователя в системе.
     /// </summary>
-    /// <param name="jwtTokenHelper">Хелпер для работы с токенами.</param>
-    /// <param name="userRepository">Репозиторий для работы с пользователями системы.</param>
+    /// <param name="authHelper">Хелпер для работы с авторизацией пользователя в системе. </param>
+    /// <param name="logger">Логгер. </param>
     [Route("auth")]
     [ApiController]
-    public class AuthController(JwtTokenHelper jwtTokenHelper,
-        UserHelper userHelper,
-        IUserRepository userRepository,
+    public class AuthController(
+        AuthHelper authHelper,
         ILogger<AuthController> logger) : ControllerBase
     {
-        private readonly UserHelper _userHelper = 
-            userHelper ?? throw new ArgumentNullException(nameof(userHelper));
+        /// <summary>
+        /// Хелпер для работы с авторизацией пользователя в системе. 
+        /// </summary>
+        private readonly AuthHelper _authHelper =
+            authHelper ?? throw new ArgumentNullException(nameof(authHelper));
 
-        private readonly JwtTokenHelper _tokenHelper = 
-            jwtTokenHelper ?? throw new ArgumentNullException(nameof(jwtTokenHelper));
-
-        private readonly IUserRepository _userRepository = 
-            userRepository ?? throw new ArgumentNullException(nameof(userRepository));
-
+        /// <summary>
+        /// Логгер. 
+        /// </summary>
         private readonly ILogger<AuthController> _logger = 
             logger ?? throw new ArgumentNullException(nameof(logger));
 
@@ -43,59 +40,51 @@ namespace ElectronicLearningSystemWebApi.Controllers
         /// <response code="403">Аккаунт заблокирован. </response>
         /// <response code="500">Ошибка сервера. </response>
         [HttpPost("login")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(401)]
-        [ProducesResponseType(403)]
-        [ProducesResponseType(500)]
+        [ProducesResponseType(typeof(AccessTokenResponse), 200)]
+        [ProducesResponseType(typeof(ErrorResponse), 400)]
+        [ProducesResponseType(typeof(ErrorResponse), 401)]
+        [ProducesResponseType(typeof(ErrorResponse), 403)]
+        [ProducesResponseType(typeof(ErrorResponse), 500)]
         public async Task<IActionResult> Login([FromBody] UserLoginDTO userLoginRequest)
         {
-            if (userLoginRequest is null)
-            {
-                return BadRequest(new
-                {
-                    ErrorCode = "INVALID_REQUEST",
-                    Message = "Invalid request data"
-                });
-            }
-
             try
             {
-                var user = await _userRepository.GetUserByLoginAsync(userLoginRequest.Login);
-                if (user == null || !_userHelper.VerificationPassword(user, userLoginRequest.Password))
-                {
-                    return Unauthorized(new
-                    {
-                        ErrorCode = "ACCOUNT_UNAUTHORIZED",
-                        Message = "The user entered the wrong username or password"
-                    });
-                }
+                var token = await _authHelper.LoginAsync(userLoginRequest);
 
-                if (user.IsLocked)
+                return Ok(token);
+            }
+            catch (BadHttpRequestException ex)
+            {
+                return BadRequest(new ErrorResponse
                 {
-                    return StatusCode(403, new
-                    {
-                        ErrorCode = "ACCOUNT_BLOCKED",
-                        Message = "The user's account has been deactivated"
-                    });
-                }
-
-                var token = await _tokenHelper.GenerateTokenForUser(user);
-
-                return Ok(new
+                    ErrorCode = "INVALID_REQUEST",
+                    ErrorMessage = ex.Message
+                });
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(new ErrorResponse
                 {
-                    token.AccessToken,
-                    token.RefreshToken
+                    ErrorCode = "ACCOUNT_UNAUTHORIZED",
+                    ErrorMessage = ex.Message
+                });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(403, new ErrorResponse
+                {
+                    ErrorCode = "ACCOUNT_BLOCKED",
+                    ErrorMessage = ex.Message
                 });
             }
             catch (Exception ex)
             {
-                _logger.LogError((int)EventLoggerEnum.DataBaseException, ex, "Error during user login");
+                _logger.LogError((int)EventLoggerEnum.DataBaseException, ex.ToString());
 
-                return StatusCode(500, new
+                return StatusCode(500, new ErrorResponse
                 {
                     ErrorCode = "SERVER_ERROR",
-                    Message = "An unexpected error occurred. Please try again later."
+                    ErrorMessage = "An unexpected error occurred. Please try again later."
                 });
             }
         }
@@ -103,26 +92,39 @@ namespace ElectronicLearningSystemWebApi.Controllers
         /// <summary>
         /// Выход пользователя из системы.
         /// </summary>
-        /// <param name="userLoginResponse"></param>
-        /// <returns></returns>
+        /// <param name="logoutResponse">Данные пользователя для выхода из системы. </param>
+        /// <response code="200">Успешный выход из системы. </response>
+        /// <response code="401">Неверно переданы данные пользователя. </response>
+        /// <response code="500">Ошибка сервера. </response>
         [HttpPost("logout")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(ErrorResponse), 401)]
+        [ProducesResponseType(typeof(ErrorResponse), 500)]
         public async Task<IActionResult> Logout([FromBody] LogoutDTO logoutResponse)
         {
             try
             {
-                var user = await _userRepository.GetUserByLoginAsync(logoutResponse.Login);
-                if (user == null)
-                {
-                    return Unauthorized("Некорректно передан логин или пароль.");
-                }
+                await _authHelper.LogoutAsync(logoutResponse);
 
-                await _userHelper.LogoutUserAsync(user);
                 return Ok();
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(new ErrorResponse
+                {
+                    ErrorCode = "ACCOUNT_UNAUTHORIZED",
+                    ErrorMessage = ex.Message
+                });
             }
             catch (Exception ex)
             {
                 _logger.LogError((int)EventLoggerEnum.DataBaseException, ex.ToString());
-                return Unauthorized();
+
+                return StatusCode(500, new ErrorResponse
+                {
+                    ErrorCode = "SERVER_ERROR",
+                    ErrorMessage = "An unexpected error occurred. Please try again later."
+                });
             }
         }
 
@@ -131,62 +133,67 @@ namespace ElectronicLearningSystemWebApi.Controllers
         /// </summary>
         /// <param name="refreshTokenRequest">Запрос на обновление токена.</param>
         /// <returns>Новые токены доступа.</returns>
+        /// <response code="200">Успешное обновление токенов доступа. </response>
+        /// <response code="401">Неверно переданы данные пользователя. </response>
+        /// <response code="500">Ошибка сервера. </response>
         [HttpPost("refreshtoken")]
+        [ProducesResponseType(typeof(AccessTokenResponse), 200)]
+        [ProducesResponseType(typeof(ErrorResponse), 401)]
+        [ProducesResponseType(typeof(ErrorResponse), 500)]
         public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenDTO refreshTokenRequest)
         {
             try
             {
-                var principal = jwtTokenHelper.GetPrincipalFromExpiredToken(refreshTokenRequest.AccessToken);
-                if (principal == null)
-                {
-                    return Unauthorized("Некорректный токен доступа.");
-                }
-
-                var user = await _userRepository.GetUserByLoginAsync(principal?.Identity?.Name);
-                if (user == null)
-                {
-                    return Unauthorized("Не найден пользователь по переданному токену.");
-                }
-
-                if (user.RefreshToken != refreshTokenRequest.RefreshToken)
-                {
-                    return Unauthorized("Некорректный рефреш токен пользователя.");
-                }
-
-                var token = await _tokenHelper.GenerateTokenForUser(user);
+                var token = await _authHelper.RefreshTokenAsync(refreshTokenRequest);
 
                 return Ok(token);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(new ErrorResponse
+                {
+                    ErrorCode = "ACCOUNT_UNAUTHORIZED",
+                    ErrorMessage = ex.Message
+                });
             }
             catch (Exception ex)
             {
                 _logger.LogError((int)EventLoggerEnum.DataBaseException, ex.ToString());
-                return Unauthorized();
+                return StatusCode(500, new ErrorResponse
+                {
+                    ErrorCode = "SERVER_ERROR",
+                    ErrorMessage = "An unexpected error occurred. Please try again later."
+                });
             }
         }
 
+        /// <summary>
+        /// Восстановление пароля для пользователя.
+        /// </summary>
+        /// <param name="recoveryPasswordDTO">данные пользователя для восстановления пароля. </param>
+        /// <response code="200">Успешный запрос на восстановление пололя пользователя. </response>
+        /// <response code="500">Ошибка сервера. </response>
         [HttpPost("recoverypassword")]
-        public async Task<IActionResult> RecoveryPassword([FromBody] RecoveryPasswordDTO login) 
+        [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(ErrorResponse), 500)]
+        public async Task<IActionResult> RecoveryPassword([FromBody] RecoveryPasswordDTO recoveryPasswordDTO) 
         {
-            if (login == null)
+            try
             {
-                return BadRequest(new
+                await _authHelper.RecoveryPasswordAsync(recoveryPasswordDTO);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError((int)EventLoggerEnum.DataBaseException, ex.ToString());
+
+                return StatusCode(500, new ErrorResponse
                 {
-                    ErrorCode = "INVALID_REQUEST",
-                    Message = "Invalid request data"
+                    ErrorCode = "SERVER_ERROR",
+                    ErrorMessage = "An unexpected error occurred. Please try again later."
                 });
             }
-
-            var user = await _userRepository.GetUserByLoginAsync(login.Login);
-            if (user is null)
-            {
-                return StatusCode(404, new
-                {
-                    ErrorCode = "NOT_FOUND",
-                    Message = "User was not found"
-                });
-            }
-
-            return Ok();
         }
     }
 }
