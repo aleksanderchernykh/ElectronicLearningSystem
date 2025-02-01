@@ -1,4 +1,4 @@
-﻿using ElectronicLearningSystemWebApi.Models.CommentModel;
+﻿using ElectronicLearningSystemWebApi.Models.CommentModel.Entity;
 using ElectronicLearningSystemWebApi.Models.GroupModel;
 using ElectronicLearningSystemWebApi.Models.NotificationModel;
 using ElectronicLearningSystemWebApi.Models.NotificationTypeModel;

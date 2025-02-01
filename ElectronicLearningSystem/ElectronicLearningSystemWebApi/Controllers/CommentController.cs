@@ -1,74 +1,60 @@
-﻿using ElectronicLearningSystemCore.Extensions;
-using ElectronicLearningSystemWebApi.Enums;
+﻿using ElectronicLearningSystemWebApi.Attribute;
 using ElectronicLearningSystemWebApi.Helpers;
-using ElectronicLearningSystemWebApi.Models.CommentModel;
 using ElectronicLearningSystemWebApi.Models.CommentModel.DTO;
-using ElectronicLearningSystemWebApi.Repositories.Base;
+using ElectronicLearningSystemWebApi.Models.CommentModel.Response;
+using ElectronicLearningSystemWebApi.Models.ErrorModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ElectronicLearningSystemWebApi.Controllers
 {
+    /// <summary>
+    /// Контроллер для работы с комментариями задач.
+    /// </summary>
+    /// <param name="commentHelper">Хелпер для работы с комментарями задач. </param>
     [Authorize]
     [Route("comment")]
     [ApiController]
-    public class CommentController(IRepository<CommentEntity> commentRepository,
-        ILogger<CommentController> logger, CommentHelper commentHelper) : ControllerBase
+    public class CommentController(CommentHelper commentHelper) : ControllerBase
     {
-        private readonly IRepository<CommentEntity> _commentRepository = commentRepository 
-            ?? throw new ArgumentNullException(nameof(commentRepository));
-
-        private readonly ILogger<CommentController> _logger = logger 
-            ?? throw new ArgumentNullException(nameof(logger));
-
+        /// <summary>
+        /// Хелпер для работы с комментарями задач.
+        /// </summary>
         private readonly CommentHelper _commentHelper = commentHelper
             ?? throw new ArgumentNullException(nameof(commentHelper));
 
+        /// <summary>
+        /// Получить все комментарии для задачи.
+        /// </summary>
+        /// <param name="id">Идентификатор задачи. </param>
+        /// <response code="200">Успешный возврат комментариев для задачи. </response>
+        /// <response code="500">Ошибка сервера. </response>
         [HttpGet("getcommentsbytask/{id}")]
+        [ValidateModel]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(CommentResponse), 200)]
+        [ProducesResponseType(typeof(ErrorResponse), 500)]
         public async Task<IActionResult> GetCommentsByTask(Guid id)
         {
-            id.ThrowIsDefault();
-
-            try
-            {
-                return Ok(await _commentRepository.GetRecordsByQueryAsync(x => x.TaskId == id));
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(new EventId((int)EventLoggerEnum.DataBaseException),
-                    message: ex.ToString());
-                return BadRequest();
-            }
+            var comments = await _commentHelper.GetCommentsByTaskAsync(id);
+            return Ok(comments);
         }
 
-        [HttpPost("createcomment")]
-        public async Task<IActionResult> CreateCommentByTask([FromBody] CreateCommentDTO createComment)
+        /// <summary>
+        /// Создание новой задачи.
+        /// </summary>
+        /// <param name="createCommentDTO">Данные о создаваемом комментарии. </param>
+        /// <response code="200">Успешное создание комментария. </response>
+        /// <response code="500">Ошибка сервера. </response>
+        [HttpPost("create")]
+        [ValidateModel]
+        [Produces("application/json")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(ErrorResponse), 500)]
+        public async Task<IActionResult> CreateCommentByTask([FromBody] CreateCommentDTO createCommentDTO)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
-
-            try
-            {
-                var comment = commentHelper.GetCommentByDTO(createComment);
-                if (comment is null)
-                {
-                    _logger.LogError(new EventId((int)EventLoggerEnum.InvalidMapEntityException),
-                        message: $"Invalid map comment {createComment.TaskId}");
-                    return BadRequest();
-                }
-
-                await _commentRepository.AddRecordAsync(comment);
-
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(new EventId((int)EventLoggerEnum.DataBaseException),
-                    message: ex.ToString());
-                return BadRequest();
-            }
+            await _commentHelper.CreateCommentAsync(createCommentDTO);
+            return Ok();
         }
     }
 }

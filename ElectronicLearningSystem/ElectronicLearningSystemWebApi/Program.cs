@@ -20,11 +20,11 @@ builder.Services.AddDatabaseContext(builder.Configuration);
 // Настройка SignalR.
 builder.Services.AddCustomSignalR();
 
-// Настройка AutoMapper.
-builder.Services.AddAutoMapperConfiguration();
-
 // Регистрация репозиториев и сервисов.
 builder.Services.AddCustomServices();
+
+// Настройка AutoMapper.
+builder.Services.AddAutoMapperConfiguration();
 
 // Регистрация Kafka Producer.
 builder.Services.AddKafkaProducer(builder.Configuration);

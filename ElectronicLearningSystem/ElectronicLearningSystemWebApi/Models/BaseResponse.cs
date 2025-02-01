@@ -2,7 +2,7 @@
 
 namespace ElectronicLearningSystemWebApi.Models
 {
-    public abstract class BaseDTO
+    public abstract class BaseResponse
     {
         public Guid Id { get; set; }
         public DateTime CreatedOn { get; set; }

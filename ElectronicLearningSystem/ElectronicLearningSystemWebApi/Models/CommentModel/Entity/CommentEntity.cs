@@ -1,6 +1,6 @@
 ﻿using ElectronicLearningSystemWebApi.Models.TaskModel;
 
-namespace ElectronicLearningSystemWebApi.Models.CommentModel
+namespace ElectronicLearningSystemWebApi.Models.CommentModel.Entity
 {
     public class CommentEntity : EntityBase
     {

@@ -1,6 +1,6 @@
 ﻿namespace ElectronicLearningSystemWebApi.Models.UserModel.Response
 {
-    public class UserDto : BaseDTO
+    public class UserResponse : BaseResponse
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

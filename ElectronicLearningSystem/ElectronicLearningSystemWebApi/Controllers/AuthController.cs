@@ -32,6 +32,7 @@ namespace ElectronicLearningSystemWebApi.Controllers
         /// <response code="403">Аккаунт заблокирован. </response>
         /// <response code="500">Ошибка сервера. </response>
         [HttpPost("login")]
+        [Produces("application/json")]
         [ValidateModel]
         [ProducesResponseType(typeof(AccessTokenResponse), 200)]
         [ProducesResponseType(typeof(ErrorResponse), 401)]
@@ -51,6 +52,7 @@ namespace ElectronicLearningSystemWebApi.Controllers
         /// <response code="404">Ошибка поиска пользователя. </response>
         /// <response code="500">Ошибка сервера. </response>
         [HttpPost("logout")]
+        [Produces("application/json")]
         [ValidateModel]
         [ProducesResponseType(200)]
         [ProducesResponseType(typeof(ErrorResponse), 404)]
@@ -70,6 +72,7 @@ namespace ElectronicLearningSystemWebApi.Controllers
         /// <response code="401">Неверно переданы данные пользователя. </response>
         /// <response code="500">Ошибка сервера. </response>
         [HttpPost("refreshtoken")]
+        [Produces("application/json")]
         [ValidateModel]
         [ProducesResponseType(typeof(AccessTokenResponse), 200)]
         [ProducesResponseType(typeof(ErrorResponse), 401)]
@@ -88,6 +91,7 @@ namespace ElectronicLearningSystemWebApi.Controllers
         /// <response code="404">Ошибка поиска пользователя. </response>
         /// <response code="500">Ошибка сервера. </response>
         [HttpPost("recoverypassword")]
+        [Produces("application/json")]
         [ValidateModel]
         [ProducesResponseType(200)]
         [ProducesResponseType(typeof(ErrorResponse), 404)]

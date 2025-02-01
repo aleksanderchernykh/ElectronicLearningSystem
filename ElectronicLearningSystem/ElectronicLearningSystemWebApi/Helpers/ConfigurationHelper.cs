@@ -128,6 +128,7 @@ namespace ElectronicLearningSystemWebApi.Helpers
             services.AddScoped<ITaskRepository, TaskRepository>();
             services.AddScoped<EmailSendingHelper>();
             services.AddScoped<UserHelper>();
+            services.AddScoped<RedisHelper>();
             services.AddScoped<AuthHelper>();
             services.AddScoped<NotificationHelper>();
             services.AddScoped<CommentHelper>();

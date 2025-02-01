@@ -59,7 +59,7 @@ namespace ElectronicLearningSystemWebApi.Controllers
             {
                 var users = await _userRepository.GetAllRecordsAsync();
 
-                return Ok(_mapper.Map<IList<UserDto>>(users));
+                return Ok(_mapper.Map<IList<UserResponse>>(users));
             }
             catch (Exception ex)
             {
@@ -105,7 +105,7 @@ namespace ElectronicLearningSystemWebApi.Controllers
                     return NotFound();
                 }
 
-                return Ok(_mapper.Map<UserDto>(user));
+                return Ok(_mapper.Map<UserResponse>(user));
             }
             catch (Exception ex)
             {

@@ -1,5 +1,4 @@
 ﻿using ElectronicLearningSystemWebApi.Models.UserModel;
-using Microsoft.Identity.Client;
 
 namespace ElectronicLearningSystemWebApi.Models
 {
