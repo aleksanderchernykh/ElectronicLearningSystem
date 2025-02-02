@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ElectronicLearningSystemWebApi.Attribute
+namespace ElectronicLearningSystemWebApi.Attributes
 {
     /// <summary>
     /// Аттрибут для проверки входящих данных.

@@ -11,9 +11,7 @@
         public static void ThrowIsDefault(this Guid value) 
         {
             if (value == default)
-            {
                 throw new ArgumentNullException(nameof(value));
-            }
         }
     }
 }

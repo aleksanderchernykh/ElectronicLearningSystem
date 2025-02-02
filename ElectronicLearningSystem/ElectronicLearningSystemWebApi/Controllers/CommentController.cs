@@ -1,4 +1,4 @@
-﻿using ElectronicLearningSystemWebApi.Attribute;
+﻿using ElectronicLearningSystemWebApi.Attributes;
 using ElectronicLearningSystemWebApi.Helpers;
 using ElectronicLearningSystemWebApi.Models.CommentModel.DTO;
 using ElectronicLearningSystemWebApi.Models.CommentModel.Response;

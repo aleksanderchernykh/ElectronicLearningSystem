@@ -93,7 +93,7 @@ namespace ElectronicLearningSystemKafka.Core.Consumer
                             _logger.LogError($"Error occurred: {e.Error.Reason}");
                         }
                     }
-                });
+                }, cancellationToken);
             }
             finally
             {

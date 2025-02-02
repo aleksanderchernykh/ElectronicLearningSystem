@@ -12,8 +12,7 @@ namespace ElectronicLearningSystemWebApi.Helpers
     /// <param name="userHelper">Хелпер для работы с пользователями. </param>
     /// <param name="commentRepository">Репозиторий для работы с комментариями. </param>
     /// <param name="mapper">Маппер. </param>
-    public class CommentHelper(UserHelper userHelper,
-        IRepository<CommentEntity> commentRepository,
+    public class CommentHelper(IRepository<CommentEntity> commentRepository,
         IMapper mapper)
     {
         /// <summary>
@@ -21,12 +20,6 @@ namespace ElectronicLearningSystemWebApi.Helpers
         /// </summary>
         protected readonly IRepository<CommentEntity> _commentRepository = commentRepository
             ?? throw new ArgumentNullException(nameof(commentRepository));
-
-        /// <summary>
-        /// Хелпер для работы с пользователями. 
-        /// </summary>
-        protected readonly UserHelper _userHelper = userHelper 
-            ?? throw new ArgumentNullException(nameof(userHelper));
 
         /// <summary>
         /// <param name="mapper">Маппер. </param>

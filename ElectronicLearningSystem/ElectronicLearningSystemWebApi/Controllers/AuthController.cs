@@ -1,9 +1,8 @@
 using ElectronicLearningSystemWebApi.Models.UserModel.Response;
 using Microsoft.AspNetCore.Mvc;
 using ElectronicLearningSystemWebApi.Helpers;
-using ElectronicLearningSystemWebApi.Enums;
 using ElectronicLearningSystemWebApi.Models.ErrorModel;
-using ElectronicLearningSystemWebApi.Attribute;
+using ElectronicLearningSystemWebApi.Attributes;
 
 namespace ElectronicLearningSystemWebApi.Controllers
 {
