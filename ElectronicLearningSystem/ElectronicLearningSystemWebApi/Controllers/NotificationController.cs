@@ -1,11 +1,8 @@
 ﻿using ElectronicLearningSystemWebApi.Attributes;
-using ElectronicLearningSystemWebApi.Enums;
 using ElectronicLearningSystemWebApi.Helpers.Controller;
-using ElectronicLearningSystemWebApi.Models.CommentModel.DTO;
 using ElectronicLearningSystemWebApi.Models.ErrorModel;
 using ElectronicLearningSystemWebApi.Models.NotificationModel.DTO;
 using ElectronicLearningSystemWebApi.Models.NotificationModel.Response;
-using ElectronicLearningSystemWebApi.Repositories.Notification;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

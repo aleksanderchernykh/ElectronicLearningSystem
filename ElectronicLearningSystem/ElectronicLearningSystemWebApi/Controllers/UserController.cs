@@ -1,12 +1,7 @@
-﻿using AutoMapper;
-using ElectronicLearningSystemWebApi.Attributes;
-using ElectronicLearningSystemWebApi.Enums;
+﻿using ElectronicLearningSystemWebApi.Attributes;
 using ElectronicLearningSystemWebApi.Helpers.Controller;
-using ElectronicLearningSystemWebApi.Helpers.Exceptions;
 using ElectronicLearningSystemWebApi.Models.ErrorModel;
-using ElectronicLearningSystemWebApi.Models.RoleModel.Response;
 using ElectronicLearningSystemWebApi.Models.UserModel.Response;
-using ElectronicLearningSystemWebApi.Repositories.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
