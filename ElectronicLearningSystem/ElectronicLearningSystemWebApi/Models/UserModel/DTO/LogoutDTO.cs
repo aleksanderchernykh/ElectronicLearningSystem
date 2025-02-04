@@ -1,4 +1,4 @@
-﻿namespace ElectronicLearningSystemWebApi.Models.UserModel.Response
+﻿namespace ElectronicLearningSystemWebApi.Models.UserModel.DTO
 {
     public class LogoutDTO
     {

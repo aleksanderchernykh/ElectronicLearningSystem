@@ -1,5 +1,5 @@
-﻿using ElectronicLearningSystemWebApi.Models.NotificationTypeModel;
-using ElectronicLearningSystemWebApi.Models.UserModel;
+﻿using ElectronicLearningSystemWebApi.Models.NotificationTypeModel.Entity;
+using ElectronicLearningSystemWebApi.Models.UserModel.Entity;
 
 namespace ElectronicLearningSystemWebApi.Models.NotificationModel.Entity
 {

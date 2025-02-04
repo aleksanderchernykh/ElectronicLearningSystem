@@ -1,6 +1,6 @@
-﻿using ElectronicLearningSystemWebApi.Models.UserModel;
+﻿using ElectronicLearningSystemWebApi.Models.UserModel.Entity;
 
-namespace ElectronicLearningSystemWebApi.Models.GroupModel
+namespace ElectronicLearningSystemWebApi.Models.GroupModel.Entity
 {
     public class GroupEntity : EntityBase
     {

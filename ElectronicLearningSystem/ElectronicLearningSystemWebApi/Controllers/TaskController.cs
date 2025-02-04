@@ -1,4 +1,4 @@
-﻿using ElectronicLearningSystemWebApi.Helpers.Controller;
+﻿using ElectronicLearningSystemWebApi.Helpers.Services;
 using ElectronicLearningSystemWebApi.Models.ErrorModel;
 using ElectronicLearningSystemWebApi.Models.RoleModel.Response;
 using Microsoft.AspNetCore.Authorization;
@@ -8,17 +8,17 @@ namespace ElectronicLearningSystemWebApi.Controllers
     /// <summary>
     /// Контроллер для работы с заданиями.
     /// </summary>
-    /// <param name="taskHelper"></param>
+    /// <param name="taskService"></param>
     [Authorize]
     [Route("task")]
     [ApiController]
-    public class TaskController(TaskHelper taskHelper) : ControllerBase
+    public class TaskController(TaskService taskService) : ControllerBase
     {
         /// <summary>
         /// Хелпер для работы с заданиями.
         /// </summary>
-        private readonly TaskHelper _taskHelper = taskHelper 
-            ?? throw new ArgumentNullException(nameof(taskHelper));
+        private readonly TaskService _taskService = taskService 
+            ?? throw new ArgumentNullException(nameof(taskService));
 
         /// <summary>
         /// Получение всех задач, связанных с текущим пользователем.
@@ -31,7 +31,7 @@ namespace ElectronicLearningSystemWebApi.Controllers
         [HttpGet("getmytask")]
         public async Task<IActionResult> GetTaskByCurrentUser()
         {
-            var tasks = await _taskHelper.GetTaskByCurrentUserAsync();
+            var tasks = await _taskService.GetTaskByCurrentUserAsync();
             return Ok(tasks);
         }
 
@@ -46,7 +46,7 @@ namespace ElectronicLearningSystemWebApi.Controllers
         [HttpGet("get")]
         public async Task<IActionResult> GetAllTask()
         {
-            var tasks = await _taskHelper.GetAllTaskAsync();
+            var tasks = await _taskService.GetAllTaskAsync();
             return Ok(tasks);
         }
 
@@ -61,7 +61,7 @@ namespace ElectronicLearningSystemWebApi.Controllers
         [HttpGet("get/{id}")]
         public async Task<IActionResult> GetTaskById(Guid id)
         {
-            var task = await _taskHelper.GetTaskByIdAsync(id);
+            var task = await _taskService.GetTaskByIdAsync(id);
             return Ok(task);
         }
     }

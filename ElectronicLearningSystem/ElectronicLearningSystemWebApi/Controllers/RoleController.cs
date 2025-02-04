@@ -1,4 +1,4 @@
-﻿using ElectronicLearningSystemWebApi.Helpers.Controller;
+﻿using ElectronicLearningSystemWebApi.Helpers.Services;
 using ElectronicLearningSystemWebApi.Models.ErrorModel;
 using ElectronicLearningSystemWebApi.Models.RoleModel.Response;
 using Microsoft.AspNetCore.Authorization;
@@ -9,18 +9,18 @@ namespace ElectronicLearningSystemWebApi.Controllers
     /// <summary>
     /// Контроллер для работы с ролями.
     /// </summary>
-    /// <param name="roleHelper">Хелпер для работы с ролями. </param>
+    /// <param name="roleService">Хелпер для работы с ролями. </param>
     [Authorize]
     [Route("role")]
     [ApiController]
-    public class RoleController(RoleHelper roleHelper) 
+    public class RoleController(RoleService roleService) 
         : ControllerBase
     {
         /// <summary>
         /// Хелпер для работы с ролями.
         /// </summary>
-        private readonly RoleHelper _roleHelper = roleHelper 
-            ?? throw new ArgumentNullException(nameof(roleHelper));
+        private readonly RoleService _roleService = roleService 
+            ?? throw new ArgumentNullException(nameof(roleService));
 
         /// <summary>
         /// Получение ролей пользователя.
@@ -33,7 +33,7 @@ namespace ElectronicLearningSystemWebApi.Controllers
         [HttpGet("get")]
         public async Task<IActionResult> GetRoles()
         {
-            var roles = await _roleHelper.GetRolesAsync();
+            var roles = await _roleService.GetRolesAsync();
             return Ok(roles);
         }
     }

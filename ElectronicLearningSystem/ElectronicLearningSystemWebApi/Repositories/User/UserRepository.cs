@@ -1,10 +1,9 @@
 ﻿using ElectronicLearningSystemWebApi.Context;
 using ElectronicLearningSystemWebApi.Helpers;
 using ElectronicLearningSystemWebApi.Helpers.Exceptions;
-using ElectronicLearningSystemWebApi.Models.UserModel;
-using ElectronicLearningSystemWebApi.Models.UserModel.Response;
+using ElectronicLearningSystemWebApi.Models.UserModel.DTO;
+using ElectronicLearningSystemWebApi.Models.UserModel.Entity;
 using ElectronicLearningSystemWebApi.Repositories.Base;
-using Microsoft.EntityFrameworkCore;
 
 namespace ElectronicLearningSystemWebApi.Repositories.User
 {

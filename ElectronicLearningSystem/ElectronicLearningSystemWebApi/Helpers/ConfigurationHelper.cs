@@ -1,6 +1,6 @@
 ﻿using ElectronicLearningSystemKafka.Core.Producer;
 using ElectronicLearningSystemWebApi.Context;
-using ElectronicLearningSystemWebApi.Helpers.Controller;
+using ElectronicLearningSystemWebApi.Helpers.Services;
 using ElectronicLearningSystemWebApi.Helpers.Mapper;
 using ElectronicLearningSystemWebApi.Repositories.Base;
 using ElectronicLearningSystemWebApi.Repositories.Notification;
@@ -129,13 +129,13 @@ namespace ElectronicLearningSystemWebApi.Helpers
             services.AddScoped<INotificationRepository, NotificationRepository>();
             services.AddScoped<ITaskRepository, TaskRepository>();
             services.AddScoped<EmailSendingHelper>();
-            services.AddScoped<UserHelper>();
+            services.AddScoped<UserService>();
             services.AddScoped<RedisHelper>();
-            services.AddScoped<AuthHelper>();
-            services.AddScoped<RoleHelper>();
-            services.AddScoped<TaskHelper>();
-            services.AddScoped<NotificationHelper>();
-            services.AddScoped<CommentHelper>();
+            services.AddScoped<AuthService>();
+            services.AddScoped<RoleService>();
+            services.AddScoped<TaskService>();
+            services.AddScoped<NotificationService>();
+            services.AddScoped<CommentService>();
             services.AddScoped<JwtTokenHelper>();
 
             return services;

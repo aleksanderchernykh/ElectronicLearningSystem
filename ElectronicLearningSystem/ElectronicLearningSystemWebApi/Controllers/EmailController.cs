@@ -1,5 +1,5 @@
 ﻿using ElectronicLearningSystemWebApi.Attributes;
-using ElectronicLearningSystemWebApi.Helpers.Controller;
+using ElectronicLearningSystemWebApi.Helpers.Services;
 using ElectronicLearningSystemWebApi.Models.EmailModel.DTO;
 using ElectronicLearningSystemWebApi.Models.ErrorModel;
 using Microsoft.AspNetCore.Authorization;
@@ -10,18 +10,18 @@ namespace ElectronicLearningSystemWebApi.Controllers
     /// <summary>
     /// Контроллер для работы с Email сообщениями.
     /// </summary>
-    /// <param name="emailHelper">Хелпер для работы с Email сообщениями. </param>
+    /// <param name="emailService">Хелпер для работы с Email сообщениями. </param>
     [Authorize]
     [Route("email")]
     [ApiController]
-    public class EmailController(EmailHelper emailHelper) 
+    public class EmailController(EmailService emailService) 
         : ControllerBase
     {
         /// <summary>
         /// Хелпер для работы с Email сообщениями. 
         /// </summary>
-        private readonly EmailHelper _emailHelper = emailHelper 
-            ?? throw new ArgumentNullException(nameof(_emailHelper));
+        private readonly EmailService _emailService = emailService 
+            ?? throw new ArgumentNullException(nameof(_emailService));
 
         /// <summary>
         /// Отправка сообщения.
@@ -36,7 +36,7 @@ namespace ElectronicLearningSystemWebApi.Controllers
         [ProducesResponseType(typeof(ErrorResponse), 500)]
         public async Task<IActionResult> SendEmail([FromBody] EmailSendingDTO emailDTO)
         {
-            await _emailHelper.SendEmailAsync(emailDTO);
+            await _emailService.SendEmailAsync(emailDTO);
             return Created();
         }
     }

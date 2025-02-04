@@ -1,7 +1,7 @@
-﻿using ElectronicLearningSystemWebApi.Models.UserModel;
-using ElectronicLearningSystemWebApi.Models.GroupModel;
+﻿using ElectronicLearningSystemWebApi.Models.GroupModel.Entity;
+using ElectronicLearningSystemWebApi.Models.UserModel.Entity;
 
-namespace ElectronicLearningSystemWebApi.Models.StudentModel
+namespace ElectronicLearningSystemWebApi.Models.StudentModel.Entity
 {
     /// <summary>
     /// Студент.

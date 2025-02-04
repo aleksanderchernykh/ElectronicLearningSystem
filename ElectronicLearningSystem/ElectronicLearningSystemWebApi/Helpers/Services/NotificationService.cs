@@ -4,7 +4,7 @@ using ElectronicLearningSystemWebApi.Models.NotificationModel.Entity;
 using ElectronicLearningSystemWebApi.Models.NotificationModel.Response;
 using ElectronicLearningSystemWebApi.Repositories.Notification;
 
-namespace ElectronicLearningSystemWebApi.Helpers.Controller
+namespace ElectronicLearningSystemWebApi.Helpers.Services
 {
     /// <summary>
     /// Хелпер для работы с уведомлениями.
@@ -12,14 +12,14 @@ namespace ElectronicLearningSystemWebApi.Helpers.Controller
     /// <param name="userHelper">Хелпер для работы с пользователем. </param>
     /// <param name="notificationRepository">Репозиторий для работы с уведомлениями. </param>
     /// <param name="mapper">Маппер. </param>
-    public class NotificationHelper(UserHelper userHelper,
+    public class NotificationService(UserService userHelper,
         INotificationRepository notificationRepository,
         IMapper mapper)
     {
         /// <summary>
         /// Хелпер для работы с пользователем.
         /// </summary>
-        protected readonly UserHelper _userHelper = userHelper
+        protected readonly UserService _userHelper = userHelper
             ?? throw new ArgumentNullException(nameof(userHelper));
 
         /// <summary>
@@ -44,10 +44,10 @@ namespace ElectronicLearningSystemWebApi.Helpers.Controller
         }
 
         /// <summary>
-        /// Создание комментария по задаче.
+        /// Создание уведомления.
         /// </summary>
-        /// <param name="createNotificationDTO">Данные для создания комментария. </param>
-        public async Task CreateCommentByTaskAsync(CreateNotificationDTO createNotificationDTO)
+        /// <param name="createNotificationDTO">Данные для создания уведомления. </param>
+        public async Task CreateNotificationAsync(CreateNotificationDTO createNotificationDTO)
         {
             var comment = _mapper.Map<NotificationEntity>(createNotificationDTO);
             await _notificationRepository.AddRecordAsync(comment);

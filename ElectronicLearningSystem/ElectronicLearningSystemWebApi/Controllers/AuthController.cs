@@ -2,24 +2,25 @@ using ElectronicLearningSystemWebApi.Models.UserModel.Response;
 using Microsoft.AspNetCore.Mvc;
 using ElectronicLearningSystemWebApi.Models.ErrorModel;
 using ElectronicLearningSystemWebApi.Attributes;
-using ElectronicLearningSystemWebApi.Helpers.Controller;
+using ElectronicLearningSystemWebApi.Helpers.Services;
+using ElectronicLearningSystemWebApi.Models.UserModel.DTO;
 
 namespace ElectronicLearningSystemWebApi.Controllers
 {
     /// <summary>
     /// Контролер для работы с авторизацией пользователя в системе.
     /// </summary>
-    /// <param name="authHelper">Хелпер для работы с авторизацией пользователя в системе. </param>
+    /// <param name="authService">Хелпер для работы с авторизацией пользователя в системе. </param>
     [Route("auth")]
     [ApiController]
-    public class AuthController(AuthHelper authHelper) 
+    public class AuthController(AuthService authService) 
         : ControllerBase
     {
         /// <summary>
         /// Хелпер для работы с авторизацией пользователя в системе. 
         /// </summary>
-        private readonly AuthHelper _authHelper = authHelper 
-            ?? throw new ArgumentNullException(nameof(authHelper));
+        private readonly AuthService _authService = authService 
+            ?? throw new ArgumentNullException(nameof(authService));
 
         /// <summary>
         /// Авторизация пользователя в системе.
@@ -40,7 +41,7 @@ namespace ElectronicLearningSystemWebApi.Controllers
         [ProducesResponseType(typeof(ErrorResponse), 500)]
         public async Task<IActionResult> Login([FromBody] UserLoginDTO userLoginRequest)
         {
-            var token = await _authHelper.LoginAsync(userLoginRequest);
+            var token = await _authService.LoginAsync(userLoginRequest);
             return Ok(token);
         }
 
@@ -59,7 +60,7 @@ namespace ElectronicLearningSystemWebApi.Controllers
         [ProducesResponseType(typeof(ErrorResponse), 500)]
         public async Task<IActionResult> Logout([FromBody] LogoutDTO logoutDTO)
         {
-            await _authHelper.LogoutAsync(logoutDTO);
+            await _authService.LogoutAsync(logoutDTO);
             return Ok();
         }
 
@@ -79,7 +80,7 @@ namespace ElectronicLearningSystemWebApi.Controllers
         [ProducesResponseType(typeof(ErrorResponse), 500)]
         public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenDTO refreshTokenDTO)
         {
-            var token = await _authHelper.RefreshTokenAsync(refreshTokenDTO);
+            var token = await _authService.RefreshTokenAsync(refreshTokenDTO);
             return Ok(token);
         }
 
@@ -98,7 +99,7 @@ namespace ElectronicLearningSystemWebApi.Controllers
         [ProducesResponseType(typeof(ErrorResponse), 500)]
         public async Task<IActionResult> RecoveryPassword([FromBody] RecoveryPasswordDTO recoveryPasswordDTO) 
         {
-            await _authHelper.RecoveryPasswordAsync(recoveryPasswordDTO);
+            await _authService.RecoveryPasswordAsync(recoveryPasswordDTO);
             return Ok();
         }
     }

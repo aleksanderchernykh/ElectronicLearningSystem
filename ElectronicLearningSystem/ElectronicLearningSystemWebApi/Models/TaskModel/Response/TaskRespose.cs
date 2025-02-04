@@ -1,5 +1,4 @@
-﻿
-namespace ElectronicLearningSystemWebApi.Models.TaskModel.Response
+﻿namespace ElectronicLearningSystemWebApi.Models.TaskModel.Response
 {
     public class TaskRespose : BaseResponse
     {

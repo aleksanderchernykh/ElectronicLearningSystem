@@ -1,5 +1,5 @@
 ﻿using ElectronicLearningSystemWebApi.Attributes;
-using ElectronicLearningSystemWebApi.Helpers.Controller;
+using ElectronicLearningSystemWebApi.Helpers.Services;
 using ElectronicLearningSystemWebApi.Models.CommentModel.DTO;
 using ElectronicLearningSystemWebApi.Models.CommentModel.Response;
 using ElectronicLearningSystemWebApi.Models.ErrorModel;
@@ -11,18 +11,18 @@ namespace ElectronicLearningSystemWebApi.Controllers
     /// <summary>
     /// Контроллер для работы с комментариями задач.
     /// </summary>
-    /// <param name="commentHelper">Хелпер для работы с комментарями задач. </param>
+    /// <param name="commentService">Хелпер для работы с комментарями задач. </param>
     [Authorize]
     [Route("comment")]
     [ApiController]
-    public class CommentController(CommentHelper commentHelper) 
+    public class CommentController(CommentService commentService) 
         : ControllerBase
     {
         /// <summary>
         /// Хелпер для работы с комментарями задач.
         /// </summary>
-        private readonly CommentHelper _commentHelper = commentHelper
-            ?? throw new ArgumentNullException(nameof(commentHelper));
+        private readonly CommentService _commentService = commentService
+            ?? throw new ArgumentNullException(nameof(commentService));
 
         /// <summary>
         /// Получить все комментарии для задачи.
@@ -37,7 +37,7 @@ namespace ElectronicLearningSystemWebApi.Controllers
         [ProducesResponseType(typeof(ErrorResponse), 500)]
         public async Task<IActionResult> GetCommentsByTask(Guid id)
         {
-            var comments = await _commentHelper.GetCommentsByTaskAsync(id);
+            var comments = await _commentService.GetCommentsByTaskAsync(id);
             return Ok(comments);
         }
 
@@ -54,7 +54,7 @@ namespace ElectronicLearningSystemWebApi.Controllers
         [ProducesResponseType(typeof(ErrorResponse), 500)]
         public async Task<IActionResult> CreateCommentByTask([FromBody] CreateCommentDTO createCommentDTO)
         {
-            await _commentHelper.CreateCommentAsync(createCommentDTO);
+            await _commentService.CreateCommentAsync(createCommentDTO);
             return Created();
         }
     }

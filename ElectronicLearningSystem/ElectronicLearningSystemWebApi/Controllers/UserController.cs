@@ -1,6 +1,7 @@
 ﻿using ElectronicLearningSystemWebApi.Attributes;
-using ElectronicLearningSystemWebApi.Helpers.Controller;
+using ElectronicLearningSystemWebApi.Helpers.Services;
 using ElectronicLearningSystemWebApi.Models.ErrorModel;
+using ElectronicLearningSystemWebApi.Models.UserModel.DTO;
 using ElectronicLearningSystemWebApi.Models.UserModel.Response;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,17 +11,17 @@ namespace ElectronicLearningSystemWebApi.Controllers
     /// <summary>
     /// Контроллер для работы с пользователями.
     /// </summary>
-    /// <param name="userHelper">Хелпер для работы с пользователями. </param>
+    /// <param name="userService">Хелпер для работы с пользователями. </param>
     [Authorize]
     [Route("user")]
     [ApiController]
-    public class UserController(UserHelper userHelper) : ControllerBase
+    public class UserController(UserService userService) : ControllerBase
     {
         /// <summary>
         /// Хелпер для работы с пользователями.
         /// </summary>
-        private readonly UserHelper _userHelper = userHelper 
-            ?? throw new ArgumentNullException(nameof(userHelper));
+        private readonly UserService _userService = userService 
+            ?? throw new ArgumentNullException(nameof(userService));
 
         /// <summary>
         /// Создание пользователя.
@@ -37,7 +38,7 @@ namespace ElectronicLearningSystemWebApi.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> Create([FromBody] CreateUserDTO userDTO)
         {
-            await _userHelper.CreateUserAsync(userDTO);
+            await _userService.CreateUserAsync(userDTO);
             return Created();
         }
 
@@ -52,7 +53,7 @@ namespace ElectronicLearningSystemWebApi.Controllers
         [HttpGet("get")]
         public async Task<IActionResult> GetUsers()
         {
-            var users = await _userHelper.GetUsersAsync();
+            var users = await _userService.GetUsersAsync();
             return Ok(users);
         }
 
@@ -67,7 +68,7 @@ namespace ElectronicLearningSystemWebApi.Controllers
         [HttpGet("getme")]
         public async Task<IActionResult> GetMe()
         {
-            var user = await _userHelper.GetCurrentUserAsync();
+            var user = await _userService.GetCurrentUserAsync();
             return Ok(user);
         }
 
@@ -83,7 +84,7 @@ namespace ElectronicLearningSystemWebApi.Controllers
         [HttpGet("get/{id}")]
         public async Task<IActionResult> GetUserByIdAsync(Guid id)
         {
-            var user = await _userHelper.GetUserByIdAsync(id);
+            var user = await _userService.GetUserByIdAsync(id);
             return Ok(user);
         }
     }

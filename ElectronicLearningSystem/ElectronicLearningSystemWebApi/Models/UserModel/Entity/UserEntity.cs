@@ -1,6 +1,6 @@
 ﻿using ElectronicLearningSystemWebApi.Models.RoleModel.Entity;
 
-namespace ElectronicLearningSystemWebApi.Models.UserModel
+namespace ElectronicLearningSystemWebApi.Models.UserModel.Entity
 {
     /// <summary>
     /// Пользователь.
@@ -30,7 +30,7 @@ namespace ElectronicLearningSystemWebApi.Models.UserModel
         /// <summary>
         /// Логин пользователя.
         /// </summary>
-        public required string Login {  get; set; }
+        public required string Login { get; set; }
 
         /// <summary>
         /// Пароль.

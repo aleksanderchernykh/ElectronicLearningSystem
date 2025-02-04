@@ -1,8 +1,9 @@
-﻿using ElectronicLearningSystemWebApi.Models.UserModel;
+﻿using ElectronicLearningSystemWebApi.Models.UserModel.DTO;
+using ElectronicLearningSystemWebApi.Models.UserModel.Entity;
 using ElectronicLearningSystemWebApi.Models.UserModel.Response;
 using ElectronicLearningSystemWebApi.Repositories.User;
 
-namespace ElectronicLearningSystemWebApi.Helpers.Controller
+namespace ElectronicLearningSystemWebApi.Helpers.Services
 {
     /// <summary>
     /// Хелпер для работы с аутентификацией пользователя.
@@ -12,8 +13,8 @@ namespace ElectronicLearningSystemWebApi.Helpers.Controller
     /// <param name="tokenHelper">Хелпер для работы с токенами. </param>
     /// <param name="redisHelper">Хелпер для работы с Redis. </param>
     /// <param name="emailSendingHelper">Хелпер для работы с Email. </param>
-    public class AuthHelper(IUserRepository userRepository,
-        UserHelper userHelper,
+    public class AuthService(IUserRepository userRepository,
+        UserService userHelper,
         JwtTokenHelper tokenHelper,
         EmailSendingHelper emailSendingHelper,
         RedisHelper redisHelper)
@@ -33,7 +34,7 @@ namespace ElectronicLearningSystemWebApi.Helpers.Controller
         /// <summary>
         /// Хелпер для работы с пользователями. 
         /// </summary>
-        protected readonly UserHelper _userHelper = userHelper
+        protected readonly UserService _userHelper = userHelper
             ?? throw new ArgumentNullException(nameof(_userHelper));
 
         /// <summary>

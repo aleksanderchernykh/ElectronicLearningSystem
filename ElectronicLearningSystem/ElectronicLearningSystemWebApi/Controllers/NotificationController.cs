@@ -1,5 +1,5 @@
 ﻿using ElectronicLearningSystemWebApi.Attributes;
-using ElectronicLearningSystemWebApi.Helpers.Controller;
+using ElectronicLearningSystemWebApi.Helpers.Services;
 using ElectronicLearningSystemWebApi.Models.ErrorModel;
 using ElectronicLearningSystemWebApi.Models.NotificationModel.DTO;
 using ElectronicLearningSystemWebApi.Models.NotificationModel.Response;
@@ -11,14 +11,14 @@ namespace ElectronicLearningSystemWebApi.Controllers
     [Authorize]
     [ApiController]
     [Route("notification")]
-    public class NotificationController(NotificationHelper notificationHelper)
+    public class NotificationController(NotificationService notificationService)
         : ControllerBase
     {
         /// <summary>
         /// Хелпер для работы с уведомлениями.
         /// </summary>
-        private readonly NotificationHelper _notificationHelper = 
-            notificationHelper ?? throw new ArgumentNullException(nameof(notificationHelper));
+        private readonly NotificationService _notificationService = 
+            notificationService ?? throw new ArgumentNullException(nameof(notificationService));
 
         /// <summary>
         /// Получение актуальных уведомлений по текущему пользователю.
@@ -31,7 +31,7 @@ namespace ElectronicLearningSystemWebApi.Controllers
         [HttpGet("get")]
         public async Task<IActionResult> GetActualNotificationByCurrentUser()
         {
-            var notifications = await _notificationHelper.GetActualNotificationByCurrentUserAsync();
+            var notifications = await _notificationService.GetActualNotificationByCurrentUserAsync();
             return Ok(notifications);
         }
 
@@ -46,9 +46,9 @@ namespace ElectronicLearningSystemWebApi.Controllers
         [ProducesResponseType(201)]
         [ProducesResponseType(typeof(ErrorResponse), 500)]
         [HttpPost("create")]
-        public async Task<IActionResult> CreateCommentByTask([FromBody] CreateNotificationDTO createNotificationDTO)
+        public async Task<IActionResult> CreateNotificationAsync([FromBody] CreateNotificationDTO createNotificationDTO)
         {
-            await _notificationHelper.CreateCommentByTaskAsync(createNotificationDTO);
+            await _notificationService.CreateNotificationAsync(createNotificationDTO);
             return Created();
         }
     }

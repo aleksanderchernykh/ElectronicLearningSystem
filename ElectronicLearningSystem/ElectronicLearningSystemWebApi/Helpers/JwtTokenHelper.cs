@@ -1,4 +1,4 @@
-﻿using ElectronicLearningSystemWebApi.Models.UserModel;
+﻿using ElectronicLearningSystemWebApi.Models.UserModel.Entity;
 using ElectronicLearningSystemWebApi.Repositories.User;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -24,11 +24,20 @@ namespace ElectronicLearningSystemWebApi.Helpers
 
         public JwtTokenHelper(IConfiguration configuration, IUserRepository userRepository)
         {
-            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
-            _key = _configuration["Jwt:Key"] ?? throw new ArgumentNullException("Jwt key is null");
-            _issuer = _configuration["Jwt:Issuer"] ?? throw new ArgumentNullException("Jwt issuer is null");
-            _audience = _configuration["Jwt:Audience"] ?? throw new ArgumentNullException("Jwt audience is null");
+            _configuration = configuration 
+                ?? throw new ArgumentNullException(nameof(configuration));
+
+            _userRepository = userRepository 
+                ?? throw new ArgumentNullException(nameof(userRepository));
+
+            _key = _configuration["Jwt:Key"] 
+                ?? throw new ArgumentNullException("Jwt key is null");
+
+            _issuer = _configuration["Jwt:Issuer"] 
+                ?? throw new ArgumentNullException("Jwt issuer is null");
+
+            _audience = _configuration["Jwt:Audience"] 
+                ?? throw new ArgumentNullException("Jwt audience is null");
 
             if (!double.TryParse(_configuration["Jwt:AccessTokenLifetime"], out var accessTokenLifetime))
             {

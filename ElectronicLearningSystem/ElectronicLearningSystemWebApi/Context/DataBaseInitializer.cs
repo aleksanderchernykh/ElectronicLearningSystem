@@ -5,6 +5,8 @@ using ElectronicLearningSystemWebApi.Helpers;
 using ElectronicLearningSystemWebApi.Models.NotificationTypeModel;
 using ElectronicLearningSystemWebApi.Models.RoleModel;
 using ElectronicLearningSystemWebApi.Models.RoleModel.Entity;
+using ElectronicLearningSystemWebApi.Models.NotificationTypeModel.Entity;
+using ElectronicLearningSystemWebApi.Models.UserModel.Entity;
 
 namespace ElectronicLearningSystemWebApi.Context
 {

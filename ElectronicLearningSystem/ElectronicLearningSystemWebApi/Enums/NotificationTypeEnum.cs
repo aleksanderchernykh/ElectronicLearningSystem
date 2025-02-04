@@ -2,6 +2,9 @@
 
 namespace ElectronicLearningSystemWebApi.Enums
 {
+    /// <summary>
+    /// Тип уведомления.
+    /// </summary>
     public enum NotificationTypeEnum
     {
         /// <summary>

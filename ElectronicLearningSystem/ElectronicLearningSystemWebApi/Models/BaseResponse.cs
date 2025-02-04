@@ -1,6 +1,4 @@
-﻿using ElectronicLearningSystemWebApi.Models.UserModel;
-
-namespace ElectronicLearningSystemWebApi.Models
+﻿namespace ElectronicLearningSystemWebApi.Models
 {
     public abstract class BaseResponse
     {

@@ -4,7 +4,7 @@ using ElectronicLearningSystemWebApi.Models.CommentModel.Entity;
 using ElectronicLearningSystemWebApi.Models.CommentModel.Response;
 using ElectronicLearningSystemWebApi.Repositories.Base;
 
-namespace ElectronicLearningSystemWebApi.Helpers.Controller
+namespace ElectronicLearningSystemWebApi.Helpers.Services
 {
     /// <summary>
     /// Хелпер для работы с комментариями для задач.
@@ -12,7 +12,7 @@ namespace ElectronicLearningSystemWebApi.Helpers.Controller
     /// <param name="userHelper">Хелпер для работы с пользователями. </param>
     /// <param name="commentRepository">Репозиторий для работы с комментариями. </param>
     /// <param name="mapper">Маппер. </param>
-    public class CommentHelper(IRepository<CommentEntity> commentRepository,
+    public class CommentService(IRepository<CommentEntity> commentRepository,
         IMapper mapper)
     {
         /// <summary>

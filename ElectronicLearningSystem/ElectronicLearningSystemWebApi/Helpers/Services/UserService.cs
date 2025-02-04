@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
 using ElectronicLearningSystemWebApi.Enums;
 using ElectronicLearningSystemWebApi.Helpers.Exceptions;
-using ElectronicLearningSystemWebApi.Models.UserModel;
+using ElectronicLearningSystemWebApi.Models.UserModel.DTO;
+using ElectronicLearningSystemWebApi.Models.UserModel.Entity;
 using ElectronicLearningSystemWebApi.Models.UserModel.Response;
 using ElectronicLearningSystemWebApi.Repositories.User;
-using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 
-namespace ElectronicLearningSystemWebApi.Helpers.Controller
+namespace ElectronicLearningSystemWebApi.Helpers.Services
 {
     /// <summary>
     /// Хелпер для работы с пользователями.
@@ -15,7 +15,7 @@ namespace ElectronicLearningSystemWebApi.Helpers.Controller
     /// <param name="userRepository">Репозиторий для работы с пользователями. </param>
     /// <param name="httpContextAccessor">Контекст выполнения запроса. </param>
     /// <param name="mapper">Маппер. </param>
-    public class UserHelper(IUserRepository userRepository,
+    public class UserService(IUserRepository userRepository,
         IHttpContextAccessor httpContextAccessor,
         IMapper mapper)
     {

@@ -11,7 +11,7 @@ using ElectronicLearningSystemWebApi.Models.RoleModel.Entity;
 using ElectronicLearningSystemWebApi.Models.RoleModel.Response;
 using ElectronicLearningSystemWebApi.Models.TaskModel.Entity;
 using ElectronicLearningSystemWebApi.Models.TaskModel.Response;
-using ElectronicLearningSystemWebApi.Models.UserModel;
+using ElectronicLearningSystemWebApi.Models.UserModel.Entity;
 using ElectronicLearningSystemWebApi.Models.UserModel.Response;
 
 namespace ElectronicLearningSystemWebApi.Helpers.Mapper

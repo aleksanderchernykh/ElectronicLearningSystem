@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ElectronicLearningSystemWebApi.Models.UserModel.Response
+namespace ElectronicLearningSystemWebApi.Models.UserModel.DTO
 {
     /// <summary>
     /// Запрос на обновление токена пользователя.

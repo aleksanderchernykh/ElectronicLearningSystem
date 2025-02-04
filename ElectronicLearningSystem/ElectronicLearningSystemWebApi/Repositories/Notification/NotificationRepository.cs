@@ -1,14 +1,14 @@
 ﻿using ElectronicLearningSystemWebApi.Context;
-using ElectronicLearningSystemWebApi.Helpers.Controller;
+using ElectronicLearningSystemWebApi.Helpers.Services;
 using ElectronicLearningSystemWebApi.Models.NotificationModel.Entity;
 using ElectronicLearningSystemWebApi.Repositories.Base;
 
 namespace ElectronicLearningSystemWebApi.Repositories.Notification
 {
-    public class NotificationRepository(ApplicationContext context, UserHelper userHelper)
+    public class NotificationRepository(ApplicationContext context, UserService userHelper)
         : RepositoryBase<NotificationEntity>(context), INotificationRepository
     {
-        protected readonly UserHelper _userHelper = userHelper
+        protected readonly UserService _userHelper = userHelper
             ?? throw new ArgumentNullException(nameof(userHelper));
 
         public async Task<IList<NotificationEntity>> GetActualNotificationByCurrentUserAsync()

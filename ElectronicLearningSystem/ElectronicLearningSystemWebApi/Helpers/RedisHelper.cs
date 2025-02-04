@@ -2,14 +2,9 @@
 
 namespace ElectronicLearningSystemWebApi.Helpers
 {
-    public class RedisHelper
+    public class RedisHelper(IConnectionMultiplexer redisConnection)
     {
-        protected readonly IDatabase _database;
-
-        public RedisHelper(IConnectionMultiplexer redisConnection)
-        {
-            _database = redisConnection.GetDatabase();
-        }
+        protected readonly IDatabase _database = redisConnection.GetDatabase();
 
         public async Task RecoveryPasswordAsync(string token, string login, TimeSpan expiration)
         {

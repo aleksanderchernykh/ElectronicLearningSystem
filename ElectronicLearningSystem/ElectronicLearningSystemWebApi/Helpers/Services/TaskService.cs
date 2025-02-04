@@ -3,14 +3,14 @@ using AutoMapper;
 using ElectronicLearningSystemWebApi.Models.TaskModel.Response;
 using ElectronicLearningSystemWebApi.Repositories.TaskRepository;
 
-namespace ElectronicLearningSystemWebApi.Helpers.Controller
+namespace ElectronicLearningSystemWebApi.Helpers.Services
 {
     /// <summary>
     /// Хелпер для работы с заданиями.
     /// </summary>
     /// <param name="taskRepository">Хелпер для работы с заданиями. </param>
     /// <param name="mapper">Маппер. </param>
-    public class TaskHelper(ITaskRepository taskRepository,
+    public class TaskService(ITaskRepository taskRepository,
         IMapper mapper)
     {
         /// <summary>
