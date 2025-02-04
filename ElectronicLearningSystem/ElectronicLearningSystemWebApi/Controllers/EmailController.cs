@@ -1,5 +1,5 @@
 ﻿using ElectronicLearningSystemWebApi.Attributes;
-using ElectronicLearningSystemWebApi.Helpers;
+using ElectronicLearningSystemWebApi.Helpers.Controller;
 using ElectronicLearningSystemWebApi.Models.EmailModel.DTO;
 using ElectronicLearningSystemWebApi.Models.ErrorModel;
 using Microsoft.AspNetCore.Authorization;
@@ -14,7 +14,8 @@ namespace ElectronicLearningSystemWebApi.Controllers
     [Authorize]
     [Route("email")]
     [ApiController]
-    public class EmailController(EmailHelper emailHelper) : ControllerBase
+    public class EmailController(EmailHelper emailHelper) 
+        : ControllerBase
     {
         /// <summary>
         /// Хелпер для работы с Email сообщениями. 
@@ -25,18 +26,18 @@ namespace ElectronicLearningSystemWebApi.Controllers
         /// <summary>
         /// Отправка сообщения.
         /// </summary>
-        /// <param name="emailResponse">Данные Email сообщения. </param>
-        /// <response code="200">Успешная отправка Email. </response>
+        /// <param name="emailDTO">Данные Email сообщения. </param>
+        /// <response code="201">Успешное создание Email. </response>
         /// <response code="500">Ошибка сервера. </response>
-        [HttpPost("send")]
+        [HttpPost("create")]
         [ValidateModel]
         [Produces("application/json")]
-        [ProducesResponseType(200)]
+        [ProducesResponseType(201)]
         [ProducesResponseType(typeof(ErrorResponse), 500)]
-        public async Task<IActionResult> SendEmail([FromBody] EmailSendingDTO emailResponse)
+        public async Task<IActionResult> SendEmail([FromBody] EmailSendingDTO emailDTO)
         {
-            await _emailHelper.SendEmailAsync(emailResponse);
-            return Ok();
+            await _emailHelper.SendEmailAsync(emailDTO);
+            return Created();
         }
     }
 }

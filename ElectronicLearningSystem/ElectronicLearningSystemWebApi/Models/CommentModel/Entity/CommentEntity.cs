@@ -1,4 +1,4 @@
-﻿using ElectronicLearningSystemWebApi.Models.TaskModel;
+﻿using ElectronicLearningSystemWebApi.Models.TaskModel.Entity;
 
 namespace ElectronicLearningSystemWebApi.Models.CommentModel.Entity
 {

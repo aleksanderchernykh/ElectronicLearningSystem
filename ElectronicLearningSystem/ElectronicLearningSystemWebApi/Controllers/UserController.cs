@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
+using ElectronicLearningSystemWebApi.Attributes;
 using ElectronicLearningSystemWebApi.Enums;
+using ElectronicLearningSystemWebApi.Helpers.Controller;
 using ElectronicLearningSystemWebApi.Helpers.Exceptions;
-using ElectronicLearningSystemWebApi.Models.UserModel;
+using ElectronicLearningSystemWebApi.Models.ErrorModel;
+using ElectronicLearningSystemWebApi.Models.RoleModel.Response;
 using ElectronicLearningSystemWebApi.Models.UserModel.Response;
 using ElectronicLearningSystemWebApi.Repositories.User;
 using Microsoft.AspNetCore.Authorization;
@@ -9,109 +12,84 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ElectronicLearningSystemWebApi.Controllers
 {
+    /// <summary>
+    /// Контроллер для работы с пользователями.
+    /// </summary>
+    /// <param name="userHelper">Хелпер для работы с пользователями. </param>
     [Authorize]
     [Route("user")]
     [ApiController]
-    public class UserController(IUserRepository userRepository,
-        ILogger<UserController> logger,
-        IMapper mapper) : ControllerBase
+    public class UserController(UserHelper userHelper) : ControllerBase
     {
-        private readonly IUserRepository _userRepository = userRepository 
-            ?? throw new ArgumentNullException(nameof(userRepository));
+        /// <summary>
+        /// Хелпер для работы с пользователями.
+        /// </summary>
+        private readonly UserHelper _userHelper = userHelper 
+            ?? throw new ArgumentNullException(nameof(userHelper));
 
-        private readonly ILogger<UserController> _logger = logger 
-            ?? throw new ArgumentNullException(nameof(logger));
-
-        private readonly IMapper _mapper = mapper 
-            ?? throw new ArgumentNullException(nameof(mapper));
-
+        /// <summary>
+        /// Создание пользователя.
+        /// </summary>
+        /// <param name="userDTO">Данные для создания пользователя. </param>
+        /// <response code="201">Успешное создание пользователя. </response>
+        /// <response code="409">Успешное создание пользователя. </response>
+        /// <response code="500">Ошибка сервера. </response>
+        [Produces("application/json")]
+        [ValidateModel]
+        [ProducesResponseType(typeof(UserResponse), 201)]
+        [ProducesResponseType(typeof(ErrorResponse), 409)]
+        [ProducesResponseType(typeof(ErrorResponse), 500)]
         [HttpPost("create")]
-        public async Task<IActionResult> Create([FromBody] CreateUserDTO userResponse)
+        public async Task<IActionResult> Create([FromBody] CreateUserDTO userDTO)
         {
-            try
-            {
-                //var newUser = _mapper.Map<UserEntity>(userResponse);
-                //if (newUser is null)
-               // {
-                   // _logger.LogError(new EventId((int)EventLoggerEnum.InvalidMapEntity), message: $"Invalid map user {userResponse.Login}");
-                   // return BadRequest();
-                //}
-
-                //await _userRepository.AddRecordAsync(newUser);
-                return StatusCode(201);
-            }
-            catch (DublicateUserException ex)
-            {
-                _logger.LogError(new EventId((int)EventLoggerEnum.DublicateUserException), message: $"Duplicate user was found {userResponse.Email}");
-                return StatusCode(409, new { ex.Message });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(new EventId((int)EventLoggerEnum.DataBaseException), message: ex.ToString());
-                return BadRequest(ex.Message);
-            }
+            await _userHelper.CreateUserAsync(userDTO);
+            return Created();
         }
 
-        [HttpGet("getusers")]
+        /// <summary>
+        /// Получение пользователей.
+        /// </summary>
+        /// <response code="200">Успешный возврат всех пользователей. </response>
+        /// <response code="500">Ошибка сервера. </response>
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(UserResponse), 200)]
+        [ProducesResponseType(typeof(ErrorResponse), 500)]
+        [HttpGet("get")]
         public async Task<IActionResult> GetUsers()
         {
-            try
-            {
-                var users = await _userRepository.GetAllRecordsAsync();
-
-                return Ok(_mapper.Map<IList<UserResponse>>(users));
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(new EventId((int)EventLoggerEnum.DataBaseException), message: ex.ToString());
-                return BadRequest(500);
-            }
+            var users = await _userHelper.GetUsersAsync();
+            return Ok(users);
         }
 
+        /// <summary>
+        /// Получение текущего профиля пользователя.
+        /// </summary>
+        /// <response code="200">Успешный возврат пользователя. </response>
+        /// <response code="500">Ошибка сервера. </response>
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(UserResponse), 200)]
+        [ProducesResponseType(typeof(ErrorResponse), 500)]
         [HttpGet("getme")]
         public async Task<IActionResult> GetMe()
         {
-            if (string.IsNullOrEmpty(User?.Identity?.Name))
-            {
-                return Unauthorized();
-            }
-
-            try
-            {
-                var user = await _userRepository.GetUserByLoginAsync(User.Identity.Name);
-               
-                if (user == null)
-                {
-                    return Unauthorized();
-                }
-                return Ok(user);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(new EventId((int)EventLoggerEnum.DataBaseException), message: ex.ToString());
-                return BadRequest(500);
-            }
+            var user = await _userHelper.GetCurrentUserAsync();
+            return Ok(user);
         }
 
-        [HttpGet("getuser/{id}")]
+        /// <summary>
+        /// Получение пользователя по идентификатору.
+        /// </summary>
+        /// <param name="id">Идентификатор пользователя. </param>
+        /// <response code="200">Успешный возврат пользователя по идентификатору. </response>
+        /// <response code="500">Ошибка сервера. </response>
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(UserResponse), 200)]
+        [ProducesResponseType(typeof(ErrorResponse), 500)]
+        [HttpGet("get/{id}")]
         public async Task<IActionResult> GetUserByIdAsync(Guid id)
         {
-            try
-            {
-                var user = await _userRepository.GetRecordByIdAsync(id);
-
-                if (user == null)
-                {
-                    return NotFound();
-                }
-
-                return Ok(_mapper.Map<UserResponse>(user));
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError((int)EventLoggerEnum.DataBaseException, message: ex.ToString());
-                return BadRequest(500);
-            }
+            var user = await _userHelper.GetUserByIdAsync(id);
+            return Ok(user);
         }
     }
 }

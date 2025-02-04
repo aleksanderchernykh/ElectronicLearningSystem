@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
+using ElectronicLearningSystemWebApi.Helpers.Controller;
 using ElectronicLearningSystemWebApi.Models;
 
-namespace ElectronicLearningSystemWebApi.Helpers.MapperResolvers
+namespace ElectronicLearningSystemWebApi.Helpers.Mapper.MapperResolvers
 {
-    public class CurrentUserResolver(UserHelper userHelper) 
+    public class CurrentUserResolver(UserHelper userHelper)
         : IValueResolver<object, EntityBase, Guid?>
     {
-        protected readonly UserHelper _userHelper = userHelper 
+        protected readonly UserHelper _userHelper = userHelper
             ?? throw new ArgumentNullException(nameof(_userHelper));
 
         public Guid? Resolve(object source, EntityBase destination, Guid? destMember, ResolutionContext context)

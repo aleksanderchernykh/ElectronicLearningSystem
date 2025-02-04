@@ -1,4 +1,4 @@
-﻿using ElectronicLearningSystemWebApi.Models.NotificationModel;
+﻿using ElectronicLearningSystemWebApi.Models.NotificationModel.Entity;
 using ElectronicLearningSystemWebApi.Models.UserModel;
 using ElectronicLearningSystemWebApi.Repositories.Base;
 

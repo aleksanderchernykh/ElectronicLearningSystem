@@ -1,8 +1,8 @@
 using ElectronicLearningSystemWebApi.Models.UserModel.Response;
 using Microsoft.AspNetCore.Mvc;
-using ElectronicLearningSystemWebApi.Helpers;
 using ElectronicLearningSystemWebApi.Models.ErrorModel;
 using ElectronicLearningSystemWebApi.Attributes;
+using ElectronicLearningSystemWebApi.Helpers.Controller;
 
 namespace ElectronicLearningSystemWebApi.Controllers
 {
@@ -12,7 +12,8 @@ namespace ElectronicLearningSystemWebApi.Controllers
     /// <param name="authHelper">Хелпер для работы с авторизацией пользователя в системе. </param>
     [Route("auth")]
     [ApiController]
-    public class AuthController(AuthHelper authHelper) : ControllerBase
+    public class AuthController(AuthHelper authHelper) 
+        : ControllerBase
     {
         /// <summary>
         /// Хелпер для работы с авторизацией пользователя в системе. 
@@ -46,7 +47,7 @@ namespace ElectronicLearningSystemWebApi.Controllers
         /// <summary>
         /// Выход пользователя из системы.
         /// </summary>
-        /// <param name="logoutResponse">Данные пользователя для выхода из системы. </param>
+        /// <param name="logoutDTO">Данные пользователя для выхода из системы. </param>
         /// <response code="200">Успешный выход из системы. </response>
         /// <response code="404">Ошибка поиска пользователя. </response>
         /// <response code="500">Ошибка сервера. </response>
@@ -56,16 +57,16 @@ namespace ElectronicLearningSystemWebApi.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(typeof(ErrorResponse), 404)]
         [ProducesResponseType(typeof(ErrorResponse), 500)]
-        public async Task<IActionResult> Logout([FromBody] LogoutDTO logoutResponse)
+        public async Task<IActionResult> Logout([FromBody] LogoutDTO logoutDTO)
         {
-            await _authHelper.LogoutAsync(logoutResponse);
+            await _authHelper.LogoutAsync(logoutDTO);
             return Ok();
         }
 
         /// <summary>
         /// Обновление токена пользователя.
         /// </summary>
-        /// <param name="refreshTokenRequest">Запрос на обновление токена.</param>
+        /// <param name="refreshTokenDTO">Запрос на обновление токена.</param>
         /// <returns>Новые токены доступа.</returns>
         /// <response code="200">Успешное обновление токенов доступа. </response>
         /// <response code="401">Неверно переданы данные пользователя. </response>
@@ -76,9 +77,9 @@ namespace ElectronicLearningSystemWebApi.Controllers
         [ProducesResponseType(typeof(AccessTokenResponse), 200)]
         [ProducesResponseType(typeof(ErrorResponse), 401)]
         [ProducesResponseType(typeof(ErrorResponse), 500)]
-        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenDTO refreshTokenRequest)
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenDTO refreshTokenDTO)
         {
-            var token = await _authHelper.RefreshTokenAsync(refreshTokenRequest);
+            var token = await _authHelper.RefreshTokenAsync(refreshTokenDTO);
             return Ok(token);
         }
 

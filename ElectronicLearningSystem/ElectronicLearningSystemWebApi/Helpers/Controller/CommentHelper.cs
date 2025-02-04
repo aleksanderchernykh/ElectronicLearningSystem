@@ -4,7 +4,7 @@ using ElectronicLearningSystemWebApi.Models.CommentModel.Entity;
 using ElectronicLearningSystemWebApi.Models.CommentModel.Response;
 using ElectronicLearningSystemWebApi.Repositories.Base;
 
-namespace ElectronicLearningSystemWebApi.Helpers
+namespace ElectronicLearningSystemWebApi.Helpers.Controller
 {
     /// <summary>
     /// Хелпер для работы с комментариями для задач.
@@ -24,7 +24,7 @@ namespace ElectronicLearningSystemWebApi.Helpers
         /// <summary>
         /// <param name="mapper">Маппер. </param>
         /// </summary>
-        protected readonly IMapper _mapper = mapper 
+        protected readonly IMapper _mapper = mapper
             ?? throw new ArgumentNullException(nameof(mapper));
 
         /// <summary>

@@ -31,8 +31,4 @@
     <ProjectReference Include="..\ElectronicLearningSystemKafka\ElectronicLearningSystemKafka.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\RoleModel\Response\" />
-  </ItemGroup>
-
 </Project>

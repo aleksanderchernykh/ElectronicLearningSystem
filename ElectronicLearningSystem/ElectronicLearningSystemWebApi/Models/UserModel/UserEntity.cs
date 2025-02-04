@@ -1,4 +1,4 @@
-﻿using ElectronicLearningSystemWebApi.Models.RoleModel;
+﻿using ElectronicLearningSystemWebApi.Models.RoleModel.Entity;
 
 namespace ElectronicLearningSystemWebApi.Models.UserModel
 {

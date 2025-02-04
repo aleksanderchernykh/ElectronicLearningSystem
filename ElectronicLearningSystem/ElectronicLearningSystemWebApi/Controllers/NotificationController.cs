@@ -1,7 +1,10 @@
-﻿using ElectronicLearningSystemWebApi.Enums;
-using ElectronicLearningSystemWebApi.Helpers;
+﻿using ElectronicLearningSystemWebApi.Attributes;
+using ElectronicLearningSystemWebApi.Enums;
+using ElectronicLearningSystemWebApi.Helpers.Controller;
 using ElectronicLearningSystemWebApi.Models.CommentModel.DTO;
+using ElectronicLearningSystemWebApi.Models.ErrorModel;
 using ElectronicLearningSystemWebApi.Models.NotificationModel.DTO;
+using ElectronicLearningSystemWebApi.Models.NotificationModel.Response;
 using ElectronicLearningSystemWebApi.Repositories.Notification;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,54 +14,45 @@ namespace ElectronicLearningSystemWebApi.Controllers
     [Authorize]
     [ApiController]
     [Route("notification")]
-    public class NotificationController(INotificationRepository notificationRepository,
-        ILogger<NotificationController> logger,
-        NotificationHelper notificationHelper): ControllerBase
+    public class NotificationController(NotificationHelper notificationHelper)
+        : ControllerBase
     {
-        private readonly INotificationRepository _notificationRepository =
-            notificationRepository ?? throw new ArgumentNullException(nameof(logger));
-
-        private readonly ILogger<NotificationController> _logger =
-            logger ?? throw new ArgumentNullException(nameof(logger));
-
+        /// <summary>
+        /// Хелпер для работы с уведомлениями.
+        /// </summary>
         private readonly NotificationHelper _notificationHelper = 
             notificationHelper ?? throw new ArgumentNullException(nameof(notificationHelper));
 
-        [HttpGet("getnotifications")]
-        public async Task<IActionResult> GetNotifications()
+        /// <summary>
+        /// Получение актуальных уведомлений по текущему пользователю.
+        /// </summary>
+        /// <response code="200">Успешный возврат актуальных уведомлений. </response>
+        /// <response code="500">Ошибка сервера. </response>
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(NotificationResponse), 200)]
+        [ProducesResponseType(typeof(ErrorResponse), 500)]
+        [HttpGet("get")]
+        public async Task<IActionResult> GetActualNotificationByCurrentUser()
         {
-            try
-            {
-                return Ok(await _notificationRepository.GetActualNotificationByCurrentUserAsync());
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(new EventId((int)EventLoggerEnum.DataBaseException), message: ex.ToString());
-                return BadRequest(ex.Message);
-            }
+            var notifications = await _notificationHelper.GetActualNotificationByCurrentUserAsync();
+            return Ok(notifications);
         }
 
-        [HttpPost("createnotification")]
+        /// <summary>
+        /// Создание уведомления.
+        /// </summary>
+        /// <param name="createNotificationDTO">Данные для создания уведомления. </param>
+        /// <response code="201">Успешное создание уведомления. </response>
+        /// <response code="500">Ошибка сервера. </response>
+        [ValidateModel]
+        [Produces("application/json")]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(typeof(ErrorResponse), 500)]
+        [HttpPost("create")]
         public async Task<IActionResult> CreateCommentByTask([FromBody] CreateNotificationDTO createNotificationDTO)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
-
-            try
-            {
-                var comment = _notificationHelper.GetNotificationByDTO(createNotificationDTO);
-                await _notificationRepository.AddRecordAsync(comment);
-
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(new EventId((int)EventLoggerEnum.DataBaseException),
-                    message: ex.ToString());
-                return BadRequest();
-            }
+            await _notificationHelper.CreateCommentByTaskAsync(createNotificationDTO);
+            return Created();
         }
     }
 }

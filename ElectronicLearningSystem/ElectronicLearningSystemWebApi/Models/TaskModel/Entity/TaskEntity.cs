@@ -1,10 +1,10 @@
 ﻿using ElectronicLearningSystemWebApi.Models.UserModel;
 
-namespace ElectronicLearningSystemWebApi.Models.TaskModel
+namespace ElectronicLearningSystemWebApi.Models.TaskModel.Entity
 {
-    public class TaskEntity: EntityBase
+    public class TaskEntity : EntityBase
     {
-        public required string Topic {  get; set; }
+        public required string Topic { get; set; }
 
         public required string Description { get; set; }
 

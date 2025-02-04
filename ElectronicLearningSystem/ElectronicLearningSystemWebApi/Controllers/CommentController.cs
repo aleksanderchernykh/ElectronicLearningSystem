@@ -1,5 +1,5 @@
 ﻿using ElectronicLearningSystemWebApi.Attributes;
-using ElectronicLearningSystemWebApi.Helpers;
+using ElectronicLearningSystemWebApi.Helpers.Controller;
 using ElectronicLearningSystemWebApi.Models.CommentModel.DTO;
 using ElectronicLearningSystemWebApi.Models.CommentModel.Response;
 using ElectronicLearningSystemWebApi.Models.ErrorModel;
@@ -15,7 +15,8 @@ namespace ElectronicLearningSystemWebApi.Controllers
     [Authorize]
     [Route("comment")]
     [ApiController]
-    public class CommentController(CommentHelper commentHelper) : ControllerBase
+    public class CommentController(CommentHelper commentHelper) 
+        : ControllerBase
     {
         /// <summary>
         /// Хелпер для работы с комментарями задач.
@@ -29,7 +30,7 @@ namespace ElectronicLearningSystemWebApi.Controllers
         /// <param name="id">Идентификатор задачи. </param>
         /// <response code="200">Успешный возврат комментариев для задачи. </response>
         /// <response code="500">Ошибка сервера. </response>
-        [HttpGet("getcommentsbytask/{id}")]
+        [HttpGet("getbytask/{id}")]
         [ValidateModel]
         [Produces("application/json")]
         [ProducesResponseType(typeof(CommentResponse), 200)]
@@ -54,7 +55,7 @@ namespace ElectronicLearningSystemWebApi.Controllers
         public async Task<IActionResult> CreateCommentByTask([FromBody] CreateCommentDTO createCommentDTO)
         {
             await _commentHelper.CreateCommentAsync(createCommentDTO);
-            return Ok();
+            return Created();
         }
     }
 }

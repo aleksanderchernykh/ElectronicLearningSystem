@@ -1,4 +1,5 @@
 ﻿using ElectronicLearningSystemWebApi.Enums;
+using ElectronicLearningSystemWebApi.Helpers.Exceptions;
 using ElectronicLearningSystemWebApi.Models.ErrorModel;
 using System.Text.Json;
 
@@ -66,6 +67,11 @@ namespace ElectronicLearningSystemWebApi.Middlewares
                     ErrorCode = "ACCOUNT_BLOCKED",
                     ErrorMessage = exception.Message
                 },
+                DublicateUserException => new ErrorResponse
+                {
+                    ErrorCode = "ACCOUNT_DUBLICATE",
+                    ErrorMessage = exception.Message
+                },
                 _ => new ErrorResponse
                 {
                     ErrorCode = "SERVER_ERROR",
@@ -77,6 +83,7 @@ namespace ElectronicLearningSystemWebApi.Middlewares
             {
                 "ACCOUNT_UNAUTHORIZED" => StatusCodes.Status401Unauthorized,
                 "ACCOUNT_BLOCKED" => StatusCodes.Status403Forbidden,
+                "ACCOUNT_DUBLICATE" => StatusCodes.Status409Conflict,
                 "NOT_FOUND" => StatusCodes.Status404NotFound,
                 _ => StatusCodes.Status500InternalServerError
             };

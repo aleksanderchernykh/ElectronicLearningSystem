@@ -1,40 +1,40 @@
-﻿using ElectronicLearningSystemWebApi.Enums;
-using ElectronicLearningSystemWebApi.Models.RoleModel;
-using ElectronicLearningSystemWebApi.Repositories.Base;
+﻿using ElectronicLearningSystemWebApi.Helpers.Controller;
+using ElectronicLearningSystemWebApi.Models.ErrorModel;
+using ElectronicLearningSystemWebApi.Models.RoleModel.Response;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ElectronicLearningSystemWebApi.Controllers
 {
+    /// <summary>
+    /// Контроллер для работы с ролями.
+    /// </summary>
+    /// <param name="roleHelper">Хелпер для работы с ролями. </param>
     [Authorize]
     [Route("role")]
     [ApiController]
-    public class RoleController(IRepository<RoleEntity> roleRepository,
-        ILogger<RoleController> logger) 
+    public class RoleController(RoleHelper roleHelper) 
         : ControllerBase
     {
-        private readonly IRepository<RoleEntity> _roleRepository = 
-            roleRepository ?? throw new ArgumentNullException(nameof(logger));
-
-        private readonly ILogger<RoleController> _logger = 
-            logger ?? throw new ArgumentNullException(nameof(logger));
+        /// <summary>
+        /// Хелпер для работы с ролями.
+        /// </summary>
+        private readonly RoleHelper _roleHelper = roleHelper 
+            ?? throw new ArgumentNullException(nameof(roleHelper));
 
         /// <summary>
         /// Получение ролей пользователя.
         /// </summary>
-        /// <returns></returns>
-        [HttpGet("getroles")]
+        /// <response code="200">Успешный возврат ролей. </response>
+        /// <response code="500">Ошибка сервера. </response>
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(RoleResponse), 200)]
+        [ProducesResponseType(typeof(ErrorResponse), 500)]
+        [HttpGet("get")]
         public async Task<IActionResult> GetRoles()
         {
-            try
-            {
-                return Ok(await _roleRepository.GetAllRecordsAsync());
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(new EventId((int)EventLoggerEnum.DataBaseException), message: ex.ToString());
-                return BadRequest(ex.Message);
-            }
+            var roles = await _roleHelper.GetRolesAsync();
+            return Ok(roles);
         }
     }
 }

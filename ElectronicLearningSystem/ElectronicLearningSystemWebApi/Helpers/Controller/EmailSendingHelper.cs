@@ -4,23 +4,23 @@ using ElectronicLearningSystemKafka.Common.Models;
 using ElectronicLearningSystemKafka.Core.Producer;
 using ElectronicLearningSystemWebApi.Models.UserModel;
 
-namespace ElectronicLearningSystemWebApi.Helpers
+namespace ElectronicLearningSystemWebApi.Helpers.Controller
 {
     public class EmailSendingHelper(Producer producer, IConfiguration configuration)
     {
         protected readonly Producer _producer = producer
             ?? throw new ArgumentException(nameof(_producer));
 
-        protected readonly IConfiguration _configuration = configuration 
+        protected readonly IConfiguration _configuration = configuration
             ?? throw new ArgumentException(nameof(_configuration));
 
         public virtual async Task SendRecoveryPasswordAsync(UserEntity user, string token)
         {
             var emailMessage = new Email
             {
-                Recipients = new List<string> 
-                { 
-                    user.Email 
+                Recipients = new List<string>
+                {
+                    user.Email
                 },
                 Subject = "Password reset",
                 Text = $@"

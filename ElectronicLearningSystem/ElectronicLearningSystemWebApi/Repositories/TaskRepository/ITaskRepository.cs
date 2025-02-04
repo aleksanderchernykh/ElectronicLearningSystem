@@ -1,5 +1,5 @@
 ﻿using ElectronicLearningSystemWebApi.Models.NotificationModel;
-using ElectronicLearningSystemWebApi.Models.TaskModel;
+using ElectronicLearningSystemWebApi.Models.TaskModel.Entity;
 using ElectronicLearningSystemWebApi.Repositories.Base;
 
 namespace ElectronicLearningSystemWebApi.Repositories.TaskRepository

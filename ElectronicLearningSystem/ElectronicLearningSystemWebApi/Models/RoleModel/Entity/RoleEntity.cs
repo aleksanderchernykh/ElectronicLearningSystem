@@ -1,6 +1,6 @@
 ﻿using ElectronicLearningSystemWebApi.Models.UserModel;
 
-namespace ElectronicLearningSystemWebApi.Models.RoleModel
+namespace ElectronicLearningSystemWebApi.Models.RoleModel.Entity
 {
     /// <summary>
     /// Роль пользователя.

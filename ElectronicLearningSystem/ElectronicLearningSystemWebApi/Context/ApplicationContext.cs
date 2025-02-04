@@ -1,10 +1,10 @@
 ﻿using ElectronicLearningSystemWebApi.Models.CommentModel.Entity;
 using ElectronicLearningSystemWebApi.Models.GroupModel;
-using ElectronicLearningSystemWebApi.Models.NotificationModel;
+using ElectronicLearningSystemWebApi.Models.NotificationModel.Entity;
 using ElectronicLearningSystemWebApi.Models.NotificationTypeModel;
-using ElectronicLearningSystemWebApi.Models.RoleModel;
+using ElectronicLearningSystemWebApi.Models.RoleModel.Entity;
 using ElectronicLearningSystemWebApi.Models.StudentModel;
-using ElectronicLearningSystemWebApi.Models.TaskModel;
+using ElectronicLearningSystemWebApi.Models.TaskModel.Entity;
 using ElectronicLearningSystemWebApi.Models.UserModel;
 using Microsoft.EntityFrameworkCore;
 

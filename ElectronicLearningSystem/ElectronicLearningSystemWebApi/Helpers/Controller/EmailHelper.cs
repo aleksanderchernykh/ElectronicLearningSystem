@@ -2,7 +2,7 @@
 using ElectronicLearningSystemKafka.Common.Models;
 using ElectronicLearningSystemWebApi.Models.EmailModel.DTO;
 
-namespace ElectronicLearningSystemWebApi.Helpers
+namespace ElectronicLearningSystemWebApi.Helpers.Controller
 {
     /// <summary>
     /// Хелпер для работы с Email сообщениями.

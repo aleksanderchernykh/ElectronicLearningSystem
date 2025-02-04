@@ -2,9 +2,9 @@
 {
     public class CreateNotificationDTO
     {
-        public required Guid Recipient {  get; set; }
+        public required Guid RecipientId {  get; set; }
 
-        public required Guid NotificationType { get; set; }
+        public required Guid NotificationTypeId { get; set; }
 
         public required string Text { get; set; }
     }

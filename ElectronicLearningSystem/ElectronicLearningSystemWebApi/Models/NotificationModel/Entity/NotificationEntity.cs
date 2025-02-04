@@ -1,9 +1,9 @@
 ﻿using ElectronicLearningSystemWebApi.Models.NotificationTypeModel;
 using ElectronicLearningSystemWebApi.Models.UserModel;
 
-namespace ElectronicLearningSystemWebApi.Models.NotificationModel
+namespace ElectronicLearningSystemWebApi.Models.NotificationModel.Entity
 {
-    public class NotificationEntity: EntityBase
+    public class NotificationEntity : EntityBase
     {
         public required string Text { get; set; }
 
@@ -12,7 +12,7 @@ namespace ElectronicLearningSystemWebApi.Models.NotificationModel
         public UserEntity Recipient { get; set; }
         public Guid RecipientId { get; set; }
 
-        public NotificationTypeEntity NotificationType {  get; set; }
+        public NotificationTypeEntity NotificationType { get; set; }
         public Guid NotificationTypeId { get; set; }
     }
 }

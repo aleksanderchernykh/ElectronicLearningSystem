@@ -1,7 +1,8 @@
-﻿using ElectronicLearningSystemWebApi.Models.UserModel.Response;
+﻿using ElectronicLearningSystemWebApi.Models.UserModel;
+using ElectronicLearningSystemWebApi.Models.UserModel.Response;
 using ElectronicLearningSystemWebApi.Repositories.User;
 
-namespace ElectronicLearningSystemWebApi.Helpers
+namespace ElectronicLearningSystemWebApi.Helpers.Controller
 {
     /// <summary>
     /// Хелпер для работы с аутентификацией пользователя.
@@ -20,13 +21,13 @@ namespace ElectronicLearningSystemWebApi.Helpers
         /// <summary>
         /// Хелпер для работы с Redis.
         /// </summary>
-        protected readonly RedisHelper _redisHelper = redisHelper 
+        protected readonly RedisHelper _redisHelper = redisHelper
             ?? throw new ArgumentNullException(nameof(redisHelper));
 
         /// <summary>
         /// Репозиторий пользователя. 
         /// </summary>
-        protected readonly IUserRepository _userRepository = userRepository 
+        protected readonly IUserRepository _userRepository = userRepository
             ?? throw new ArgumentNullException(nameof(_userRepository));
 
         /// <summary>
@@ -59,7 +60,7 @@ namespace ElectronicLearningSystemWebApi.Helpers
             var user = await _userRepository.GetUserByLoginAsync(userLoginRequest.Login) ??
                 throw new UnauthorizedAccessException("The user entered the wrong username");
 
-            if (!_userHelper.VerificationPassword(user, userLoginRequest.Password))
+            if (!VerificationPassword(user, userLoginRequest.Password))
                 throw new UnauthorizedAccessException("The user entered the wrong username or password");
 
             if (user.IsLocked)
@@ -67,10 +68,10 @@ namespace ElectronicLearningSystemWebApi.Helpers
 
             var (AccessToken, RefreshToken) = await _tokenHelper.GenerateTokenForUser(user);
 
-            return new AccessTokenResponse 
-            { 
-                AccessToken = AccessToken, 
-                RefreshToken = RefreshToken 
+            return new AccessTokenResponse
+            {
+                AccessToken = AccessToken,
+                RefreshToken = RefreshToken
             };
         }
 
@@ -81,10 +82,10 @@ namespace ElectronicLearningSystemWebApi.Helpers
         /// <exception cref="KeyNotFoundException">Ошибка проверки пользователя. </exception>
         public async Task LogoutAsync(LogoutDTO logoutDTO)
         {
-            var user = await _userRepository.GetUserByLoginAsync(logoutDTO.Login) 
+            var user = await _userRepository.GetUserByLoginAsync(logoutDTO.Login)
                 ?? throw new KeyNotFoundException("The user entered the wrong username");
 
-            await _userHelper.LogoutUserAsync(user);
+            await LogoutUserAsync(user);
         }
 
         /// <summary>
@@ -95,10 +96,10 @@ namespace ElectronicLearningSystemWebApi.Helpers
         /// <exception cref="UnauthorizedAccessException">Ошибка проверки пользователя.</exception>
         public async Task<AccessTokenResponse> RefreshTokenAsync(RefreshTokenDTO refreshTokenRequest)
         {
-            var principal = _tokenHelper.GetPrincipalFromExpiredToken(refreshTokenRequest.AccessToken) 
+            var principal = _tokenHelper.GetPrincipalFromExpiredToken(refreshTokenRequest.AccessToken)
                 ?? throw new UnauthorizedAccessException("Invalid access token");
 
-            var user = await _userRepository.GetUserByLoginAsync(principal?.Identity?.Name) 
+            var user = await _userRepository.GetUserByLoginAsync(principal?.Identity?.Name)
                 ?? throw new UnauthorizedAccessException("The user was not found using the transferred token");
 
             if (user.RefreshToken != refreshTokenRequest.RefreshToken)
@@ -127,6 +128,32 @@ namespace ElectronicLearningSystemWebApi.Helpers
 
             await _redisHelper.RecoveryPasswordAsync(token, user.Login, TimeSpan.FromHours(1));
             await _emailSendingHelper.SendRecoveryPasswordAsync(user, token);
+        }
+
+        /// <summary>
+        /// Выход пользователя из системы.
+        /// </summary>
+        /// <param name="user">Пользователь.</param>
+        public virtual async Task LogoutUserAsync(UserEntity user)
+        {
+            user.RefreshToken = null;
+            user.RefreshTokenExpiryTime = null;
+            await _userRepository.UpdateRecordAsync(user);
+        }
+
+        /// <summary>
+        /// Проверка пароля пользователя.
+        /// </summary>
+        /// <param name="user">Пользователя.</param>
+        /// <param name="password">Пароль.</param>
+        /// <returns>Логическое значение равенства паролей.</returns>
+        /// <exception cref="ArgumentNullException">Передано пустое значение.</exception>
+        public virtual bool VerificationPassword(UserEntity user, string password)
+        {
+            ArgumentNullException.ThrowIfNull(user);
+            ArgumentException.ThrowIfNullOrWhiteSpace(password);
+
+            return PasswordHelper.VerifyPassword(user.Password, password);
         }
     }
 }

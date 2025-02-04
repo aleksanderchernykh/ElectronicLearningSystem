@@ -1,6 +1,6 @@
 ﻿using ElectronicLearningSystemWebApi.Context;
-using ElectronicLearningSystemWebApi.Helpers;
-using ElectronicLearningSystemWebApi.Models.NotificationModel;
+using ElectronicLearningSystemWebApi.Helpers.Controller;
+using ElectronicLearningSystemWebApi.Models.NotificationModel.Entity;
 using ElectronicLearningSystemWebApi.Repositories.Base;
 
 namespace ElectronicLearningSystemWebApi.Repositories.Notification
