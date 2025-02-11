@@ -12,6 +12,8 @@
         /// <returns>Захешированный пароль.</returns>
         public static string HashPassword(string password)
         {
+            ArgumentException.ThrowIfNullOrWhiteSpace(password, nameof(password));
+
             return BCrypt.Net.BCrypt.HashPassword(password);
         }
 
@@ -23,6 +25,9 @@
         /// <returns>Логическое значение равенства паролей.</returns>
         public static bool VerifyPassword(string storedHash, string password)
         {
+            ArgumentException.ThrowIfNullOrWhiteSpace(storedHash, nameof(storedHash));
+            ArgumentException.ThrowIfNullOrWhiteSpace(password, nameof(password));
+
             return BCrypt.Net.BCrypt.Verify(password, storedHash);
         }
     }
