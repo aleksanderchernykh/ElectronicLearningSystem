@@ -34,6 +34,7 @@ namespace ElectronicLearningSystemWebApi.Helpers.Mapper
 
             // Маппинг возвращаемых значений "Пользователь".
             CreateMap<UserEntity, UserResponse>()
+                .IncludeBase<EntityBase, BaseResponse>()
                 .ForSourceMember(src => src.Role, opt => opt.DoNotValidate())
                 .ForSourceMember(src => src.Password, opt => opt.DoNotValidate())
                 .ForSourceMember(src => src.RefreshTokenExpiryTime, opt => opt.DoNotValidate())

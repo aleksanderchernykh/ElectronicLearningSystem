@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ElectronicLearningSystemWebApi.Enums;
 using ElectronicLearningSystemWebApi.Helpers.Exceptions;
+using ElectronicLearningSystemWebApi.Models;
 using ElectronicLearningSystemWebApi.Models.UserModel.DTO;
 using ElectronicLearningSystemWebApi.Models.UserModel.Entity;
 using ElectronicLearningSystemWebApi.Models.UserModel.Response;
@@ -62,6 +63,19 @@ namespace ElectronicLearningSystemWebApi.Helpers.Services
                 ?? throw new ArgumentNullException($"The user with id: {id} was not found");
 
             return _mapper.Map<UserResponse>(user);
+        }
+
+        /// <summary>
+        /// Получение анонимной записи пользователя по идентификатору.
+        /// </summary>
+        /// <param name="id">Идентификатор пользователя. </param>
+        public async Task<BaseResponse> GetAnonymousUserByIdAsync(Guid id)
+        {
+            var user = await _userRepository.GetRecordByIdAsync(id)
+                ?? throw new ArgumentNullException($"The user with id: {id} was not found");
+
+            var anonymousUser = (EntityBase)user;
+            return _mapper.Map<BaseResponse>(anonymousUser);
         }
 
         /// <summary>

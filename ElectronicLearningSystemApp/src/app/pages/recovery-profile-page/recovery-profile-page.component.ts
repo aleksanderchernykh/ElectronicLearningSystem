@@ -34,19 +34,21 @@ export class RecoveryProfilePageComponent {
 
   gotoRecoveryProfile() {
     const login = this.recoveryForm.value;
+    this.errorText = "";
   
     this.authService.recoveryPassword(login)
       .pipe(
         catchError(err=> {
           if (err.status === 404) {
-            this.errorText = err.error.message;
+            this.errorText = err.error.errorMessage;
           }
         
           return throwError(() => err);
         })
       )
       .subscribe({
-        next: () => {   
+        next: () => {
+          this.errorText = "";   
           this.isConfirm = true;
         },
     });

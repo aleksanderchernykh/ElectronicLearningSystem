@@ -4,6 +4,8 @@ using ElectronicLearningSystemWebApi.Models.ErrorModel;
 using ElectronicLearningSystemWebApi.Attributes;
 using ElectronicLearningSystemWebApi.Helpers.Services;
 using ElectronicLearningSystemWebApi.Models.UserModel.DTO;
+using System.Runtime.CompilerServices;
+using ElectronicLearningSystemWebApi.Models;
 
 namespace ElectronicLearningSystemWebApi.Controllers
 {
@@ -101,6 +103,23 @@ namespace ElectronicLearningSystemWebApi.Controllers
         {
             await _authService.RecoveryPasswordAsync(recoveryPasswordDTO);
             return Ok();
+        }
+
+        /// <summary>
+        /// Получение данных пользователя по токену восстановления пароля.
+        /// </summary>
+        /// <param name="token">Токен восстановления пароля. </param>
+        /// <response code="200">Успешный запрос на получение данных пользователя. </response>
+        /// <response code="500">Ошибка сервера. </response>
+        [Produces("application/json")]
+        [ValidateModel]
+        [ProducesResponseType(typeof(BaseResponse), 200)]
+        [ProducesResponseType(typeof(ErrorResponse), 500)]
+        [HttpGet("getuseridbyrecoverypasswordtoken/{token:guid}")]
+        public async Task<IActionResult> GetUserIdByRecoveryPasswordToken(Guid token)
+        {
+            var user = await _authService.GetUserIdByRecoveryPasswordTokenAsync(token);
+            return Ok(user);
         }
     }
 }

@@ -81,7 +81,7 @@ namespace ElectronicLearningSystemWebApi.Controllers
         [Produces("application/json")]
         [ProducesResponseType(typeof(UserResponse), 200)]
         [ProducesResponseType(typeof(ErrorResponse), 500)]
-        [HttpGet("get/{id}")]
+        [HttpGet("get/{id:guid}")]
         public async Task<IActionResult> GetUserByIdAsync(Guid id)
         {
             var user = await _userService.GetUserByIdAsync(id);
