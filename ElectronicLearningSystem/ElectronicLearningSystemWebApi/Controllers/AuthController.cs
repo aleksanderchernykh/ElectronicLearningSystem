@@ -4,7 +4,6 @@ using ElectronicLearningSystemWebApi.Models.ErrorModel;
 using ElectronicLearningSystemWebApi.Attributes;
 using ElectronicLearningSystemWebApi.Helpers.Services;
 using ElectronicLearningSystemWebApi.Models.UserModel.DTO;
-using System.Runtime.CompilerServices;
 using ElectronicLearningSystemWebApi.Models;
 
 namespace ElectronicLearningSystemWebApi.Controllers
