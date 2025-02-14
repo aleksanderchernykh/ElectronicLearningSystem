@@ -15,9 +15,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{5A1E8052-142
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{C120827A-5929-4D3A-B3DB-CCF0FB6F2BBC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectronicLearningSystemWebApi.Test", "ElectronicLearningSystemWebApi.Test\ElectronicLearningSystemWebApi.Test.csproj", "{AF9FF9D1-9416-4F02-8717-BAD1F736CBA6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectronicLearningSystemWebApi.Test", "test\ElectronicLearningSystemWebApi.Test\ElectronicLearningSystemWebApi.Test.csproj", "{AF9FF9D1-9416-4F02-8717-BAD1F736CBA6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicLearningSystemKafka.Test", "ElectronicLearningSystemKafka.Test\ElectronicLearningSystemKafka.Test.csproj", "{D84702A8-6279-4D50-B657-4375413E0D5E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectronicLearningSystemKafka.Test", "test\ElectronicLearningSystemKafka.Test\ElectronicLearningSystemKafka.Test.csproj", "{D84702A8-6279-4D50-B657-4375413E0D5E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
