@@ -2,7 +2,7 @@
 using ElectronicLearningSystemWebApi.Models.UserModel.Response;
 using ElectronicLearningSystemWebApi.Models;
 
-namespace ElectronicLearningSystemWebApi.Helpers.Services.UserService
+namespace ElectronicLearningSystemWebApi.Services.UserService
 {
     /// <summary>
     /// Интерфейс для работы с пользователями.

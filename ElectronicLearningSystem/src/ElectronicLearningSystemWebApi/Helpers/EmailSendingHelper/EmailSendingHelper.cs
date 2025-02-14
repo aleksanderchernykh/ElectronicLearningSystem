@@ -4,7 +4,7 @@ using ElectronicLearningSystemKafka.Common.Models;
 using ElectronicLearningSystemKafka.Core.Producer;
 using ElectronicLearningSystemWebApi.Models.UserModel.Entity;
 
-namespace ElectronicLearningSystemWebApi.Helpers
+namespace ElectronicLearningSystemWebApi.Helpers.EmailSendingHelper
 {
     /// <summary>
     /// Хелпер для работы с Email сообщениями.
@@ -12,7 +12,7 @@ namespace ElectronicLearningSystemWebApi.Helpers
     /// <param name="producer">Kafka producer. </param>
     /// <param name="configuration">Конфигурация приложения. </param>
     public class EmailSendingHelper(Producer producer,
-        IConfiguration configuration)
+        IConfiguration configuration) : IEmailSendingHelper
     {
         /// <summary>
         /// Kafka producer. 

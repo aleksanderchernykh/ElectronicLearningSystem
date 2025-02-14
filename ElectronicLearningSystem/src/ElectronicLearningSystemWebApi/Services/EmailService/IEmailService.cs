@@ -1,6 +1,6 @@
 ﻿using ElectronicLearningSystemWebApi.Models.EmailModel.DTO;
 
-namespace ElectronicLearningSystemWebApi.Helpers.Services.EmailService
+namespace ElectronicLearningSystemWebApi.Services.EmailService
 {
     /// <summary>
     /// Интерфейс сервиса для работы с Email сообщениями.

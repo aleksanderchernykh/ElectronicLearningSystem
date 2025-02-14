@@ -6,12 +6,12 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace ElectronicLearningSystemWebApi.Helpers
+namespace ElectronicLearningSystemWebApi.Helpers.JwtTokenHelper
 {
     /// <summary>
     /// Хелпер для генерации и проверки токена пользователя.
     /// </summary>
-    public class JwtTokenHelper
+    public class JwtTokenHelper : IJwtTokenHelper
     {
         private readonly string _key;
         private readonly string _issuer;
@@ -24,19 +24,19 @@ namespace ElectronicLearningSystemWebApi.Helpers
 
         public JwtTokenHelper(IConfiguration configuration, IUserRepository userRepository)
         {
-            _configuration = configuration 
+            _configuration = configuration
                 ?? throw new ArgumentNullException(nameof(configuration));
 
-            _userRepository = userRepository 
+            _userRepository = userRepository
                 ?? throw new ArgumentNullException(nameof(userRepository));
 
-            _key = _configuration["Jwt:Key"] 
+            _key = _configuration["Jwt:Key"]
                 ?? throw new ArgumentNullException("Jwt key is null");
 
-            _issuer = _configuration["Jwt:Issuer"] 
+            _issuer = _configuration["Jwt:Issuer"]
                 ?? throw new ArgumentNullException("Jwt issuer is null");
 
-            _audience = _configuration["Jwt:Audience"] 
+            _audience = _configuration["Jwt:Audience"]
                 ?? throw new ArgumentNullException("Jwt audience is null");
 
             if (!double.TryParse(_configuration["Jwt:AccessTokenLifetime"], out var accessTokenLifetime))
@@ -55,9 +55,9 @@ namespace ElectronicLearningSystemWebApi.Helpers
         /// <summary>
         /// Проверка токена пользователя, совершившего запрос.
         /// </summary>
-        /// <param name="token">Токен.</param>
-        /// <returns>Пользователь.</returns>
-        /// <exception cref="SecurityTokenException">Ошибка проверки токена.</exception>
+        /// <param name="token">Токен. </param>
+        /// <returns>Пользователь. </returns>
+        /// <exception cref="SecurityTokenException">Ошибка проверки токена. </exception>
         public virtual ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
         {
             ArgumentException.ThrowIfNullOrWhiteSpace(token);
@@ -89,8 +89,8 @@ namespace ElectronicLearningSystemWebApi.Helpers
         /// <summary>
         /// Генерация токена для пользователя.
         /// </summary>
-        /// <param name="user">Пользователь.</param>
-        /// <returns>Токен доступа и обновления.</returns>
+        /// <param name="user">Пользователь. </param>
+        /// <returns>Токен доступа и обновления. </returns>
         public virtual async Task<(string AccessToken, string RefreshToken)> GenerateTokenForUser(UserEntity user)
         {
             ArgumentNullException.ThrowIfNull(user);
@@ -117,8 +117,8 @@ namespace ElectronicLearningSystemWebApi.Helpers
         /// <summary>
         /// Генерация токена для доступа.
         /// </summary>
-        /// <param name="username">Логин пользователя.</param>
-        /// <returns>Токен.</returns>
+        /// <param name="user">Данные пользователя. </param>
+        /// <returns>Токен. </returns>
         protected virtual string GenerateAccessToken(UserEntity user)
         {
             ArgumentNullException.ThrowIfNull(user, nameof(user));

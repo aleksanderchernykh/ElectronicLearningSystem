@@ -1,21 +1,22 @@
 ﻿using AutoMapper;
 using ElectronicLearningSystemKafka.Common.Models;
+using ElectronicLearningSystemWebApi.Helpers.EmailSendingHelper;
 using ElectronicLearningSystemWebApi.Models.EmailModel.DTO;
 
-namespace ElectronicLearningSystemWebApi.Helpers.Services.EmailService
+namespace ElectronicLearningSystemWebApi.Services.EmailService
 {
     /// <summary>
     /// Хелпер для работы с Email сообщениями.
     /// </summary>
     /// <param name="emailSendingService">Хелпер для работы с отправкой сообщения. </param>
     /// <param name="mapper">Маппер. </param>
-    public class EmailService(EmailSendingHelper emailSendingService,
+    public class EmailService(IEmailSendingHelper emailSendingService,
         IMapper mapper) : IEmailService
     {
         /// <summary>
         /// Хелпер для работы с отправкой сообщения.
         /// </summary>
-        private readonly EmailSendingHelper _emailSendingService = emailSendingService;
+        private readonly IEmailSendingHelper _emailSendingService = emailSendingService;
 
         /// <summary>
         /// Маппер.

@@ -12,13 +12,16 @@ using Microsoft.OpenApi.Models;
 using StackExchange.Redis;
 using System.Text;
 using System.Text.Json;
-using ElectronicLearningSystemWebApi.Helpers.Services.AuthService;
-using ElectronicLearningSystemWebApi.Helpers.Services.CommentService;
-using ElectronicLearningSystemWebApi.Helpers.Services.NotificationService;
-using ElectronicLearningSystemWebApi.Helpers.Services.RoleService;
-using ElectronicLearningSystemWebApi.Helpers.Services.TaskService;
-using ElectronicLearningSystemWebApi.Helpers.Services.UserService;
-using ElectronicLearningSystemWebApi.Helpers.Services.EmailService;
+using ElectronicLearningSystemWebApi.Services.AuthService;
+using ElectronicLearningSystemWebApi.Services.CommentService;
+using ElectronicLearningSystemWebApi.Services.EmailService;
+using ElectronicLearningSystemWebApi.Services.NotificationService;
+using ElectronicLearningSystemWebApi.Services.RoleService;
+using ElectronicLearningSystemWebApi.Services.TaskService;
+using ElectronicLearningSystemWebApi.Services.UserService;
+using ElectronicLearningSystemWebApi.Helpers.JwtTokenHelper;
+using ElectronicLearningSystemWebApi.Helpers.RedisHelper;
+using ElectronicLearningSystemWebApi.Helpers.EmailSendingHelper;
 
 namespace ElectronicLearningSystemWebApi.Helpers
 {
@@ -134,16 +137,16 @@ namespace ElectronicLearningSystemWebApi.Helpers
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<INotificationRepository, NotificationRepository>();
             services.AddScoped<ITaskRepository, TaskRepository>();
-            services.AddScoped<EmailSendingHelper>();
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<RedisHelper>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<ITaskService, TaskService>();
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<ICommentService, CommentService>();
-            services.AddScoped<JwtTokenHelper>();
+            services.AddScoped<IJwtTokenHelper, JwtTokenHelper.JwtTokenHelper>();
+            services.AddScoped<IRedisHelper, RedisHelper.RedisHelper>();
+            services.AddScoped<IEmailSendingHelper, EmailSendingHelper.EmailSendingHelper>();
 
             return services;
         }

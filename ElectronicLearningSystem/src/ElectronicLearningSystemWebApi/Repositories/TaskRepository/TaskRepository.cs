@@ -1,9 +1,9 @@
 ﻿using ElectronicLearningSystemWebApi.Context;
-using ElectronicLearningSystemWebApi.Helpers.Services.UserService;
 using ElectronicLearningSystemWebApi.Models.NotificationModel;
 using ElectronicLearningSystemWebApi.Models.TaskModel.Entity;
 using ElectronicLearningSystemWebApi.Repositories.Base;
 using ElectronicLearningSystemWebApi.Repositories.Notification;
+using ElectronicLearningSystemWebApi.Services.UserService;
 
 namespace ElectronicLearningSystemWebApi.Repositories.TaskRepository
 {

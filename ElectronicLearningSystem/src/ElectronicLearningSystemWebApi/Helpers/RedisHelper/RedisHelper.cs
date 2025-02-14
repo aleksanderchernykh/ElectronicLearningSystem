@@ -1,9 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using StackExchange.Redis;
+﻿using StackExchange.Redis;
 
-namespace ElectronicLearningSystemWebApi.Helpers
+namespace ElectronicLearningSystemWebApi.Helpers.RedisHelper
 {
-    public class RedisHelper(IConnectionMultiplexer redisConnection)
+    public class RedisHelper(IConnectionMultiplexer redisConnection) : IRedisHelper
     {
         protected readonly IDatabase _database = redisConnection.GetDatabase();
 

@@ -4,7 +4,7 @@ using ElectronicLearningSystemWebApi.Models.CommentModel.Entity;
 using ElectronicLearningSystemWebApi.Models.CommentModel.Response;
 using ElectronicLearningSystemWebApi.Repositories.Base;
 
-namespace ElectronicLearningSystemWebApi.Helpers.Services.CommentService
+namespace ElectronicLearningSystemWebApi.Services.CommentService
 {
     /// <summary>
     /// Хелпер для работы с комментариями для задач.

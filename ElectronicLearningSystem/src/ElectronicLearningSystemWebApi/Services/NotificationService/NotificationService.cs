@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
-using ElectronicLearningSystemWebApi.Helpers.Services.UserService;
 using ElectronicLearningSystemWebApi.Models.NotificationModel.DTO;
 using ElectronicLearningSystemWebApi.Models.NotificationModel.Entity;
 using ElectronicLearningSystemWebApi.Models.NotificationModel.Response;
 using ElectronicLearningSystemWebApi.Repositories.Notification;
+using ElectronicLearningSystemWebApi.Services.UserService;
 
-namespace ElectronicLearningSystemWebApi.Helpers.Services.NotificationService
+namespace ElectronicLearningSystemWebApi.Services.NotificationService
 {
     /// <summary>
     /// Хелпер для работы с уведомлениями.

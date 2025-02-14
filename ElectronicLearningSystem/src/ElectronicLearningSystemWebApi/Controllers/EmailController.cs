@@ -1,8 +1,7 @@
 ﻿using ElectronicLearningSystemWebApi.Attributes;
-using ElectronicLearningSystemWebApi.Helpers.Services.CommentService;
-using ElectronicLearningSystemWebApi.Helpers.Services.EmailService;
 using ElectronicLearningSystemWebApi.Models.EmailModel.DTO;
 using ElectronicLearningSystemWebApi.Models.ErrorModel;
+using ElectronicLearningSystemWebApi.Services.EmailService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

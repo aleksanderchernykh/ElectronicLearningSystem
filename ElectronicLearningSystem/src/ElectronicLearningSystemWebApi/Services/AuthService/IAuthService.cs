@@ -3,7 +3,7 @@ using ElectronicLearningSystemWebApi.Models.UserModel.Entity;
 using ElectronicLearningSystemWebApi.Models;
 using ElectronicLearningSystemWebApi.Models.UserModel.Response;
 
-namespace ElectronicLearningSystemWebApi.Helpers.Services.AuthService
+namespace ElectronicLearningSystemWebApi.Services.AuthService
 {
     /// <summary>
     /// Интерфейс сервиса аутентификации.
