@@ -1,5 +1,5 @@
 ﻿using ElectronicLearningSystemWebApi.Attributes;
-using ElectronicLearningSystemWebApi.Helpers.Services;
+using ElectronicLearningSystemWebApi.Helpers.Services.CommentService;
 using ElectronicLearningSystemWebApi.Models.CommentModel.DTO;
 using ElectronicLearningSystemWebApi.Models.CommentModel.Response;
 using ElectronicLearningSystemWebApi.Models.ErrorModel;
@@ -15,13 +15,13 @@ namespace ElectronicLearningSystemWebApi.Controllers
     [Authorize]
     [Route("comment")]
     [ApiController]
-    public class CommentController(CommentService commentService) 
+    public class CommentController(ICommentService commentService) 
         : ControllerBase
     {
         /// <summary>
         /// Хелпер для работы с комментарями задач.
         /// </summary>
-        private readonly CommentService _commentService = commentService
+        private readonly ICommentService _commentService = commentService
             ?? throw new ArgumentNullException(nameof(commentService));
 
         /// <summary>

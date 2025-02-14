@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using ElectronicLearningSystemWebApi.Helpers.Services;
+using ElectronicLearningSystemWebApi.Helpers.Services.UserService;
 using ElectronicLearningSystemWebApi.Models;
 
 namespace ElectronicLearningSystemWebApi.Helpers.Mapper.MapperResolvers

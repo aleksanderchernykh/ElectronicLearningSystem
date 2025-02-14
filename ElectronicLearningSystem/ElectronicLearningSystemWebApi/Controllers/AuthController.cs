@@ -2,10 +2,10 @@ using ElectronicLearningSystemWebApi.Models.UserModel.Response;
 using Microsoft.AspNetCore.Mvc;
 using ElectronicLearningSystemWebApi.Models.ErrorModel;
 using ElectronicLearningSystemWebApi.Attributes;
-using ElectronicLearningSystemWebApi.Helpers.Services;
 using ElectronicLearningSystemWebApi.Models.UserModel.DTO;
 using System.Runtime.CompilerServices;
 using ElectronicLearningSystemWebApi.Models;
+using ElectronicLearningSystemWebApi.Helpers.Services.AuthService;
 
 namespace ElectronicLearningSystemWebApi.Controllers
 {
@@ -15,13 +15,13 @@ namespace ElectronicLearningSystemWebApi.Controllers
     /// <param name="authService">Хелпер для работы с авторизацией пользователя в системе. </param>
     [Route("auth")]
     [ApiController]
-    public class AuthController(AuthService authService) 
+    public class AuthController(IAuthService authService) 
         : ControllerBase
     {
         /// <summary>
         /// Хелпер для работы с авторизацией пользователя в системе. 
         /// </summary>
-        private readonly AuthService _authService = authService 
+        private readonly IAuthService _authService = authService 
             ?? throw new ArgumentNullException(nameof(authService));
 
         /// <summary>

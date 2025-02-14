@@ -4,7 +4,7 @@ using ElectronicLearningSystemKafka.Common.Models;
 using ElectronicLearningSystemKafka.Core.Producer;
 using ElectronicLearningSystemWebApi.Models.UserModel.Entity;
 
-namespace ElectronicLearningSystemWebApi.Helpers.Services
+namespace ElectronicLearningSystemWebApi.Helpers
 {
     /// <summary>
     /// Хелпер для раьоты с Email сообщениями.

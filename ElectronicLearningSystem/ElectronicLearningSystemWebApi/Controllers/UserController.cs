@@ -1,5 +1,5 @@
 ﻿using ElectronicLearningSystemWebApi.Attributes;
-using ElectronicLearningSystemWebApi.Helpers.Services;
+using ElectronicLearningSystemWebApi.Helpers.Services.UserService;
 using ElectronicLearningSystemWebApi.Models.ErrorModel;
 using ElectronicLearningSystemWebApi.Models.UserModel.DTO;
 using ElectronicLearningSystemWebApi.Models.UserModel.Response;
@@ -15,12 +15,12 @@ namespace ElectronicLearningSystemWebApi.Controllers
     [Authorize]
     [Route("user")]
     [ApiController]
-    public class UserController(UserService userService) : ControllerBase
+    public class UserController(IUserService userService) : ControllerBase
     {
         /// <summary>
         /// Хелпер для работы с пользователями.
         /// </summary>
-        private readonly UserService _userService = userService 
+        private readonly IUserService _userService = userService 
             ?? throw new ArgumentNullException(nameof(userService));
 
         /// <summary>

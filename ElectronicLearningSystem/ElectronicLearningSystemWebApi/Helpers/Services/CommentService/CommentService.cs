@@ -4,7 +4,7 @@ using ElectronicLearningSystemWebApi.Models.CommentModel.Entity;
 using ElectronicLearningSystemWebApi.Models.CommentModel.Response;
 using ElectronicLearningSystemWebApi.Repositories.Base;
 
-namespace ElectronicLearningSystemWebApi.Helpers.Services
+namespace ElectronicLearningSystemWebApi.Helpers.Services.CommentService
 {
     /// <summary>
     /// Хелпер для работы с комментариями для задач.
@@ -13,7 +13,7 @@ namespace ElectronicLearningSystemWebApi.Helpers.Services
     /// <param name="commentRepository">Репозиторий для работы с комментариями. </param>
     /// <param name="mapper">Маппер. </param>
     public class CommentService(IRepository<CommentEntity> commentRepository,
-        IMapper mapper)
+        IMapper mapper) : ICommentService
     {
         /// <summary>
         /// Репозиторий для работы с комментариями. 
@@ -42,7 +42,7 @@ namespace ElectronicLearningSystemWebApi.Helpers.Services
         /// Создание комментария по задаче.
         /// </summary>
         /// <param name="createCommentDTO">Информация по комментарию. </param>
-        internal async Task CreateCommentAsync(CreateCommentDTO createCommentDTO)
+        public async Task CreateCommentAsync(CreateCommentDTO createCommentDTO)
         {
             var comment = _mapper.Map<CommentEntity>(createCommentDTO);
             await _commentRepository.AddRecordAsync(comment);
