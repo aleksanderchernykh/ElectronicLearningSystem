@@ -1,6 +1,5 @@
 ﻿using ElectronicLearningSystemWebApi.Helpers;
 using Xunit;
-using System;
 
 namespace ElectronicLearningSystemWebApi.Test.HelpersTests
 {

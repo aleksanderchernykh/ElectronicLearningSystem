@@ -1,11 +1,15 @@
-﻿using ElectronicLearningSystemWebApi.Helpers.Services.UserService;
+﻿using ElectronicLearningSystemWebApi.Helpers;
+using ElectronicLearningSystemWebApi.Helpers.EmailSendingHelper;
+using ElectronicLearningSystemWebApi.Helpers.JwtTokenHelper;
+using ElectronicLearningSystemWebApi.Helpers.RedisHelper;
 using ElectronicLearningSystemWebApi.Models;
 using ElectronicLearningSystemWebApi.Models.UserModel.DTO;
 using ElectronicLearningSystemWebApi.Models.UserModel.Entity;
 using ElectronicLearningSystemWebApi.Models.UserModel.Response;
 using ElectronicLearningSystemWebApi.Repositories.User;
+using ElectronicLearningSystemWebApi.Services.UserService;
 
-namespace ElectronicLearningSystemWebApi.Helpers.Services.AuthService
+namespace ElectronicLearningSystemWebApi.Services.AuthService
 {
     /// <summary>
     /// Хелпер для работы с аутентификацией пользователя.
@@ -18,14 +22,14 @@ namespace ElectronicLearningSystemWebApi.Helpers.Services.AuthService
     /// <param name="emailSendingHelper">Хелпер для работы с Email. </param>
     public class AuthService(IUserRepository userRepository,
         IUserService userService,
-        JwtTokenHelper tokenHelper,
-        EmailSendingHelper emailSendingHelper,
-        RedisHelper redisHelper) : IAuthService
+        IJwtTokenHelper tokenHelper,
+        IEmailSendingHelper emailSendingHelper,
+        IRedisHelper redisHelper) : IAuthService
     {
         /// <summary>
         /// Хелпер для работы с Redis.
         /// </summary>
-        protected readonly RedisHelper _redisHelper = redisHelper
+        protected readonly IRedisHelper _redisHelper = redisHelper
             ?? throw new ArgumentNullException(nameof(redisHelper));
 
         /// <summary>
@@ -43,13 +47,13 @@ namespace ElectronicLearningSystemWebApi.Helpers.Services.AuthService
         /// <summary>
         /// Хелпер для работы с токенами. 
         /// </summary>
-        protected readonly JwtTokenHelper _tokenHelper = tokenHelper
+        protected readonly IJwtTokenHelper _tokenHelper = tokenHelper
             ?? throw new ArgumentNullException(nameof(_tokenHelper));
 
         /// <summary>
         /// Хелпер для работы с сообщениями.
         /// </summary>
-        protected readonly EmailSendingHelper _emailSendingHelper = emailSendingHelper
+        protected readonly IEmailSendingHelper _emailSendingHelper = emailSendingHelper
             ?? throw new ArgumentNullException(nameof(_emailSendingHelper));
 
         /// <summary>

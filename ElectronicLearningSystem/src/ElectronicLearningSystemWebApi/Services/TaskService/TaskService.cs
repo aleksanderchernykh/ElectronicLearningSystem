@@ -2,7 +2,7 @@
 using ElectronicLearningSystemWebApi.Models.TaskModel.Response;
 using ElectronicLearningSystemWebApi.Repositories.TaskRepository;
 
-namespace ElectronicLearningSystemWebApi.Helpers.Services.TaskService
+namespace ElectronicLearningSystemWebApi.Services.TaskService
 {
     /// <summary>
     /// Хелпер для работы с заданиями.

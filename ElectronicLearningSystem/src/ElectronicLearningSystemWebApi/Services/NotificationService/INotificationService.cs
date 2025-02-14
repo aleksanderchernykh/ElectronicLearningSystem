@@ -1,7 +1,7 @@
 ﻿using ElectronicLearningSystemWebApi.Models.NotificationModel.DTO;
 using ElectronicLearningSystemWebApi.Models.NotificationModel.Response;
 
-namespace ElectronicLearningSystemWebApi.Helpers.Services.NotificationService
+namespace ElectronicLearningSystemWebApi.Services.NotificationService
 {
     /// <summary>
     /// Интерфейс сервиса для работы с уведомлениями.

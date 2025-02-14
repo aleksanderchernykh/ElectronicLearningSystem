@@ -4,7 +4,7 @@ using ElectronicLearningSystemWebApi.Models.RoleModel.Entity;
 using ElectronicLearningSystemWebApi.Models.RoleModel.Response;
 using ElectronicLearningSystemWebApi.Repositories.Base;
 
-namespace ElectronicLearningSystemWebApi.Helpers.Services.RoleService
+namespace ElectronicLearningSystemWebApi.Services.RoleService
 {
     /// <summary>
     /// Хелпер для работы с ролями.

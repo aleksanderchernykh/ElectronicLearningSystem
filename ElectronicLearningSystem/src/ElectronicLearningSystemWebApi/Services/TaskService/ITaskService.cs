@@ -1,6 +1,6 @@
 ﻿using ElectronicLearningSystemWebApi.Models.TaskModel.Response;
 
-namespace ElectronicLearningSystemWebApi.Helpers.Services.TaskService
+namespace ElectronicLearningSystemWebApi.Services.TaskService
 {
     /// <summary>
     /// Интерфейс сервиса для работы с заданиями.

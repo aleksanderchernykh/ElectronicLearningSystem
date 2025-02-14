@@ -1,7 +1,7 @@
 ﻿using ElectronicLearningSystemWebApi.Models.CommentModel.DTO;
 using ElectronicLearningSystemWebApi.Models.CommentModel.Response;
 
-namespace ElectronicLearningSystemWebApi.Helpers.Services.CommentService
+namespace ElectronicLearningSystemWebApi.Services.CommentService
 {
     /// <summary>
     /// Интерфейс сервиса для работы с комментариями к задачам.

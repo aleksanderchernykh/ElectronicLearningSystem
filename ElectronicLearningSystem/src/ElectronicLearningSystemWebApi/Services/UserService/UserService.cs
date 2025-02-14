@@ -7,7 +7,7 @@ using ElectronicLearningSystemWebApi.Models.UserModel.Response;
 using ElectronicLearningSystemWebApi.Repositories.User;
 using System.Security.Claims;
 
-namespace ElectronicLearningSystemWebApi.Helpers.Services.UserService
+namespace ElectronicLearningSystemWebApi.Services.UserService
 {
     /// <summary>
     /// Хелпер для работы с пользователями.

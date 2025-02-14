@@ -1,6 +1,6 @@
 ﻿using ElectronicLearningSystemWebApi.Models.RoleModel.Response;
 
-namespace ElectronicLearningSystemWebApi.Helpers.Services.RoleService
+namespace ElectronicLearningSystemWebApi.Services.RoleService
 {
     /// <summary>
     /// Интерфейс сервиса для работы с ролями.

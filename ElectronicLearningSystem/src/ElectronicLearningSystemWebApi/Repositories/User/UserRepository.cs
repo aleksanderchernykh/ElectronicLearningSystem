@@ -19,12 +19,10 @@ namespace ElectronicLearningSystemWebApi.Repositories.User
         /// </summary>
         /// <param name="login">Логин.</param>
         /// <returns>Пользователь.</returns>
-        public async Task<UserEntity> GetUserByLoginAsync(string login)
+        public async Task<UserEntity?> GetUserByLoginAsync(string login)
         {
             if (string.IsNullOrEmpty(login))
-            {
                 return null;
-            }
 
             return await GetFirstRecordsByQueryAsync(x => x.Login == login);
         }
@@ -40,15 +38,11 @@ namespace ElectronicLearningSystemWebApi.Repositories.User
             var dublicateUser = await GetUserByLoginAsync(userResponse.Login);
 
             if (dublicateUser != null)
-            {
                 throw new DublicateUserException("Пользователь с переданным логином уже существует.");
-            }
 
             if (string.IsNullOrEmpty(userResponse.Login) ||
                 string.IsNullOrEmpty(userResponse.Password))
-            {
                 throw new ArgumentNullException(nameof(userResponse), "Передано пустое значение логина или пароля.");
-            }
 
             var user = new UserEntity()
             {

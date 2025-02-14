@@ -4,7 +4,7 @@ using ElectronicLearningSystemWebApi.Models.ErrorModel;
 using ElectronicLearningSystemWebApi.Attributes;
 using ElectronicLearningSystemWebApi.Models.UserModel.DTO;
 using ElectronicLearningSystemWebApi.Models;
-using ElectronicLearningSystemWebApi.Helpers.Services.AuthService;
+using ElectronicLearningSystemWebApi.Services.AuthService;
 
 namespace ElectronicLearningSystemWebApi.Controllers
 {
