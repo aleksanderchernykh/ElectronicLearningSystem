@@ -1,4 +1,4 @@
-﻿using ElectronicLearningSystemWebApi.Helpers.Services;
+﻿using ElectronicLearningSystemWebApi.Helpers.Services.RoleService;
 using ElectronicLearningSystemWebApi.Models.ErrorModel;
 using ElectronicLearningSystemWebApi.Models.RoleModel.Response;
 using Microsoft.AspNetCore.Authorization;
@@ -13,13 +13,13 @@ namespace ElectronicLearningSystemWebApi.Controllers
     [Authorize]
     [Route("role")]
     [ApiController]
-    public class RoleController(RoleService roleService) 
+    public class RoleController(IRoleService roleService) 
         : ControllerBase
     {
         /// <summary>
         /// Хелпер для работы с ролями.
         /// </summary>
-        private readonly RoleService _roleService = roleService 
+        private readonly IRoleService _roleService = roleService 
             ?? throw new ArgumentNullException(nameof(roleService));
 
         /// <summary>

@@ -1,4 +1,4 @@
-﻿using ElectronicLearningSystemWebApi.Helpers.Services;
+﻿using ElectronicLearningSystemWebApi.Helpers.Services.TaskService;
 using ElectronicLearningSystemWebApi.Models.ErrorModel;
 using ElectronicLearningSystemWebApi.Models.RoleModel.Response;
 using Microsoft.AspNetCore.Authorization;
@@ -12,12 +12,12 @@ namespace ElectronicLearningSystemWebApi.Controllers
     [Authorize]
     [Route("task")]
     [ApiController]
-    public class TaskController(TaskService taskService) : ControllerBase
+    public class TaskController(ITaskService taskService) : ControllerBase
     {
         /// <summary>
         /// Хелпер для работы с заданиями.
         /// </summary>
-        private readonly TaskService _taskService = taskService 
+        private readonly ITaskService _taskService = taskService 
             ?? throw new ArgumentNullException(nameof(taskService));
 
         /// <summary>

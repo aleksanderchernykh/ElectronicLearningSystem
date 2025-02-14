@@ -1,5 +1,5 @@
 ﻿using ElectronicLearningSystemWebApi.Attributes;
-using ElectronicLearningSystemWebApi.Helpers.Services;
+using ElectronicLearningSystemWebApi.Helpers.Services.NotificationService;
 using ElectronicLearningSystemWebApi.Models.ErrorModel;
 using ElectronicLearningSystemWebApi.Models.NotificationModel.DTO;
 using ElectronicLearningSystemWebApi.Models.NotificationModel.Response;
@@ -11,13 +11,13 @@ namespace ElectronicLearningSystemWebApi.Controllers
     [Authorize]
     [ApiController]
     [Route("notification")]
-    public class NotificationController(NotificationService notificationService)
+    public class NotificationController(INotificationService notificationService)
         : ControllerBase
     {
         /// <summary>
         /// Хелпер для работы с уведомлениями.
         /// </summary>
-        private readonly NotificationService _notificationService = 
+        private readonly INotificationService _notificationService = 
             notificationService ?? throw new ArgumentNullException(nameof(notificationService));
 
         /// <summary>

@@ -1,5 +1,5 @@
 ﻿using ElectronicLearningSystemWebApi.Context;
-using ElectronicLearningSystemWebApi.Helpers.Services;
+using ElectronicLearningSystemWebApi.Helpers.Services.UserService;
 using ElectronicLearningSystemWebApi.Models.NotificationModel.Entity;
 using ElectronicLearningSystemWebApi.Repositories.Base;
 

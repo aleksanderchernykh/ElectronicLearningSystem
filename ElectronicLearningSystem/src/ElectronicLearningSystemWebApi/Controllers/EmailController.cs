@@ -1,5 +1,6 @@
 ﻿using ElectronicLearningSystemWebApi.Attributes;
-using ElectronicLearningSystemWebApi.Helpers.Services;
+using ElectronicLearningSystemWebApi.Helpers.Services.CommentService;
+using ElectronicLearningSystemWebApi.Helpers.Services.EmailService;
 using ElectronicLearningSystemWebApi.Models.EmailModel.DTO;
 using ElectronicLearningSystemWebApi.Models.ErrorModel;
 using Microsoft.AspNetCore.Authorization;
@@ -14,13 +15,13 @@ namespace ElectronicLearningSystemWebApi.Controllers
     [Authorize]
     [Route("email")]
     [ApiController]
-    public class EmailController(EmailService emailService) 
+    public class EmailController(IEmailService emailService) 
         : ControllerBase
     {
         /// <summary>
         /// Хелпер для работы с Email сообщениями. 
         /// </summary>
-        private readonly EmailService _emailService = emailService 
+        private readonly IEmailService _emailService = emailService 
             ?? throw new ArgumentNullException(nameof(_emailService));
 
         /// <summary>

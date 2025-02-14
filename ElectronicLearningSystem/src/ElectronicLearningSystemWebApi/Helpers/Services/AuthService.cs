@@ -1,10 +1,11 @@
-﻿using ElectronicLearningSystemWebApi.Models;
+﻿using ElectronicLearningSystemWebApi.Helpers.Services.UserService;
+using ElectronicLearningSystemWebApi.Models;
 using ElectronicLearningSystemWebApi.Models.UserModel.DTO;
 using ElectronicLearningSystemWebApi.Models.UserModel.Entity;
 using ElectronicLearningSystemWebApi.Models.UserModel.Response;
 using ElectronicLearningSystemWebApi.Repositories.User;
 
-namespace ElectronicLearningSystemWebApi.Helpers.Services
+namespace ElectronicLearningSystemWebApi.Helpers.Services.AuthService
 {
     /// <summary>
     /// Хелпер для работы с аутентификацией пользователя.
@@ -16,10 +17,10 @@ namespace ElectronicLearningSystemWebApi.Helpers.Services
     /// <param name="emailSendingHelper">Хелпер для работы с Email. </param>
     /// <param name="emailSendingHelper">Хелпер для работы с Email. </param>
     public class AuthService(IUserRepository userRepository,
-        UserService userService,
+        IUserService userService,
         JwtTokenHelper tokenHelper,
         EmailSendingHelper emailSendingHelper,
-        RedisHelper redisHelper)
+        RedisHelper redisHelper) : IAuthService
     {
         /// <summary>
         /// Хелпер для работы с Redis.
@@ -36,7 +37,7 @@ namespace ElectronicLearningSystemWebApi.Helpers.Services
         /// <summary>
         /// Хелпер для работы с пользователями. 
         /// </summary>
-        protected readonly UserService _userService = userService
+        protected readonly IUserService _userService = userService
             ?? throw new ArgumentNullException(nameof(_userService));
 
         /// <summary>
@@ -140,7 +141,7 @@ namespace ElectronicLearningSystemWebApi.Helpers.Services
         /// <exception cref="ArgumentNullException">Данные по переданному токену не найдены. </exception>
         public async Task<BaseResponse> GetUserIdByRecoveryPasswordTokenAsync(Guid id)
         {
-            var userId = await _redisHelper.GetUserIdByRecoveryPasswordTokenAsync(id) 
+            var userId = await _redisHelper.GetUserIdByRecoveryPasswordTokenAsync(id)
                 ?? throw new ArgumentNullException("Invalid user password recovery token");
 
             return await _userService.GetAnonymousUserByIdAsync(userId);
