@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using ElectronicLearningSystemWebApi.Models.ErrorModel;
 using ElectronicLearningSystemWebApi.Attributes;
 using ElectronicLearningSystemWebApi.Models.UserModel.DTO;
-using System.Runtime.CompilerServices;
 using ElectronicLearningSystemWebApi.Models;
 using ElectronicLearningSystemWebApi.Helpers.Services.AuthService;
 

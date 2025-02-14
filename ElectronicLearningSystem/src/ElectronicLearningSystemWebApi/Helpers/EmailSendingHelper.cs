@@ -7,7 +7,7 @@ using ElectronicLearningSystemWebApi.Models.UserModel.Entity;
 namespace ElectronicLearningSystemWebApi.Helpers
 {
     /// <summary>
-    /// Хелпер для раьоты с Email сообщениями.
+    /// Хелпер для работы с Email сообщениями.
     /// </summary>
     /// <param name="producer">Kafka producer. </param>
     /// <param name="configuration">Конфигурация приложения. </param>
