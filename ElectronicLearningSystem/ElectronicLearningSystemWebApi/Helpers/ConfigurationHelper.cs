@@ -1,6 +1,5 @@
 ﻿using ElectronicLearningSystemKafka.Core.Producer;
 using ElectronicLearningSystemWebApi.Context;
-using ElectronicLearningSystemWebApi.Helpers.Services;
 using ElectronicLearningSystemWebApi.Helpers.Mapper;
 using ElectronicLearningSystemWebApi.Repositories.Base;
 using ElectronicLearningSystemWebApi.Repositories.Notification;
@@ -13,6 +12,13 @@ using Microsoft.OpenApi.Models;
 using StackExchange.Redis;
 using System.Text;
 using System.Text.Json;
+using ElectronicLearningSystemWebApi.Helpers.Services.AuthService;
+using ElectronicLearningSystemWebApi.Helpers.Services.CommentService;
+using ElectronicLearningSystemWebApi.Helpers.Services.NotificationService;
+using ElectronicLearningSystemWebApi.Helpers.Services.RoleService;
+using ElectronicLearningSystemWebApi.Helpers.Services.TaskService;
+using ElectronicLearningSystemWebApi.Helpers.Services.UserService;
+using ElectronicLearningSystemWebApi.Helpers.Services.EmailService;
 
 namespace ElectronicLearningSystemWebApi.Helpers
 {
@@ -129,13 +135,14 @@ namespace ElectronicLearningSystemWebApi.Helpers
             services.AddScoped<INotificationRepository, NotificationRepository>();
             services.AddScoped<ITaskRepository, TaskRepository>();
             services.AddScoped<EmailSendingHelper>();
-            services.AddScoped<UserService>();
+            services.AddScoped<IUserService, UserService>();
             services.AddScoped<RedisHelper>();
-            services.AddScoped<AuthService>();
-            services.AddScoped<RoleService>();
-            services.AddScoped<TaskService>();
-            services.AddScoped<NotificationService>();
-            services.AddScoped<CommentService>();
+            services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<ITaskService, TaskService>();
+            services.AddScoped<INotificationService, NotificationService>();
+            services.AddScoped<ICommentService, CommentService>();
             services.AddScoped<JwtTokenHelper>();
 
             return services;

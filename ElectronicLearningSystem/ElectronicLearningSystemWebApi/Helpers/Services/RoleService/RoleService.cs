@@ -4,7 +4,7 @@ using ElectronicLearningSystemWebApi.Models.RoleModel.Entity;
 using ElectronicLearningSystemWebApi.Models.RoleModel.Response;
 using ElectronicLearningSystemWebApi.Repositories.Base;
 
-namespace ElectronicLearningSystemWebApi.Helpers.Services
+namespace ElectronicLearningSystemWebApi.Helpers.Services.RoleService
 {
     /// <summary>
     /// Хелпер для работы с ролями.
@@ -12,7 +12,7 @@ namespace ElectronicLearningSystemWebApi.Helpers.Services
     /// <param name="roleRepository">Репозиторий для работы с ролями. </param>
     /// <param name="mapper">Маппер. </param>
     public class RoleService(IRepository<RoleEntity> roleRepository,
-        IMapper mapper)
+        IMapper mapper) : IRoleService
     {
         /// <summary>
         /// Репозиторий для работы с ролями.

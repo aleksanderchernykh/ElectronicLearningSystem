@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using ElectronicLearningSystemWebApi.Enums;
 using ElectronicLearningSystemWebApi.Helpers.Exceptions;
 using ElectronicLearningSystemWebApi.Models;
 using ElectronicLearningSystemWebApi.Models.UserModel.DTO;
@@ -8,7 +7,7 @@ using ElectronicLearningSystemWebApi.Models.UserModel.Response;
 using ElectronicLearningSystemWebApi.Repositories.User;
 using System.Security.Claims;
 
-namespace ElectronicLearningSystemWebApi.Helpers.Services
+namespace ElectronicLearningSystemWebApi.Helpers.Services.UserService
 {
     /// <summary>
     /// Хелпер для работы с пользователями.
@@ -18,7 +17,7 @@ namespace ElectronicLearningSystemWebApi.Helpers.Services
     /// <param name="mapper">Маппер. </param>
     public class UserService(IUserRepository userRepository,
         IHttpContextAccessor httpContextAccessor,
-        IMapper mapper)
+        IMapper mapper) : IUserService
     {
         /// <summary>
         /// Репозиторий для работы с пользователями.
@@ -35,7 +34,7 @@ namespace ElectronicLearningSystemWebApi.Helpers.Services
         /// <summary>
         /// Маппер.
         /// </summary>
-        private readonly IMapper _mapper = mapper 
+        private readonly IMapper _mapper = mapper
             ?? throw new ArgumentNullException(nameof(mapper));
 
         /// <summary>
@@ -59,7 +58,7 @@ namespace ElectronicLearningSystemWebApi.Helpers.Services
         /// <param name="id">Идентификатор пользователя. </param>
         public async Task<UserResponse> GetUserByIdAsync(Guid id)
         {
-            var user = await _userRepository.GetRecordByIdAsync(id) 
+            var user = await _userRepository.GetRecordByIdAsync(id)
                 ?? throw new ArgumentNullException($"The user with id: {id} was not found");
 
             return _mapper.Map<UserResponse>(user);
@@ -85,7 +84,7 @@ namespace ElectronicLearningSystemWebApi.Helpers.Services
         public async Task<UserResponse> GetCurrentUserAsync()
         {
             var userId = GetCurrentUserId();
-            var user = await _userRepository.GetRecordByIdAsync(userId) 
+            var user = await _userRepository.GetRecordByIdAsync(userId)
                 ?? throw new ArgumentNullException($"The user with id: {userId} was not found");
 
             return _mapper.Map<UserResponse>(user);

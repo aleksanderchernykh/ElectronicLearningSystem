@@ -2,7 +2,7 @@
 using ElectronicLearningSystemKafka.Common.Models;
 using ElectronicLearningSystemWebApi.Models.EmailModel.DTO;
 
-namespace ElectronicLearningSystemWebApi.Helpers.Services
+namespace ElectronicLearningSystemWebApi.Helpers.Services.EmailService
 {
     /// <summary>
     /// Хелпер для работы с Email сообщениями.
@@ -10,7 +10,7 @@ namespace ElectronicLearningSystemWebApi.Helpers.Services
     /// <param name="emailSendingService">Хелпер для работы с отправкой сообщения. </param>
     /// <param name="mapper">Маппер. </param>
     public class EmailService(EmailSendingHelper emailSendingService,
-        IMapper mapper)
+        IMapper mapper) : IEmailService
     {
         /// <summary>
         /// Хелпер для работы с отправкой сообщения.

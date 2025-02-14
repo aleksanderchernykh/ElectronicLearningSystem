@@ -1,9 +1,8 @@
-﻿
-using AutoMapper;
+﻿using AutoMapper;
 using ElectronicLearningSystemWebApi.Models.TaskModel.Response;
 using ElectronicLearningSystemWebApi.Repositories.TaskRepository;
 
-namespace ElectronicLearningSystemWebApi.Helpers.Services
+namespace ElectronicLearningSystemWebApi.Helpers.Services.TaskService
 {
     /// <summary>
     /// Хелпер для работы с заданиями.
@@ -11,7 +10,7 @@ namespace ElectronicLearningSystemWebApi.Helpers.Services
     /// <param name="taskRepository">Хелпер для работы с заданиями. </param>
     /// <param name="mapper">Маппер. </param>
     public class TaskService(ITaskRepository taskRepository,
-        IMapper mapper)
+        IMapper mapper) : ITaskService
     {
         /// <summary>
         /// Хелпер для работы с заданиями.

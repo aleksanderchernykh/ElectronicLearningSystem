@@ -16,11 +16,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ServicesTests\" />
+    <ProjectReference Include="..\ElectronicLearningSystemWebApi\ElectronicLearningSystemWebApi.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ElectronicLearningSystemWebApi\ElectronicLearningSystemWebApi.csproj" />
+    <Folder Include="ControllersTests\" />
   </ItemGroup>
 
 </Project>

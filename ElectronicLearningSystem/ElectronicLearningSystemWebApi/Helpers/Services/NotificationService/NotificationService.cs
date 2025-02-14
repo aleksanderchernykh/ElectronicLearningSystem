@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
+using ElectronicLearningSystemWebApi.Helpers.Services.UserService;
 using ElectronicLearningSystemWebApi.Models.NotificationModel.DTO;
 using ElectronicLearningSystemWebApi.Models.NotificationModel.Entity;
 using ElectronicLearningSystemWebApi.Models.NotificationModel.Response;
 using ElectronicLearningSystemWebApi.Repositories.Notification;
 
-namespace ElectronicLearningSystemWebApi.Helpers.Services
+namespace ElectronicLearningSystemWebApi.Helpers.Services.NotificationService
 {
     /// <summary>
     /// Хелпер для работы с уведомлениями.
@@ -12,14 +13,14 @@ namespace ElectronicLearningSystemWebApi.Helpers.Services
     /// <param name="userHelper">Хелпер для работы с пользователем. </param>
     /// <param name="notificationRepository">Репозиторий для работы с уведомлениями. </param>
     /// <param name="mapper">Маппер. </param>
-    public class NotificationService(UserService userHelper,
+    public class NotificationService(IUserService userHelper,
         INotificationRepository notificationRepository,
-        IMapper mapper)
+        IMapper mapper) : INotificationService
     {
         /// <summary>
         /// Хелпер для работы с пользователем.
         /// </summary>
-        protected readonly UserService _userHelper = userHelper
+        protected readonly IUserService _userHelper = userHelper
             ?? throw new ArgumentNullException(nameof(userHelper));
 
         /// <summary>
