@@ -1,11 +1,11 @@
-﻿using ElectronicLearningSystemWebApi.Repositories.User;
-using Moq;
-using ElectronicLearningSystemWebApi.Services.UserService;
+﻿using ElectronicLearningSystemWebApi.Helpers.EmailSendingHelper;
 using ElectronicLearningSystemWebApi.Helpers.JwtTokenHelper;
 using ElectronicLearningSystemWebApi.Helpers.RedisHelper;
-using ElectronicLearningSystemWebApi.Helpers.EmailSendingHelper;
+using ElectronicLearningSystemWebApi.Repositories.User;
+using ElectronicLearningSystemWebApi.Services.UserService;
+using Moq;
 
-namespace ElectronicLearningSystemWebApi.Test.Common
+namespace ElectronicLearningSystem.UnitTests.Common
 {
     public abstract class BaseTest
     {

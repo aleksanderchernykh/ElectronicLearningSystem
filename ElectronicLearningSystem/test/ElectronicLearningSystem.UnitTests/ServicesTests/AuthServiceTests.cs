@@ -1,13 +1,15 @@
-﻿using Moq;
-using Xunit;
+﻿
+
+using ElectronicLearningSystem.UnitTests.Common;
+using ElectronicLearningSystemWebApi.Helpers;
 using ElectronicLearningSystemWebApi.Models.UserModel.DTO;
 using ElectronicLearningSystemWebApi.Models.UserModel.Entity;
-using ElectronicLearningSystemWebApi.Test.Common;
 using ElectronicLearningSystemWebApi.Services.AuthService;
-using ElectronicLearningSystemWebApi.Helpers;
+using Moq;
 using System.Security.Claims;
+using Xunit;
 
-namespace ElectronicLearningSystemWebApi.Test.ServicesTests
+namespace ElectronicLearningSystem.UnitTests.ServicesTests
 {
     public class AuthServiceTests : BaseTest
     {

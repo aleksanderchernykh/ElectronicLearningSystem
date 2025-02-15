@@ -7,12 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="ControllersTests\**" />
-    <EmbeddedResource Remove="ControllersTests\**" />
-    <None Remove="ControllersTests\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
     <PackageReference Include="Moq" Version="4.20.72" />
     <PackageReference Include="xunit" Version="2.9.3" />
@@ -24,11 +18,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\ElectronicLearningSystemWebApi\ElectronicLearningSystemWebApi.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-	<Folder Include="ServicesTests\" />
-	<Folder Include="HelpersTests\" />
   </ItemGroup>
 
 </Project>

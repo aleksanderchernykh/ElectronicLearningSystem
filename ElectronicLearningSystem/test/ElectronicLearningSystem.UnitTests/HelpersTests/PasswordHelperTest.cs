@@ -1,7 +1,7 @@
 ﻿using ElectronicLearningSystemWebApi.Helpers;
 using Xunit;
 
-namespace ElectronicLearningSystemWebApi.Test.HelpersTests
+namespace ElectronicLearningSystem.UnitTests.HelpersTests
 {
     public class PasswordHelperTest
     {
