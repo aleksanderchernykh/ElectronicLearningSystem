@@ -29,20 +29,20 @@
 
 ## Базовые записи для тестирования системы
 
-* Роли
+Роли:
 |Id|Наименование|
 |--|------------|
 |02bc926f-9c56-4fb9-bc8e-68bbe2e87c17|Administrator|
 |c0eb7e9a-b913-4cd0-bf70-146fc48764ba|Teacher|
 |86b8ca0b-85ce-4aca-b911-28836645ebc7|Student|
 
-* Типы уведомлений
+Типы уведомлений:
 |Id|Наименование|
 |--|------------|
 |2cbbcb67-fb42-4dcc-ae89-61f93a283d10|New comment sent|
 |d569e3db-3daa-435c-9a02-2f21d19132f9|A new message has been sent|
 
-* Пользователи
+Пользователи:
 |Логин|Пароль|Роль|
 |--|------------|--|
 |Administrator|RsQOluzt|Administrator|
