@@ -17,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{C120827A-5
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectronicLearningSystemWebApi.Test", "test\ElectronicLearningSystemWebApi.Test\ElectronicLearningSystemWebApi.Test.csproj", "{AF9FF9D1-9416-4F02-8717-BAD1F736CBA6}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectronicLearningSystemKafka.Test", "test\ElectronicLearningSystemKafka.Test\ElectronicLearningSystemKafka.Test.csproj", "{9693CF3A-0E52-493E-9A26-441DD4559F43}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,10 @@ Global
 		{AF9FF9D1-9416-4F02-8717-BAD1F736CBA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF9FF9D1-9416-4F02-8717-BAD1F736CBA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF9FF9D1-9416-4F02-8717-BAD1F736CBA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9693CF3A-0E52-493E-9A26-441DD4559F43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9693CF3A-0E52-493E-9A26-441DD4559F43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9693CF3A-0E52-493E-9A26-441DD4559F43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9693CF3A-0E52-493E-9A26-441DD4559F43}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -53,6 +59,7 @@ Global
 		{57901721-31DD-46A3-9A02-9BAA85BD16AE} = {5A1E8052-142B-4386-BBDB-A96AACFC5FF5}
 		{7CA3D827-D91F-4EA1-901C-F91B86029226} = {5A1E8052-142B-4386-BBDB-A96AACFC5FF5}
 		{AF9FF9D1-9416-4F02-8717-BAD1F736CBA6} = {C120827A-5929-4D3A-B3DB-CCF0FB6F2BBC}
+		{9693CF3A-0E52-493E-9A26-441DD4559F43} = {C120827A-5929-4D3A-B3DB-CCF0FB6F2BBC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A028FC75-C76C-4CC2-8CE7-88F06A136F8B}
