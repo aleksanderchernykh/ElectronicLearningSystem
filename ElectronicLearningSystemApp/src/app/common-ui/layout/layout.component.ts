@@ -4,6 +4,7 @@ import { AuthService } from '../../auth/auth.service';
 import { NotificationService } from '../../services/notification.service';
 import { Notification } from '../../interfaces/notification';
 import * as signalR from "@microsoft/signalr";
+import { ConfigService } from '../../services/config.service';
 
 @Component({
   selector: 'app-layout',
@@ -15,6 +16,7 @@ import * as signalR from "@microsoft/signalr";
 export class LayoutComponent implements OnInit, OnDestroy {
   route = inject(Router);
   authService = inject(AuthService);
+  configService = inject(ConfigService);
   notificationsService = inject(NotificationService);
 
   notifications: Notification[] = [];
@@ -37,7 +39,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   private initializeSignalRConnection(): void {
     this.connection = new signalR.HubConnectionBuilder()
-      .withUrl("https://localhost:7291/notificationhub", {
+      .withUrl(`${this.configService.API_URL}notificationhub`, {
         accessTokenFactory: () => this.authService.getToken() || ''
       })
       .configureLogging(signalR.LogLevel.Information)

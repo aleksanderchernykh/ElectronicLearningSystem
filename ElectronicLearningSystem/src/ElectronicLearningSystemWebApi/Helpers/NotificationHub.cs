@@ -15,12 +15,15 @@ namespace ElectronicLearningSystemWebApi.Helpers
             await Clients.Caller.SendAsync("Message", "Connected successfully!");
         }
 
-        // Метод, который будет вызываться на клиенте
-        public async Task CreatedNotification(string user)
+        /// <summary>
+        /// СОздание оповещения для пользователя. 
+        /// </summary>
+        /// <param name="userId">Идентификатор пользователя. </param>
+        public async Task CreatedNotification(Guid userId)
         {
             try
             {
-                await Clients.All.SendAsync("CreatedNotificationFromUser", user);
+                await Clients.All.SendAsync("CreatedNotificationFromUser", userId);
             }
             catch (Exception ex)
             {

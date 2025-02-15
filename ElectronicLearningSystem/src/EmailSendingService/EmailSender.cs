@@ -4,6 +4,8 @@ using Microsoft.Extensions.Logging;
 using ElectronicLearningSystemWebApi.Enums;
 using ElectronicLearningSystemKafka.Common.Models;
 using Microsoft.Extensions.Configuration;
+using EmailSendingService.Common;
+using Microsoft.Extensions.Options;
 
 namespace EmailSendingService
 {
@@ -16,22 +18,21 @@ namespace EmailSendingService
         private readonly int _smtpPort;
         private readonly string _emailFrom;
         private readonly string _emailPassword;
+        private readonly EmailSettings _emailSettings;
 
-        public EmailSender(ILogger<EmailSender> logger, IConfiguration configuration)
+        public EmailSender(ILogger<EmailSender> logger, IOptions<EmailSettings> emailSettings)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            _emailSettings = emailSettings?.Value ?? throw new ArgumentNullException(nameof(emailSettings));
 
-            _smtpServer = _configuration.GetValue<string>("Email:SmtpServerUrl")
-                ?? throw new ArgumentNullException(nameof(_smtpServer), "SMTP server URL is not configured.");
+            if (string.IsNullOrEmpty(_emailSettings.SmtpServerUrl))
+                throw new ArgumentNullException(nameof(_emailSettings.SmtpServerUrl), "SMTP server URL is not configured.");
 
-            _emailFrom = _configuration.GetValue<string>("Email:SenderEmailAddress")
-                ?? throw new ArgumentNullException(nameof(_emailFrom), "Sender email address is not configured.");
+            if (string.IsNullOrEmpty(_emailSettings.SenderEmailAddress))
+                throw new ArgumentNullException(nameof(_emailSettings.SenderEmailAddress), "Sender email address is not configured.");
 
-            _emailPassword = _configuration.GetValue<string>("Email:SenderPassword")
-                ?? throw new ArgumentNullException(nameof(_emailPassword), "Sender email password is not configured.");
-
-            _smtpPort = _configuration.GetValue<int>("Email:SmtpPort");
+            if (string.IsNullOrEmpty(_emailSettings.SenderPassword))
+                throw new ArgumentNullException(nameof(_emailSettings.SenderPassword), "Sender email password is not configured.");
         }
 
         public async Task SendEmailAsync(Email email)
