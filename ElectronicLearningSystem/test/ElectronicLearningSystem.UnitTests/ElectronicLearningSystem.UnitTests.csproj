@@ -17,7 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\ElectronicLearningSystemWebApi\ElectronicLearningSystemWebApi.csproj" />
+    <ProjectReference Include="..\..\src\ElectronicLearningSystem.Application\ElectronicLearningSystem.Application.csproj" />
+    <ProjectReference Include="..\..\src\ElectronicLearningSystem.Core\ElectronicLearningSystem.Core.csproj" />
+    <ProjectReference Include="..\..\src\ElectronicLearningSystem.Infrastructure\ElectronicLearningSystem.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

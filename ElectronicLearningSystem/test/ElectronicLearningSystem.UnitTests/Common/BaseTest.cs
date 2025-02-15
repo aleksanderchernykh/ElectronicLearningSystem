@@ -1,8 +1,8 @@
-﻿using ElectronicLearningSystemWebApi.Helpers.EmailSendingHelper;
-using ElectronicLearningSystemWebApi.Helpers.JwtTokenHelper;
-using ElectronicLearningSystemWebApi.Helpers.RedisHelper;
-using ElectronicLearningSystemWebApi.Repositories.User;
-using ElectronicLearningSystemWebApi.Services.UserService;
+﻿using ElectronicLearningSystem.Application.Services;
+using ElectronicLearningSystem.Common.Helpers.EmailSendingHelper;
+using ElectronicLearningSystem.Common.Helpers.JwtTokenHelper;
+using ElectronicLearningSystem.Common.Helpers.RedisHelper;
+using ElectronicLearningSystem.Infrastructure.Repositories.User;
 using Moq;
 
 namespace ElectronicLearningSystem.UnitTests.Common

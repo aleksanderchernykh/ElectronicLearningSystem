@@ -1,10 +1,8 @@
-﻿
-
+﻿using ElectronicLearningSystem.Application.Models.UserModel.DTO;
+using ElectronicLearningSystem.Application.Services.AuthService;
+using ElectronicLearningSystem.Core.Helpers;
+using ElectronicLearningSystem.Infrastructure.Models.UserModel;
 using ElectronicLearningSystem.UnitTests.Common;
-using ElectronicLearningSystemWebApi.Helpers;
-using ElectronicLearningSystemWebApi.Models.UserModel.DTO;
-using ElectronicLearningSystemWebApi.Models.UserModel.Entity;
-using ElectronicLearningSystemWebApi.Services.AuthService;
 using Moq;
 using System.Security.Claims;
 using Xunit;

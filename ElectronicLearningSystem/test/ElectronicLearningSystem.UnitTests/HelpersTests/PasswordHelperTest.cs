@@ -1,4 +1,4 @@
-﻿using ElectronicLearningSystemWebApi.Helpers;
+﻿using ElectronicLearningSystem.Core.Helpers;
 using Xunit;
 
 namespace ElectronicLearningSystem.UnitTests.HelpersTests
