@@ -188,18 +188,15 @@ namespace ElectronicLearningSystemWebApi.Helpers
         /// <summary>
         /// Настройка конфигурации cors.
         /// </summary>
-        public static IServiceCollection AddCustomCors(this IServiceCollection services, string[] allowedOrigins)
+        public static IServiceCollection AddCustomCors(this IServiceCollection services)
         {
             services.AddCors(options =>
             {
-                options.AddPolicy("AllowSpecificOrigins", builder =>
-                {
-                    builder.WithOrigins(allowedOrigins)
-                           .AllowAnyHeader()
-                           .AllowAnyMethod()
-                           .AllowCredentials();
-                });
-            });
+                options.AddPolicy("AllowAll",
+                    policy => policy.AllowAnyOrigin()
+                                    .AllowAnyMethod()
+                                    .AllowAnyHeader());
+            }); 
 
             return services;
         }

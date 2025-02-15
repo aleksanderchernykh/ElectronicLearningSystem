@@ -362,5 +362,11 @@ MigrationBackup/
 # Data for redis
 redis-data/
 
+# ENV File
+.env
+
+#server app key
+ElectronicLearningSystemApp/server.key
+
 # Fody - auto-generated XML schema
 FodyWeavers.xsd

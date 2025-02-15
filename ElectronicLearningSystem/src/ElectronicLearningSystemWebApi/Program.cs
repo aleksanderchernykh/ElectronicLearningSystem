@@ -12,7 +12,7 @@ builder.WebHost.ConfigureKestrelServer(5000);
 builder.Services.AddSwagger();
 
 // Настройка CORS.
-builder.Services.AddCustomCors(new[] { "https://localhost:4200" });
+builder.Services.AddCustomCors();
 
 // Настройка базы данных.
 builder.Services.AddDatabaseContext(builder.Configuration);
@@ -50,15 +50,10 @@ using (var scope = app.Services.CreateScope())
     DataBaseInitializer.Initialize(context);
 }
 
-// Настройка middleware.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
+app.UseSwagger();
+app.UseSwaggerUI();
+app.UseCors("AllowAll");
 app.UseMiddleware<ExceptionHandlingMiddleware>();
-app.UseCors("AllowSpecificOrigins");
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

@@ -64,8 +64,13 @@ services:
     image: emailservice
     container_name: emailservice
     build: 
-      context: ./ElectronicLearningSystem
+      context: ./ElectronicLearningSystem/src/
       dockerfile: ./EmailSendingService/Dockerfile
+    environment:
+      SMTP_SERVER: ${SMTP_SERVER}
+      SMTP_PORT: ${SMTP_PORT}
+      EMAIL_SENDER: ${EMAIL_SENDER}
+      EMAIL_PASSWORD: ${EMAIL_PASSWORD}
     depends_on:
       - broker1
       - zookeeper
@@ -75,7 +80,7 @@ services:
     image: webapiimage
     container_name: webapi
     build: 
-      context: ./ElectronicLearningSystem
+      context: ./ElectronicLearningSystem/src/
       dockerfile: ./ElectronicLearningSystemWebApi/Dockerfile
     depends_on:
       - mssql
@@ -100,7 +105,7 @@ services:
     image: mcr.microsoft.com/mssql/server:2019-latest
     container_name: mssqlserver
     environment:
-      SA_PASSWORD: "U)c82r65M%"
+      SA_PASSWORD: "${MSSQL_SA_PASSWORD}"
       ACCEPT_EULA: "Y"
     ports:
       - "1433:1433"
