@@ -25,11 +25,13 @@ Electronic Learning System — система электронного обуч�
 
 Типы уведомлений:
 |Id|Наименование|
+|--|------------|
 |2cbbcb67-fb42-4dcc-ae89-61f93a283d10|New comment sent|
 |d569e3db-3daa-435c-9a02-2f21d19132f9|A new message has been sent|
 
 Пользователи:
 |Логин|Пароль|Роль|
+|--|------------|
 |Administrator|RsQOluzt|Administrator|
 |Teacher|TZewZmJj|Teacher|
 |Student|FXRCYoix|Student|
