@@ -31,7 +31,7 @@ Electronic Learning System — система электронного обуч�
 
 Пользователи:
 |Логин|Пароль|Роль|
-|--|------------|
+|--|------------|--|
 |Administrator|RsQOluzt|Administrator|
 |Teacher|TZewZmJj|Teacher|
 |Student|FXRCYoix|Student|
