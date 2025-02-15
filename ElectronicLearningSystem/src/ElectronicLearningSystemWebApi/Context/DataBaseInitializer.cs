@@ -22,19 +22,19 @@ namespace ElectronicLearningSystemWebApi.Context
             var administrator = new RoleEntity
             {
                 Id = (Guid)UserRoleEnum.Admin.GetAmbientValue(),
-                Name = "Администратор"
+                Name = "Administrator"
             };
 
             var student = new RoleEntity
             {
                 Id = (Guid)UserRoleEnum.Student.GetAmbientValue(),
-                Name = "Студент"
+                Name = "Teacher"
             };
 
             var teacher = new RoleEntity
             {
                 Id = (Guid)UserRoleEnum.Teacher.GetAmbientValue(),
-                Name = "Преподаватель"
+                Name = "Student"
             };
 
             context.Role.AddRange(
@@ -47,7 +47,7 @@ namespace ElectronicLearningSystemWebApi.Context
                 Id = Guid.NewGuid(),
                 Role = administrator,
                 Login = "Administrator",
-                Password = PasswordHelper.HashPassword("Administrator"),
+                Password = PasswordHelper.HashPassword("RsQOluzt"),
                 Email = "aleksandr.chernykh3@gmail.com",
                 CreatedOn = DateTime.Now,
                 ModifiedOn = DateTime.Now
@@ -58,7 +58,7 @@ namespace ElectronicLearningSystemWebApi.Context
                 Id = Guid.NewGuid(),
                 Role = teacher,
                 Login = "Teacher",
-                Password = PasswordHelper.HashPassword("Teacher"),
+                Password = PasswordHelper.HashPassword("TZewZmJj"),
                 Email = "aleksandr.chernykh3@gmail.com",
                 CreatedOn = DateTime.Now,
                 ModifiedOn = DateTime.Now
@@ -69,7 +69,7 @@ namespace ElectronicLearningSystemWebApi.Context
                 Id = Guid.NewGuid(),
                 Role = student,
                 Login = "Student",
-                Password = PasswordHelper.HashPassword("Student"),
+                Password = PasswordHelper.HashPassword("FXRCYoix"),
                 Email = "aleksandr.chernykh3@gmail.com",
                 CreatedOn = DateTime.Now,
                 ModifiedOn = DateTime.Now
@@ -78,13 +78,13 @@ namespace ElectronicLearningSystemWebApi.Context
             context.NotificationType.Add(new NotificationTypeEntity 
             { 
                 Id = (Guid)NotificationTypeEnum.Comment.GetAmbientValue(),
-                Name = "Отправлен новый комментарий" 
+                Name = "New comment sent"
             });
 
             context.NotificationType.Add(new NotificationTypeEntity
             {
                 Id = (Guid)NotificationTypeEnum.Message.GetAmbientValue(),
-                Name = "Отправлено новое сообщение"
+                Name = "A new message has been sent"
             });
 
             context.SaveChanges();
