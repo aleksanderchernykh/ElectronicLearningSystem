@@ -65,7 +65,7 @@ services:
     container_name: emailservice
     build: 
       context: ./ElectronicLearningSystem/src/
-      dockerfile: ./EmailSendingService/Dockerfile
+      dockerfile: ./ElectronicLearningSystem.EmailSendingService/Dockerfile
     environment:
       SMTP_SERVER: ${SMTP_SERVER}
       SMTP_PORT: ${SMTP_PORT}
@@ -81,7 +81,7 @@ services:
     container_name: webapi
     build: 
       context: ./ElectronicLearningSystem/src/
-      dockerfile: ./ElectronicLearningSystemWebApi/Dockerfile
+      dockerfile: ./ElectronicLearningSystem.WebApi/Dockerfile
     depends_on:
       - mssql
       - broker1
